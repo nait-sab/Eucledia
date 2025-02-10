@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sandbox", "Sandbox\Sandbox.vcxproj", "{6E6A8A12-2783-4715-BA98-02B2D1986847}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Eucledia", "Eucledia\Eucledia.vcxproj", "{30451220-D180-4D5B-86FB-BADDA655506A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{30451220-D180-4D5B-86FB-BADDA655506A}.Debug|x64.ActiveCfg = Debug|x64
+		{30451220-D180-4D5B-86FB-BADDA655506A}.Debug|x64.Build.0 = Debug|x64
+		{30451220-D180-4D5B-86FB-BADDA655506A}.Release|x64.ActiveCfg = Release|x64
+		{30451220-D180-4D5B-86FB-BADDA655506A}.Release|x64.Build.0 = Release|x64
+		{6E6A8A12-2783-4715-BA98-02B2D1986847}.Debug|x64.ActiveCfg = Debug|x64
+		{6E6A8A12-2783-4715-BA98-02B2D1986847}.Debug|x64.Build.0 = Debug|x64
+		{6E6A8A12-2783-4715-BA98-02B2D1986847}.Release|x64.ActiveCfg = Release|x64
+		{6E6A8A12-2783-4715-BA98-02B2D1986847}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
