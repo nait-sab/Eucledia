@@ -1,0 +1,3 @@
+[submodule "Eucledia/vendor/sdplog"]
+	path = Eucledia/vendor/sdplog
+	url = https://github.com/gabime/spdlog
