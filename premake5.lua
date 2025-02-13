@@ -19,7 +19,6 @@ project "Eucledia"
 	location "Eucledia"
 	kind "SharedLib"
 	language "C++"
-	staticruntime "on"
 
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -64,15 +63,18 @@ project "Eucledia"
 
 	filter "configurations:Debug"
 		defines "EUCLEDIA_DEBUG"
-		symbols "ON"
+		buildoptions "/MDd"
+		symbols "On"
 
 	filter "configurations:Release"
 		defines "EUCLEDIA_RELEASE"
-		symbols "ON"
+		buildoptions "/MD"
+		symbols "On"
 
 	filter "configurations:Dist"
 		defines "EUCLEDIA_DIST"
-		symbols "ON"
+		buildoptions "/MD"
+		symbols "On"
 
 	filter { "system:windows", "configurations:Debug" }
 		buildoptions "/utf-8"

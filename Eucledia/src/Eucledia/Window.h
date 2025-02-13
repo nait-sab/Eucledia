@@ -13,7 +13,7 @@ namespace Eucledia
 		unsigned int _width;
 		unsigned int _height;
 
-		WindowProps(const std::string& title = "Eucledia Engine", unsigned int width = 1920, unsigned int height = 1080) 
+		WindowProps(const std::string& title = "Eucledia Engine", unsigned int width = 1280, unsigned int height = 720) 
 			: _title(title), _width(width), _height(height) {}
 	};
 

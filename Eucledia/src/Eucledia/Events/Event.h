@@ -39,6 +39,7 @@ namespace Eucledia
 		virtual const char* getName() const = 0;
 		virtual int getCategoryFlags() const = 0;
 		virtual std::string toString() const { return getName(); }
+		virtual bool getHandled() const { return _handled; }
 
 		inline bool isInCategory(EventCategory category)
 		{

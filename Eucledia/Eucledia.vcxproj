@@ -147,6 +147,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Eucledia\LayerStack.h" />
+    <ClInclude Include="src\Eucledia\Layer.h" />
     <ClInclude Include="src\Eucledia.h" />
     <ClInclude Include="src\Eucledia\Application.h" />
     <ClInclude Include="src\Eucledia\Core.h" />
@@ -161,6 +163,8 @@
     <ClInclude Include="src\euclediapch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Eucledia\LayerStack.cpp" />
+    <ClCompile Include="src\Eucledia\Layer.cpp" />
     <ClCompile Include="src\Eucledia\Application.cpp" />
     <ClCompile Include="src\Eucledia\Log.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />

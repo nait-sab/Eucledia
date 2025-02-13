@@ -17,17 +17,43 @@ namespace Eucledia
 	{
 	}
 
+	void Application::pushLayer(Layer* layer)
+	{
+		_layerStack.pushLayer(layer);
+	}
+
+	void Application::pushOverlay(Layer* layer)
+	{
+		_layerStack.pushOverlay(layer);
+	}
+
 	void Application::onEvent(Event& event)
 	{
 		EventDispatcher dispatcher(event);
 		dispatcher.dispatch<WindowCloseEvent>(BIND_EVENT_FN(onWindowClosed));
+
 		EUCLEDIA_CORE_TRACE("{0}", event.toString());
+
+		for (auto it = _layerStack.end(); it != _layerStack.begin();)
+		{
+			(*--it)->onEvent(event);
+			
+			if (event.getHandled())
+			{
+				break;
+			}
+		}
 	}
 
 	void Application::run()
 	{
 		while (_running)
 		{
+			for (Layer* layer : _layerStack)
+			{
+				layer->onUpdate();
+			}
+
 			_window->onUpdate();
 		}
 	}
