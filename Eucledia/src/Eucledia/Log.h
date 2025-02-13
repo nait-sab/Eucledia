@@ -1,10 +1,9 @@
 #pragma once
 
-#include <memory>
-
 #include "Core.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
+#include "spdlog/fmt/ostr.h"
 
 namespace Eucledia
 {
@@ -23,15 +22,15 @@ namespace Eucledia
 }
 
 // Core Logs macros
-#define EUCLEDIA_CORE_ERROR(...)	::Eucledia::Log::getCoreLogger()->error(__VA_ARGS__)
+#define EUCLEDIA_CORE_TRACE(...)	::Eucledia::Log::getCoreLogger()->trace(__VA_ARGS__)
 #define EUCLEDIA_CORE_INFO(...)		::Eucledia::Log::getCoreLogger()->info(__VA_ARGS__)
 #define EUCLEDIA_CORE_WARN(...)		::Eucledia::Log::getCoreLogger()->warn(__VA_ARGS__)
-#define EUCLEDIA_CORE_TRACE(...)	::Eucledia::Log::getCoreLogger()->trace(__VA_ARGS__)
+#define EUCLEDIA_CORE_ERROR(...)	::Eucledia::Log::getCoreLogger()->error(__VA_ARGS__)
 #define EUCLEDIA_CORE_FATAL(...)	::Eucledia::Log::getCoreLogger()->fatal(__VA_ARGS__)
 
 // App Logs macros
-#define EUCLEDIA_ERROR(...)			::Eucledia::Log::getClientLogger()->error(__VA_ARGS__)
+#define EUCLEDIA_TRACE(...)			::Eucledia::Log::getClientLogger()->trace(__VA_ARGS__)
 #define EUCLEDIA_INFO(...)			::Eucledia::Log::getClientLogger()->info(__VA_ARGS__)
 #define EUCLEDIA_WARN(...)			::Eucledia::Log::getClientLogger()->warn(__VA_ARGS__)
-#define EUCLEDIA_TRACE(...)			::Eucledia::Log::getClientLogger()->trace(__VA_ARGS__)
+#define EUCLEDIA_ERROR(...)			::Eucledia::Log::getClientLogger()->error(__VA_ARGS__)
 #define EUCLEDIA_FATAL(...)			::Eucledia::Log::getClientLogger()->fatal(__VA_ARGS__)

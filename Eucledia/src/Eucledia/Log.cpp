@@ -1,3 +1,4 @@
+#include "euclediapch.h"
 #include "Log.h"
 
 namespace Eucledia

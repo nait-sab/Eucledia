@@ -4,6 +4,15 @@
     <Filter Include="Eucledia">
       <UniqueIdentifier>{21959946-0D62-F451-367B-E2F922A729E0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Eucledia\Events">
+      <UniqueIdentifier>{E5115251-519D-BF15-5AAE-420AC6B81B16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\Windows">
+      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Eucledia.h" />
@@ -16,9 +25,28 @@
     <ClInclude Include="src\Eucledia\EntryPoint.h">
       <Filter>Eucledia</Filter>
     </ClInclude>
+    <ClInclude Include="src\Eucledia\Events\ApplicationEvent.h">
+      <Filter>Eucledia\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Eucledia\Events\Event.h">
+      <Filter>Eucledia\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Eucledia\Events\KeyEvent.h">
+      <Filter>Eucledia\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Eucledia\Events\MouseEvent.h">
+      <Filter>Eucledia\Events</Filter>
+    </ClInclude>
     <ClInclude Include="src\Eucledia\Log.h">
       <Filter>Eucledia</Filter>
     </ClInclude>
+    <ClInclude Include="src\Eucledia\Window.h">
+      <Filter>Eucledia</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\euclediapch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Eucledia\Application.cpp">
@@ -27,5 +55,9 @@
     <ClCompile Include="src\Eucledia\Log.cpp">
       <Filter>Eucledia</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\euclediapch.cpp" />
   </ItemGroup>
 </Project>

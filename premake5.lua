@@ -1,7 +1,8 @@
 workspace "Eucledia"
 	architecture "x64"
 
-	configurations {
+	configurations 
+	{
 		"Debug",
 		"Release",
 		"Dist"
@@ -9,21 +10,40 @@ workspace "Eucledia"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+IncludeDir = {}
+IncludeDir["GLFW"] = "Eucledia/vendor/GLFW/include"
+
+include "Eucledia/vendor/GLFW"
+
 project "Eucledia"
 	location "Eucledia"
 	kind "SharedLib"
 	language "C++"
+	staticruntime "on"
 
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
-	files {
+	pchheader "euclediapch.h"
+	pchsource "Eucledia/src/euclediapch.cpp"
+
+	files 
+	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp"
 	}
 
-	includedirs {
-		"%{prj.name}/vendor/sdplog/include"
+	includedirs 
+	{
+		"%{prj.name}/src",
+		"%{prj.name}/vendor/sdplog/include",
+		"%{IncludeDir.GLFW}"
+	}
+
+	links
+	{
+		"GLFW",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"
@@ -31,12 +51,14 @@ project "Eucledia"
 		staticruntime "On"
 		systemversion "latest"
 
-		defines {
+		defines 
+		{
 			"EUCLEDIA_PLATFORM_WNDOWS",
 			"EUCLEDIA_BUILD_DLL"
 		}
 
-		postbuildcommands {
+		postbuildcommands 
+		{
 			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
 		}
 
@@ -69,12 +91,14 @@ project "Sandbox"
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
-	files {
+	files 
+	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp"
 	}
 
-	includedirs {
+	includedirs 
+	{
 		"Eucledia/src",
 		"Eucledia/vendor/sdplog/include"
 	}
@@ -88,7 +112,8 @@ project "Sandbox"
 		staticruntime "On"
 		systemversion "latest"
 
-		defines {
+		defines 
+		{
 			"EUCLEDIA_PLATFORM_WNDOWS"
 		}
 
