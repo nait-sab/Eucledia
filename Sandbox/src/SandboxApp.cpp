@@ -10,7 +10,12 @@ public:
 
 	void onUpdate() override
 	{
-		// EUCLEDIA_INFO("ExampleLayer::Update");
+		//EUCLEDIA_INFO("ExampleLayer::Update");
+	}
+
+	void onEvent(Eucledia::Event& event) override
+	{
+		//EUCLEDIA_TRACE(event.toString());
 	}
 };
 
@@ -20,6 +25,7 @@ public:
 	Sandbox()
 	{
 		pushLayer(new ExampleLayer());
+		pushOverlay(new Eucledia::ImGuiLayer());
 	}
 
 	~Sandbox()

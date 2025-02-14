@@ -12,8 +12,12 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
 IncludeDir["GLFW"] = "Eucledia/vendor/GLFW/include"
+IncludeDir["Glad"] = "Eucledia/vendor/Glad/include"
+IncludeDir["ImGui"] = "Eucledia/vendor/imgui"
 
 include "Eucledia/vendor/GLFW"
+include "Eucledia/vendor/Glad"
+include "Eucledia/vendor/imgui"
 
 project "Eucledia"
 	location "Eucledia"
@@ -36,12 +40,16 @@ project "Eucledia"
 	{
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/sdplog/include",
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}",
+		"%{IncludeDir.ImGui}"
 	}
 
 	links
 	{
 		"GLFW",
+		"GLAD",
+		"ImGui",
 		"opengl32.lib"
 	}
 
@@ -53,7 +61,8 @@ project "Eucledia"
 		defines 
 		{
 			"EUCLEDIA_PLATFORM_WNDOWS",
-			"EUCLEDIA_BUILD_DLL"
+			"EUCLEDIA_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
 		}
 
 		postbuildcommands 
@@ -121,14 +130,17 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "EUCLEDIA_DEBUG"
+		buildoptions "/MDd"
 		symbols "ON"
 
 	filter "configurations:Release"
 		defines "EUCLEDIA_RELEASE"
+		buildoptions "/MD"
 		symbols "ON"
 
 	filter "configurations:Dist"
 		defines "EUCLEDIA_DIST"
+		buildoptions "/MD"
 		symbols "ON"
 
 	filter { "system:windows", "configurations:Debug" }

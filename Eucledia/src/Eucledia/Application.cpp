@@ -1,14 +1,19 @@
 #include "euclediapch.h"
 #include "Application.h"
 
-#include <GLFW/glfw3.h>
+#include <glad/glad.h>
 
 namespace Eucledia
 {
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1) 
 
+	Application* Application::_instance = nullptr;
+
 	Application::Application()
 	{
+		EUCLEDIA_CORE_ASSERT(!_instance, "Application already exists")
+		_instance = this;
+
 		_window = std::unique_ptr<Window>(Window::create());
 		_window->setEventCallback(BIND_EVENT_FN(onEvent));
 	}
@@ -20,11 +25,13 @@ namespace Eucledia
 	void Application::pushLayer(Layer* layer)
 	{
 		_layerStack.pushLayer(layer);
+		layer->onAttach();
 	}
 
 	void Application::pushOverlay(Layer* layer)
 	{
 		_layerStack.pushOverlay(layer);
+		layer->onAttach();
 	}
 
 	void Application::onEvent(Event& event)

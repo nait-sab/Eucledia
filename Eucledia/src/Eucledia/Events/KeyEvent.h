@@ -28,7 +28,7 @@ namespace Eucledia
 		std::string toString() const override
 		{
 			std::stringstream ss;
-			ss << "KeyPressedEvent: " << _keyCode << " (" << _repeatCount << " repeats)";
+			ss << "KeyPressedEvent: " << _keyCode << " (repeat = " << _repeatCount << ")";
 			return ss.str();
 		}
 
@@ -51,5 +51,20 @@ namespace Eucledia
 		}
 
 		EVENT_CLASS_TYPE(KeyReleased)
+	};
+
+	class EUCLEDIA_API KeyTypedEvent : public KeyEvent
+	{
+	public:
+		KeyTypedEvent(int keyCode) : KeyEvent(keyCode) {}
+
+		std::string toString() const override
+		{
+			std::stringstream ss;
+			ss << "KeyTypedEvent: " << _keyCode;
+			return ss.str();
+		}
+
+		EVENT_CLASS_TYPE(KeyTyped)
 	};
 }

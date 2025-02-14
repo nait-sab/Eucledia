@@ -5,6 +5,8 @@
 #include "Eucledia/Events/MouseEvent.h"
 #include "Eucledia/Events/KeyEvent.h"
 
+#include <glad/glad.h>
+
 namespace Eucledia
 {
 	static bool _GLFWInitialized = false;
@@ -48,6 +50,8 @@ namespace Eucledia
 
 		_window = glfwCreateWindow((int)props._width, (int)props._height, _data._title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(_window);
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		EUCLEDIA_CORE_ASSERT(status, "Failed no initialize Glad");
 		glfwSetWindowUserPointer(_window, &_data);
 		setVSync(true);
 
