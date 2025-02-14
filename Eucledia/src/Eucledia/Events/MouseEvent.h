@@ -52,7 +52,7 @@ namespace Eucledia
 	class EUCLEDIA_API MouseButtonEvent : public Event
 	{
 	public:
-		inline int getMouseButtn() const { return _button; }
+		inline int getMouseButton() const { return _button; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput | EventCategoryMouseButton)
 

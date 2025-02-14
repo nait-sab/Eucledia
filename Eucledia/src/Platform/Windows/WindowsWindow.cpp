@@ -61,7 +61,6 @@ namespace Eucledia
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 			data._width = width;
 			data._height = height;
-
 			WindowResizeEvent event(width, height);
 			data._eventCallback(event);
 		});
@@ -100,6 +99,13 @@ namespace Eucledia
 			}
 		});
 
+		glfwSetCharCallback(_window, [](GLFWwindow* window, unsigned int keyCode)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			KeyTypedEvent event(keyCode);
+			data._eventCallback(event);
+		});
+
 		glfwSetMouseButtonCallback(_window, [](GLFWwindow* window, int button, int action, int mods)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -124,7 +130,6 @@ namespace Eucledia
 		glfwSetScrollCallback(_window, [](GLFWwindow* window, double xOffset, double yOffset)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-
 			MouseScrolledEvent event((float)xOffset, (float)yOffset);
 			data._eventCallback(event);
 		});
@@ -132,7 +137,6 @@ namespace Eucledia
 		glfwSetCursorPosCallback(_window, [](GLFWwindow* window, double xPosition, double yPosition)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-
 			MouseMovedEvent event((float)xPosition, (float)yPosition);
 			data._eventCallback(event);
 		});

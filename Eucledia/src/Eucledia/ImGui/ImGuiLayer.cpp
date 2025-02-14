@@ -3,9 +3,12 @@
 
 #include "imgui.h"
 #include "Platform/OpenGL/ImGuiOpenGLRenderer.h"
-#include "GLFW/glfw3.h"
 
 #include "Eucledia/Application.h"
+
+// Temporary
+#include <GLFW/glfw3.h>
+#include <glad/glad.h>
 
 namespace Eucledia
 {
@@ -78,5 +81,85 @@ namespace Eucledia
 
 	void ImGuiLayer::onEvent(Event& event)
 	{
+		EventDispatcher dispatcher(event);
+		dispatcher.dispatch<MouseButtonPressedEvent>(EUCLEDIA_BIND_EVENT_FN(ImGuiLayer::onMouseButtonPressedEvent));
+		dispatcher.dispatch<MouseButtonReleasedEvent>(EUCLEDIA_BIND_EVENT_FN(ImGuiLayer::onMouseButtonReleaseddEvent));
+		dispatcher.dispatch<MouseMovedEvent>(EUCLEDIA_BIND_EVENT_FN(ImGuiLayer::onMouseMovedEvent));
+		dispatcher.dispatch<MouseScrolledEvent>(EUCLEDIA_BIND_EVENT_FN(ImGuiLayer::onMouseScrolledEvent));
+		dispatcher.dispatch<KeyPressedEvent>(EUCLEDIA_BIND_EVENT_FN(ImGuiLayer::onKeyPressedEvent));
+		dispatcher.dispatch<KeyReleasedEvent>(EUCLEDIA_BIND_EVENT_FN(ImGuiLayer::onKeyReleasedEvent));
+		dispatcher.dispatch<KeyTypedEvent>(EUCLEDIA_BIND_EVENT_FN(ImGuiLayer::onKeyTypedEvent));
+		dispatcher.dispatch<WindowResizeEvent>(EUCLEDIA_BIND_EVENT_FN(ImGuiLayer::onWindowResizeEvent));
+	}
+
+	bool ImGuiLayer::onMouseButtonPressedEvent(MouseButtonPressedEvent& event)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		io.MouseDown[event.getMouseButton()] = true;
+		return false;
+	}
+
+	bool ImGuiLayer::onMouseButtonReleaseddEvent(MouseButtonReleasedEvent& event)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		io.MouseDown[event.getMouseButton()] = false;
+		return false;
+	}
+
+	bool ImGuiLayer::onMouseMovedEvent(MouseMovedEvent& event)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		io.MousePos = ImVec2(event.getX(), event.getY());
+		return false;
+	}
+
+	bool ImGuiLayer::onMouseScrolledEvent(MouseScrolledEvent& event)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		io.MouseWheel += event.getXOffset();
+		io.MouseWheelH += event.getYOffset();
+		return false;
+	}
+
+	bool ImGuiLayer::onKeyPressedEvent(KeyPressedEvent& event)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		io.KeysDown[event.getKeyCode()] = true;
+
+		io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
+		io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
+		io.KeyAlt = io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
+		io.KeySuper = io.KeysDown[GLFW_KEY_LEFT_SUPER] || io.KeysDown[GLFW_KEY_RIGHT_SUPER];
+
+		return false;
+	}
+
+	bool ImGuiLayer::onKeyReleasedEvent(KeyReleasedEvent& event)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		io.KeysDown[event.getKeyCode()] = false;
+		return false;
+	}
+
+	bool ImGuiLayer::onKeyTypedEvent(KeyTypedEvent& event)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		int keyCode = event.getKeyCode();
+
+		if (keyCode > 0 && keyCode < 0x10000)
+		{
+			io.AddInputCharacter((unsigned short) keyCode);
+		}
+
+		return false;
+	}
+
+	bool ImGuiLayer::onWindowResizeEvent(WindowResizeEvent& event)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		io.DisplaySize = ImVec2(event.getWidth(), event.getHeight());
+		io.DisplayFramebufferScale = ImVec2(1, 1);
+		glViewport(0, 0, event.getWidth(), event.getHeight());
+		return false;
 	}
 }

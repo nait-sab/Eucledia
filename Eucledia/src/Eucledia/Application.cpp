@@ -56,6 +56,8 @@ namespace Eucledia
 	{
 		while (_running)
 		{
+			glClear(GL_COLOR_BUFFER_BIT);
+
 			for (Layer* layer : _layerStack)
 			{
 				layer->onUpdate();
