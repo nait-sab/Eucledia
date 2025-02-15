@@ -157,9 +157,11 @@
     <ClInclude Include="src\Eucledia\Events\MouseEvent.h" />
     <ClInclude Include="src\Eucledia\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Eucledia\Input.h" />
+    <ClInclude Include="src\Eucledia\KeyCodes.h" />
     <ClInclude Include="src\Eucledia\Layer.h" />
     <ClInclude Include="src\Eucledia\LayerStack.h" />
     <ClInclude Include="src\Eucledia\Log.h" />
+    <ClInclude Include="src\Eucledia\MouseButtonCodes.h" />
     <ClInclude Include="src\Eucledia\Window.h" />
     <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />

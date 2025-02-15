@@ -24,7 +24,7 @@ namespace Eucledia
 		EventCategoryMouseButton	= BIT(4),
 	};
 
-#define EVENT_CLASS_TYPE(type) static EventType getStaticType() { return EventType::##type; }\
+#define EVENT_CLASS_TYPE(type) static EventType getStaticType() { return EventType::type; }\
 								virtual EventType getEventType() const override { return getStaticType(); }\
 								virtual const char* getName() const override { return #type; }
 
@@ -32,38 +32,33 @@ namespace Eucledia
 
 	class EUCLEDIA_API Event
 	{
-		friend class EventDispatcher;
-
 	public:
+		virtual ~Event() = default;
+
+		bool _handled = false;
+
 		virtual EventType getEventType() const = 0;
 		virtual const char* getName() const = 0;
 		virtual int getCategoryFlags() const = 0;
 		virtual std::string toString() const { return getName(); }
-		virtual bool getHandled() const { return _handled; }
 
-		inline bool isInCategory(EventCategory category)
+		bool isInCategory(EventCategory category)
 		{
 			return getCategoryFlags() & category;
 		}
-
-	protected:
-		bool _handled = false;
 	};
 
 	class EventDispatcher
 	{
-		template<typename T>
-		using EventFn = std::function<bool(T&)>;
-
 	public:
 		EventDispatcher(Event& event) : _event(event) {}
 
-		template<typename T>
-		bool dispatch(EventFn<T> func)
+		template<typename T, typename F>
+		bool dispatch(const F& func)
 		{
 			if (_event.getEventType() == T::getStaticType())
 			{
-				_event._handled = func(*(T*)&_event);
+				_event._handled |= func(static_cast<T&>(_event));
 				return true;
 			}
 

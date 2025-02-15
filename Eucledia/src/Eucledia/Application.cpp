@@ -1,8 +1,6 @@
 #include "euclediapch.h"
 #include "Application.h"
 
-#include "Input.h"
-
 #include <glad/glad.h>
 
 namespace Eucledia
@@ -41,13 +39,11 @@ namespace Eucledia
 		EventDispatcher dispatcher(event);
 		dispatcher.dispatch<WindowCloseEvent>(BIND_EVENT_FN(onWindowClosed));
 
-		EUCLEDIA_CORE_TRACE("{0}", event.toString());
-
 		for (auto it = _layerStack.end(); it != _layerStack.begin();)
 		{
 			(*--it)->onEvent(event);
 			
-			if (event.getHandled())
+			if (event._handled)
 			{
 				break;
 			}
@@ -64,9 +60,6 @@ namespace Eucledia
 			{
 				layer->onUpdate();
 			}
-
-			auto [x, y] = Input::getMousePosition();
-			EUCLEDIA_CORE_TRACE("{0}, {1}", x, y);
 
 			_window->onUpdate();
 		}

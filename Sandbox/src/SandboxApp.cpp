@@ -10,12 +10,21 @@ public:
 
 	void onUpdate() override
 	{
-		//EUCLEDIA_INFO("ExampleLayer::Update");
+		// EUCLEDIA_INFO("ExampleLayer::Update");
+
+		if (Eucledia::Input::isKeyPressed(EUCLEDIA_KEY_TAB))
+		{
+			EUCLEDIA_INFO("ExampleLayer::Update::Tab pressed");
+		}
 	}
 
 	void onEvent(Eucledia::Event& event) override
 	{
-		//EUCLEDIA_TRACE(event.toString());
+		if (event.getEventType() == Eucledia::EventType::KeyPressed)
+		{
+			Eucledia::KeyPressedEvent& e = (Eucledia::KeyPressedEvent&)event;
+			EUCLEDIA_TRACE("{0}", (char)e.getKeyCode());
+		}
 	}
 };
 
