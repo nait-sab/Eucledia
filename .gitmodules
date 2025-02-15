@@ -7,3 +7,6 @@
 [submodule "Eucledia/vendor/imgui"]
 	path = Eucledia/vendor/imgui
 	url = https://github.com/TheCherno/imgui
+[submodule "Eucledia/vendor/glm"]
+	path = Eucledia/vendor/glm
+	url = https://github.com/g-truc/glm

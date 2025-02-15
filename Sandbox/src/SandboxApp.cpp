@@ -1,5 +1,7 @@
 #include <Eucledia.h>
 
+#include "imgui/imgui.h"
+
 class ExampleLayer : public Eucledia::Layer
 {
 public:
@@ -18,6 +20,13 @@ public:
 		}
 	}
 
+	virtual void onImGuiRender() override
+	{
+		ImGui::Begin("Test");
+		ImGui::Text("Rabbit");
+		ImGui::End();
+	}
+
 	void onEvent(Eucledia::Event& event) override
 	{
 		if (event.getEventType() == Eucledia::EventType::KeyPressed)
@@ -34,7 +43,6 @@ public:
 	Sandbox()
 	{
 		pushLayer(new ExampleLayer());
-		pushOverlay(new Eucledia::ImGuiLayer());
 	}
 
 	~Sandbox()

@@ -6,6 +6,8 @@
 #include "Events/Event.h"
 #include "Eucledia/Events/ApplicationEvent.h"
 
+#include "Eucledia/ImGui/ImGuiLayer.h"
+
 namespace Eucledia
 {
 	class EUCLEDIA_API Application
@@ -28,6 +30,7 @@ namespace Eucledia
 
 		bool onWindowClosed(WindowCloseEvent& event);
 		std::unique_ptr<Window> _window;
+		ImGuiLayer* _imGuiLayer;
 		bool _running = true;
 		LayerStack _layerStack;
 	};

@@ -14,21 +14,14 @@ namespace Eucledia
 		ImGuiLayer();
 		~ImGuiLayer();
 
-		void onAttach();
-		void onDetach();
-		void onUpdate();
-		void onEvent(Event& event);
+		virtual void onAttach() override;
+		virtual void onDetach() override;
+		virtual void onImGuiRender() override;
+
+		void begin();
+		void end();
 
 	private:
-		bool onMouseButtonPressedEvent(MouseButtonPressedEvent& event);
-		bool onMouseButtonReleaseddEvent(MouseButtonReleasedEvent& event);
-		bool onMouseMovedEvent(MouseMovedEvent& event);
-		bool onMouseScrolledEvent(MouseScrolledEvent& event);
-		bool onKeyPressedEvent(KeyPressedEvent& event);
-		bool onKeyReleasedEvent(KeyReleasedEvent& event);
-		bool onKeyTypedEvent(KeyTypedEvent& event);
-		bool onWindowResizeEvent(WindowResizeEvent& event);
-
 		float _time = 0;
 	};
 }

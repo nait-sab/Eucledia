@@ -13,25 +13,25 @@ namespace Eucledia
 	{
 		EUCLEDIA_CORE_ASSERT(!_instance, "Application already exists")
 		_instance = this;
-
 		_window = std::unique_ptr<Window>(Window::create());
 		_window->setEventCallback(BIND_EVENT_FN(onEvent));
+		_imGuiLayer = new ImGuiLayer();
+		pushOverlay(_imGuiLayer);
 	}
 
 	Application::~Application()
 	{
+		delete _imGuiLayer;
 	}
 
 	void Application::pushLayer(Layer* layer)
 	{
 		_layerStack.pushLayer(layer);
-		layer->onAttach();
 	}
 
 	void Application::pushOverlay(Layer* layer)
 	{
 		_layerStack.pushOverlay(layer);
-		layer->onAttach();
 	}
 
 	void Application::onEvent(Event& event)
@@ -60,6 +60,15 @@ namespace Eucledia
 			{
 				layer->onUpdate();
 			}
+
+			_imGuiLayer->begin();
+
+			for (Layer* layer : _layerStack)
+			{
+				layer->onImGuiRender();
+			}
+
+			_imGuiLayer->end();
 
 			_window->onUpdate();
 		}

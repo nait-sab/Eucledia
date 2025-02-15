@@ -15,20 +15,21 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "Eucledia/vendor/GLFW/include"
 IncludeDir["Glad"] = "Eucledia/vendor/Glad/include"
 IncludeDir["ImGui"] = "Eucledia/vendor/imgui"
+IncludeDir["glm"] = "Eucledia/vendor/glm"
 
 group "Dependencies"
 	include "Eucledia/vendor/GLFW"
 	include "Eucledia/vendor/Glad"
 	include "Eucledia/vendor/imgui"
+	include "Eucledia/vendor/glm"
 
 group ""
-
 
 project "Eucledia"
 	location "Eucledia"
 	kind "SharedLib"
 	language "C++"
-	staticruntime "Off"
+	staticruntime "off"
 
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -48,7 +49,8 @@ project "Eucledia"
 		"%{prj.name}/vendor/sdplog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
-		"%{IncludeDir.ImGui}"
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.glm}"
 	}
 
 	links
@@ -78,17 +80,19 @@ project "Eucledia"
 	filter "configurations:Debug"
 		defines "EUCLEDIA_DEBUG"
 		runtime "Debug"
-		symbols "On"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "EUCLEDIA_RELEASE"
 		runtime "Release"
-		symbols "On"
+		symbols "on"
+		optimize "on"
 
 	filter "configurations:Dist"
 		defines "EUCLEDIA_DIST"
 		runtime "Release"
-		symbols "On"
+		symbols "on"
+		optimize "on"
 
 	filter { "system:windows", "configurations:Debug" }
 		buildoptions "/utf-8"
@@ -116,8 +120,10 @@ project "Sandbox"
 
 	includedirs 
 	{
+		"Eucledia/vendor/sdplog/include",
 		"Eucledia/src",
-		"Eucledia/vendor/sdplog/include"
+		"Eucledia/vendor",
+		"%{IncludeDir.glm}"
 	}
 
 	links {
@@ -136,17 +142,19 @@ project "Sandbox"
 	filter "configurations:Debug"
 		defines "EUCLEDIA_DEBUG"
 		runtime "Debug"
-		symbols "ON"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "EUCLEDIA_RELEASE"
 		runtime "Release"
-		symbols "ON"
+		symbols "on"
+		optimize "on"
 
 	filter "configurations:Dist"
 		defines "EUCLEDIA_DIST"
 		runtime "Release"
-		symbols "ON"
+		symbols "on"
+		optimize "on"
 
 	filter { "system:windows", "configurations:Debug" }
 		buildoptions "/utf-8"

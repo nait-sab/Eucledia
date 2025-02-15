@@ -5,7 +5,6 @@ namespace Eucledia
 {
 	LayerStack::LayerStack()
 	{
-		_layerInsert = _layers.begin();
 	}
 
 	LayerStack::~LayerStack()
@@ -18,12 +17,15 @@ namespace Eucledia
 	
 	void LayerStack::pushLayer(Layer* layer)
 	{
-		_layerInsert = _layers.emplace(_layerInsert, layer);
+		_layers.emplace(_layers.begin() + _layerInsertIndex, layer);
+		layer->onAttach();
+		_layerInsertIndex++;
 	}
 
 	void LayerStack::pushOverlay(Layer* overlay)
 	{
 		_layers.emplace_back(overlay);
+		overlay->onAttach();
 	}
 
 	void LayerStack::popLayer(Layer* layer)
@@ -33,7 +35,8 @@ namespace Eucledia
 		if (it != _layers.end())
 		{
 			_layers.erase(it);
-			_layerInsert--;
+			layer->onDetach();
+			_layerInsertIndex--;
 		}
 	}
 
@@ -44,6 +47,7 @@ namespace Eucledia
 		if (it != _layers.end())
 		{
 			_layers.erase(it);
+			overlay->onDetach();
 		}
 	}
 }
