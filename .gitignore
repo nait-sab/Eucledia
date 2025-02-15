@@ -3,5 +3,8 @@
 bin/*
 bin-int/*
 
+Eucledia/vendor/*/bin/*
+Eucledia/vendor/*/bin-int/*
+
 # Files
 *.user

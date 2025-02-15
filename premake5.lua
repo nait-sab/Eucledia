@@ -1,5 +1,6 @@
 workspace "Eucledia"
 	architecture "x64"
+	startproject "Sandbox"
 
 	configurations 
 	{
@@ -15,14 +16,19 @@ IncludeDir["GLFW"] = "Eucledia/vendor/GLFW/include"
 IncludeDir["Glad"] = "Eucledia/vendor/Glad/include"
 IncludeDir["ImGui"] = "Eucledia/vendor/imgui"
 
-include "Eucledia/vendor/GLFW"
-include "Eucledia/vendor/Glad"
-include "Eucledia/vendor/imgui"
+group "Dependencies"
+	include "Eucledia/vendor/GLFW"
+	include "Eucledia/vendor/Glad"
+	include "Eucledia/vendor/imgui"
+
+group ""
+
 
 project "Eucledia"
 	location "Eucledia"
 	kind "SharedLib"
 	language "C++"
+	staticruntime "Off"
 
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -55,7 +61,6 @@ project "Eucledia"
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines 
@@ -67,22 +72,22 @@ project "Eucledia"
 
 		postbuildcommands 
 		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
+			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
 		}
 
 	filter "configurations:Debug"
 		defines "EUCLEDIA_DEBUG"
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "EUCLEDIA_RELEASE"
-		buildoptions "/MD"
+		runtime "Release"
 		symbols "On"
 
 	filter "configurations:Dist"
 		defines "EUCLEDIA_DIST"
-		buildoptions "/MD"
+		runtime "Release"
 		symbols "On"
 
 	filter { "system:windows", "configurations:Debug" }
@@ -98,6 +103,7 @@ project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
+	staticruntime "Off"
 
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -120,7 +126,6 @@ project "Sandbox"
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines 
@@ -130,17 +135,17 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "EUCLEDIA_DEBUG"
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "ON"
 
 	filter "configurations:Release"
 		defines "EUCLEDIA_RELEASE"
-		buildoptions "/MD"
+		runtime "Release"
 		symbols "ON"
 
 	filter "configurations:Dist"
 		defines "EUCLEDIA_DIST"
-		buildoptions "/MD"
+		runtime "Release"
 		symbols "ON"
 
 	filter { "system:windows", "configurations:Debug" }
