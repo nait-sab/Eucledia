@@ -27,9 +27,10 @@ group ""
 
 project "Eucledia"
 	location "Eucledia"
-	kind "SharedLib"
+	kind "StaticLib"
 	language "C++"
-	staticruntime "off"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -41,6 +42,11 @@ project "Eucledia"
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp"
+	}
+
+	defines
+	{
+		"_CTR_SECURE_NO_WARNINGS"
 	}
 
 	includedirs 
@@ -62,7 +68,6 @@ project "Eucledia"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
 		systemversion "latest"
 
 		defines 
@@ -70,11 +75,6 @@ project "Eucledia"
 			"EUCLEDIA_PLATFORM_WNDOWS",
 			"EUCLEDIA_BUILD_DLL",
 			"GLFW_INCLUDE_NONE"
-		}
-
-		postbuildcommands 
-		{
-			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
 		}
 
 	filter "configurations:Debug"
@@ -85,13 +85,11 @@ project "Eucledia"
 	filter "configurations:Release"
 		defines "EUCLEDIA_RELEASE"
 		runtime "Release"
-		symbols "on"
 		optimize "on"
 
 	filter "configurations:Dist"
 		defines "EUCLEDIA_DIST"
 		runtime "Release"
-		symbols "on"
 		optimize "on"
 
 	filter { "system:windows", "configurations:Debug" }
@@ -107,7 +105,8 @@ project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
-	staticruntime "Off"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -131,7 +130,6 @@ project "Sandbox"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
 		systemversion "latest"
 
 		defines 
@@ -147,13 +145,11 @@ project "Sandbox"
 	filter "configurations:Release"
 		defines "EUCLEDIA_RELEASE"
 		runtime "Release"
-		symbols "on"
 		optimize "on"
 
 	filter "configurations:Dist"
 		defines "EUCLEDIA_DIST"
 		runtime "Release"
-		symbols "on"
 		optimize "on"
 
 	filter { "system:windows", "configurations:Debug" }

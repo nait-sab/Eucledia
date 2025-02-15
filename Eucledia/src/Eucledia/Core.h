@@ -1,10 +1,14 @@
 #pragma once
 
 #ifdef EUCLEDIA_PLATFORM_WNDOWS
-	#ifdef EUCLEDIA_BUILD_DLL
-		#define EUCLEDIA_API __declspec(dllexport)
+	#if EUCLEDIA_DYNAMIC_LINK
+		#ifdef EUCLEDIA_BUILD_DLL
+			#define EUCLEDIA_API __declspec(dllexport)
+		#else
+			#define EUCLEDIA_API __declspec(dllimport)
+		#endif
 	#else
-		#define EUCLEDIA_API __declspec(dllimport)
+		#define EUCLEDIA_API
 	#endif
 #else
 	#error Eucledia only supports Windows
