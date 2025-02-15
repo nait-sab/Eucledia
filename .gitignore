@@ -3,6 +3,7 @@
 bin/*
 bin-int/*
 
+# Vendor directories
 Eucledia/vendor/*/bin/*
 Eucledia/vendor/*/bin-int/*
 

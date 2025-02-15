@@ -1,6 +1,8 @@
 #include "euclediapch.h"
 #include "Application.h"
 
+#include "Input.h"
+
 #include <glad/glad.h>
 
 namespace Eucledia
@@ -62,6 +64,9 @@ namespace Eucledia
 			{
 				layer->onUpdate();
 			}
+
+			auto [x, y] = Input::getMousePosition();
+			EUCLEDIA_CORE_TRACE("{0}, {1}", x, y);
 
 			_window->onUpdate();
 		}

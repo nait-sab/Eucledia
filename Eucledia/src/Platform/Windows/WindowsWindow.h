@@ -24,6 +24,8 @@ namespace Eucledia
 		};
 		void setVSync(bool enabled) override;
 		bool isVSync() const override;
+		
+		inline virtual void* getNativeWindow() const { return _window; }
 
 	private:
 		virtual void init(const WindowProps& props);
