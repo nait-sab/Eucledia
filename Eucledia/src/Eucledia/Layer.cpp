@@ -7,9 +7,4 @@ namespace Eucledia
 	{
 
 	}
-
-	Layer::~Layer()
-	{
-
-	}
 }

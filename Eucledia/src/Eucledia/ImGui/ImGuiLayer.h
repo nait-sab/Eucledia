@@ -12,7 +12,7 @@ namespace Eucledia
 	{
 	public:
 		ImGuiLayer();
-		~ImGuiLayer();
+		~ImGuiLayer() = default;
 
 		virtual void onAttach() override;
 		virtual void onDetach() override;

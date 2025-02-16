@@ -17,10 +17,6 @@ namespace Eucledia
 	{
 	}
 
-	ImGuiLayer::~ImGuiLayer()
-	{
-	}
-
 	void ImGuiLayer::onAttach()
 	{
 		IMGUI_CHECKVERSION();
