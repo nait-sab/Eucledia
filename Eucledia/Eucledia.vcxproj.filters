@@ -95,6 +95,12 @@
     <ClInclude Include="src\Eucledia\Renderer\Renderer.h">
       <Filter>Eucledia\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Eucledia\Renderer\VertexArray.h">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGlVertexArray.h">
+      <Filter>Platform\OpenGL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Eucledia\Application.cpp">
@@ -136,6 +142,12 @@
     </ClCompile>
     <ClCompile Include="src\Eucledia\Renderer\Renderer.cpp">
       <Filter>Eucledia\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Eucledia\Renderer\VertexArray.cpp">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGlVertexArray.cpp">
+      <Filter>Platform\OpenGL</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

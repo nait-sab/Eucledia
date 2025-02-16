@@ -10,6 +10,7 @@
 
 #include "Eucledia/Renderer/Shader.h"
 #include "Eucledia/Renderer/Buffer.h"
+#include "Eucledia/Renderer/VertexArray.h"
 
 namespace Eucledia
 {
@@ -37,10 +38,11 @@ namespace Eucledia
 		bool _running = true;
 		LayerStack _layerStack;
 
-		unsigned int _vertexArray;
-		std::unique_ptr<Shader> _shader;
-		std::unique_ptr<VertexBuffer> _vertexBuffer;
-		std::unique_ptr<IndexBuffer> _indexBuffer;
+		std::shared_ptr<Shader> _shader;
+		std::shared_ptr<VertexArray> _vertexArray;
+
+		std::shared_ptr<Shader> _squareShader;
+		std::shared_ptr<VertexArray> _squareVA;
 	};
 
 	// To be defined in client

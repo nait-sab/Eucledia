@@ -146,9 +146,11 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Platform\OpenGL\OpenGlVertexArray.h" />
     <ClInclude Include="src\Eucledia\Renderer\Buffer.h" />
     <ClInclude Include="src\Eucledia\Renderer\Renderer.h" />
     <ClInclude Include="src\Eucledia\Renderer\Shader.h" />
+    <ClInclude Include="src\Eucledia\Renderer\VertexArray.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Eucledia\Renderer\GraphicsContext.h" />
@@ -173,9 +175,11 @@
     <ClInclude Include="src\euclediapch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Platform\OpenGL\OpenGlVertexArray.cpp" />
     <ClCompile Include="src\Eucledia\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Eucledia\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Eucledia\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Eucledia\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Eucledia\Application.cpp" />

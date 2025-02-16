@@ -9,27 +9,6 @@ namespace Eucledia
 
 	Application* Application::_instance = nullptr;
 
-	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
-	{
-		switch (type)
-		{
-		case Eucledia::ShaderDataType::Float:		return GL_FLOAT;
-			case Eucledia::ShaderDataType::Float2:	return GL_FLOAT;
-			case Eucledia::ShaderDataType::Float3:	return GL_FLOAT;
-			case Eucledia::ShaderDataType::Float4:	return GL_FLOAT;
-			case Eucledia::ShaderDataType::Mat3:	return GL_FLOAT;
-			case Eucledia::ShaderDataType::Mat4:	return GL_FLOAT;
-			case Eucledia::ShaderDataType::Int:		return GL_INT;
-			case Eucledia::ShaderDataType::Int2:	return GL_INT;
-			case Eucledia::ShaderDataType::Int3:	return GL_INT;
-			case Eucledia::ShaderDataType::Int4:	return GL_INT;
-			case Eucledia::ShaderDataType::Bool:	return GL_BOOL;
-		}
-
-		EUCLEDIA_CORE_ASSERT(false, "Unknow ShaderDataType");
-		return 0;
-	}
-
 	Application::Application()
 	{
 		EUCLEDIA_CORE_ASSERT(!_instance, "Application already exists")
@@ -41,8 +20,7 @@ namespace Eucledia
 		_imGuiLayer = new ImGuiLayer();
 		pushOverlay(_imGuiLayer);
 
-		glGenVertexArrays(1, &_vertexArray);
-		glBindVertexArray(_vertexArray);
+		_vertexArray.reset(VertexArray::create());
 
 		float vertices[3 * 7] = {
 			-.5, -.5, 0, .5, 0, 1, 1,
@@ -50,35 +28,39 @@ namespace Eucledia
 			0, .5, 0, 1, 0, 1, 1
 		};
 
-		_vertexBuffer.reset(VertexBuffer::create(vertices, sizeof(vertices)));
-
-		{
-			BufferLayout layout = {
+		std::shared_ptr<VertexBuffer> vertexBuffer;
+		vertexBuffer.reset(VertexBuffer::create(vertices, sizeof(vertices)));
+		vertexBuffer->setLayout({
 			{ ShaderDataType::Float3, "position" },
 			{ ShaderDataType::Float4, "color" }
-			};
-
-			_vertexBuffer->setLayout(layout);
-		}
-
-		uint32_t index = 0;
-		const auto& layout = _vertexBuffer->getlayout();
-		for (const auto& element : layout)
-		{
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(
-				index, 
-				element.getComponentCount(), 
-				ShaderDataTypeToOpenGLBaseType(element._type), 
-				element._normalized ? GL_TRUE : GL_FALSE,
-				layout.getStride(),
-				(const void*)element._offset
-			);
-			index++;
-		}
+		});
+		_vertexArray->addVertexBuffer(vertexBuffer);
 
 		uint32_t indices[3] = { 0, 1, 2 };
-		_indexBuffer.reset(IndexBuffer::create(indices, sizeof(indices) / sizeof(uint32_t)));
+		std::shared_ptr<IndexBuffer> indexBuffer;
+		indexBuffer.reset(IndexBuffer::create(indices, sizeof(indices) / sizeof(uint32_t)));
+		_vertexArray->setIndexBuffer(indexBuffer);
+
+		_squareVA.reset(VertexArray::create());
+
+		float squareVertices[3 * 4] = {
+			-.75, -.75, 0,
+			.75, -.75, 0,
+			.75, .75, 0,
+			-.75, .75, 0
+		};
+
+		std::shared_ptr<VertexBuffer> squareVB;
+		squareVB.reset(VertexBuffer::create(squareVertices, sizeof(squareVertices)));
+		squareVB->setLayout({
+			{ ShaderDataType::Float3, "position" },
+		});
+		_squareVA->addVertexBuffer(squareVB);
+
+		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
+		std::shared_ptr<IndexBuffer> squareIB;
+		squareIB.reset(IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+		_squareVA->setIndexBuffer(squareIB);
 
 		std::string vertexSrc = R"(
 			#version 330 core
@@ -113,6 +95,35 @@ namespace Eucledia
 		)";
 
 		_shader.reset(new Shader(vertexSrc, fragmentSrc));
+
+		std::string vertexSrc2 = R"(
+			#version 330 core
+			
+			layout(location = 0) in vec3 position;
+
+			out vec3 v_position;
+
+			void main()
+			{
+				v_position = position;
+				gl_Position = vec4(position, 1.0);
+			}
+		)";
+
+		std::string fragmentSrc2 = R"(
+			#version 330 core
+			
+			layout(location = 0) out vec4 color;
+
+			in vec3 v_position;
+
+			void main()
+			{
+				color = vec4(0.7, 0, 0.6, 1.0);
+			}
+		)";
+
+		_squareShader.reset(new Shader(vertexSrc2, fragmentSrc2));
 	}
 
 	Application::~Application()
@@ -153,9 +164,13 @@ namespace Eucledia
 			glClearColor(.15f, .15f, .15f, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 
+			_squareShader->bind();
+			_squareVA->bind();
+			glDrawElements(GL_TRIANGLES, _squareVA->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr);
+
 			_shader->bind();
-			glBindVertexArray(_vertexArray);
-			glDrawElements(GL_TRIANGLES, _indexBuffer->getCount(), GL_UNSIGNED_INT, nullptr);
+			_vertexArray->bind();
+			glDrawElements(GL_TRIANGLES, _vertexArray->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr);
 
 			for (Layer* layer : _layerStack)
 			{
