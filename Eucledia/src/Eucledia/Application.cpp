@@ -9,6 +9,27 @@ namespace Eucledia
 
 	Application* Application::_instance = nullptr;
 
+	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
+	{
+		switch (type)
+		{
+		case Eucledia::ShaderDataType::Float:		return GL_FLOAT;
+			case Eucledia::ShaderDataType::Float2:	return GL_FLOAT;
+			case Eucledia::ShaderDataType::Float3:	return GL_FLOAT;
+			case Eucledia::ShaderDataType::Float4:	return GL_FLOAT;
+			case Eucledia::ShaderDataType::Mat3:	return GL_FLOAT;
+			case Eucledia::ShaderDataType::Mat4:	return GL_FLOAT;
+			case Eucledia::ShaderDataType::Int:		return GL_INT;
+			case Eucledia::ShaderDataType::Int2:	return GL_INT;
+			case Eucledia::ShaderDataType::Int3:	return GL_INT;
+			case Eucledia::ShaderDataType::Int4:	return GL_INT;
+			case Eucledia::ShaderDataType::Bool:	return GL_BOOL;
+		}
+
+		EUCLEDIA_CORE_ASSERT(false, "Unknow ShaderDataType");
+		return 0;
+	}
+
 	Application::Application()
 	{
 		EUCLEDIA_CORE_ASSERT(!_instance, "Application already exists")
@@ -23,16 +44,38 @@ namespace Eucledia
 		glGenVertexArrays(1, &_vertexArray);
 		glBindVertexArray(_vertexArray);
 
-		float vertices[3 * 3] = {
-			-.5f, -.5f, 0,
-			.5f, -.5f, 0,
-			0, .5f, 0
+		float vertices[3 * 7] = {
+			-.5, -.5, 0, .5, 0, 1, 1,
+			.5, -.5, 0, 1, 1, 1, 1,
+			0, .5, 0, 1, 0, 1, 1
 		};
 
 		_vertexBuffer.reset(VertexBuffer::create(vertices, sizeof(vertices)));
 
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+		{
+			BufferLayout layout = {
+			{ ShaderDataType::Float3, "position" },
+			{ ShaderDataType::Float4, "color" }
+			};
+
+			_vertexBuffer->setLayout(layout);
+		}
+
+		uint32_t index = 0;
+		const auto& layout = _vertexBuffer->getlayout();
+		for (const auto& element : layout)
+		{
+			glEnableVertexAttribArray(index);
+			glVertexAttribPointer(
+				index, 
+				element.getComponentCount(), 
+				ShaderDataTypeToOpenGLBaseType(element._type), 
+				element._normalized ? GL_TRUE : GL_FALSE,
+				layout.getStride(),
+				(const void*)element._offset
+			);
+			index++;
+		}
 
 		uint32_t indices[3] = { 0, 1, 2 };
 		_indexBuffer.reset(IndexBuffer::create(indices, sizeof(indices) / sizeof(uint32_t)));
@@ -41,12 +84,15 @@ namespace Eucledia
 			#version 330 core
 			
 			layout(location = 0) in vec3 position;
+			layout(location = 1) in vec4 color;
 
 			out vec3 v_position;
+			out vec4 v_color;
 
 			void main()
 			{
 				v_position = position;
+				v_color = color;
 				gl_Position = vec4(position, 1.0);
 			}
 		)";
@@ -57,10 +103,12 @@ namespace Eucledia
 			layout(location = 0) out vec4 color;
 
 			in vec3 v_position;
+			in vec4 v_color;
 
 			void main()
 			{
 				color = vec4(v_position * .5 + .5, 1.0);
+				color = v_color;
 			}
 		)";
 
