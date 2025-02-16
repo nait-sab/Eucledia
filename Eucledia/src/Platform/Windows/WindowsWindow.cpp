@@ -5,7 +5,7 @@
 #include "Eucledia/Events/MouseEvent.h"
 #include "Eucledia/Events/KeyEvent.h"
 
-#include <glad/glad.h>
+#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Eucledia
 {
@@ -49,9 +49,8 @@ namespace Eucledia
 		}
 
 		_window = glfwCreateWindow((int)props._width, (int)props._height, _data._title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(_window);
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		EUCLEDIA_CORE_ASSERT(status, "Failed no initialize Glad");
+		_context = new OpenGLContext(_window);
+		_context->init();
 		glfwSetWindowUserPointer(_window, &_data);
 		setVSync(true);
 
@@ -150,7 +149,7 @@ namespace Eucledia
 	void WindowsWindow::onUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(_window);
+		_context->swapBuffers();
 	}
 
 	void WindowsWindow::setVSync(bool enabled)

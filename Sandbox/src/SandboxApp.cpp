@@ -12,8 +12,6 @@ public:
 
 	void onUpdate() override
 	{
-		// EUCLEDIA_INFO("ExampleLayer::Update");
-
 		if (Eucledia::Input::isKeyPressed(EUCLEDIA_KEY_TAB))
 		{
 			EUCLEDIA_INFO("ExampleLayer::Update::Tab pressed");

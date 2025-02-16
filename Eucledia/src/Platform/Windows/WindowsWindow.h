@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Eucledia/Window.h"
+#include "Eucledia/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>
 
@@ -28,11 +29,6 @@ namespace Eucledia
 		inline virtual void* getNativeWindow() const { return _window; }
 
 	private:
-		virtual void init(const WindowProps& props);
-		virtual void shutdown();
-
-		GLFWwindow* _window;
-
 		struct WindowData
 		{
 			std::string _title;
@@ -41,7 +37,12 @@ namespace Eucledia
 			EventCallbackFn _eventCallback;
 		};
 
+		GLFWwindow* _window;
 		WindowData _data;
+		GraphicsContext* _context;
+
+		virtual void init(const WindowProps& props);
+		virtual void shutdown();
 	};
 }
 

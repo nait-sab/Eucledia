@@ -146,6 +146,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\Eucledia\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Eucledia.h" />
     <ClInclude Include="src\Eucledia\Application.h" />
     <ClInclude Include="src\Eucledia\Core.h" />
@@ -167,6 +169,7 @@
     <ClInclude Include="src\euclediapch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Eucledia\Application.cpp" />
     <ClCompile Include="src\Eucledia\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Eucledia\ImGui\ImGuiLayer.cpp" />
