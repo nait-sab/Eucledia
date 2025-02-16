@@ -146,6 +146,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Eucledia\Renderer\Shader.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Eucledia\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Eucledia.h" />
@@ -169,6 +170,7 @@
     <ClInclude Include="src\euclediapch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Eucledia\Renderer\Shader.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Eucledia\Application.cpp" />
     <ClCompile Include="src\Eucledia\ImGui\ImGuiBuild.cpp" />

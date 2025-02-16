@@ -83,6 +83,9 @@
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h">
       <Filter>Platform\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="src\Eucledia\Renderer\Shader.h">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Eucledia\Application.cpp">
@@ -112,6 +115,9 @@
     <ClCompile Include="src\euclediapch.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp">
       <Filter>Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Eucledia\Renderer\Shader.cpp">
+      <Filter>Eucledia\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

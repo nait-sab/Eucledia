@@ -7,6 +7,7 @@
 #include "Eucledia/Events/ApplicationEvent.h"
 
 #include "Eucledia/ImGui/ImGuiLayer.h"
+#include "Eucledia/Renderer/Shader.h"
 
 namespace Eucledia
 {
@@ -33,7 +34,9 @@ namespace Eucledia
 		ImGuiLayer* _imGuiLayer;
 		bool _running = true;
 		LayerStack _layerStack;
+
 		unsigned int _vertexArray, _vertexBuffer, _indexBuffer;
+		std::unique_ptr<Shader> _shader;
 	};
 
 	// To be defined in client
