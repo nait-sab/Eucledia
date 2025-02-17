@@ -10,6 +10,7 @@ namespace Eucledia
 	Application* Application::_instance = nullptr;
 
 	Application::Application()
+		: _camera(-1.f, 1.f, -1.f, 1.f)
 	{
 		EUCLEDIA_CORE_ASSERT(!_instance, "Application already exists")
 		_instance = this;
@@ -68,6 +69,8 @@ namespace Eucledia
 			layout(location = 0) in vec3 position;
 			layout(location = 1) in vec4 color;
 
+			uniform mat4 viewProjection;
+
 			out vec3 v_position;
 			out vec4 v_color;
 
@@ -75,7 +78,7 @@ namespace Eucledia
 			{
 				v_position = position;
 				v_color = color;
-				gl_Position = vec4(position, 1.0);
+				gl_Position = viewProjection * vec4(position, 1.0);
 			}
 		)";
 
@@ -101,12 +104,14 @@ namespace Eucledia
 			
 			layout(location = 0) in vec3 position;
 
+			uniform mat4 viewProjection;
+
 			out vec3 v_position;
 
 			void main()
 			{
 				v_position = position;
-				gl_Position = vec4(position, 1.0);
+				gl_Position = viewProjection * vec4(position, 1.0);
 			}
 		)";
 
@@ -159,19 +164,27 @@ namespace Eucledia
 
 	void Application::run()
 	{
+		float speed = 0.001;
+
 		while (_running)
 		{
 			RenderCommand::setClearColor({ .15f, .15f, .15f, 1 });
 			RenderCommand::clear();
 
-			Renderer::beginScene();
+			_camera.setPosition({ _camera.getPosition().x, _camera.getPosition().y + speed, _camera.getPosition().z });
+			std::cout << _camera.getPosition().y << std::endl;
 
-			_squareShader->bind();
-			Renderer::submit(_squareVA);
+			if (_camera.getPosition().y > 0.8) {
+				speed = -0.001;
+			}
 
-			_shader->bind();
-			Renderer::submit(_vertexArray);
+			if (_camera.getPosition().y < -0.8) {
+				speed = 0.001;
+			}
 
+			Renderer::beginScene(_camera);
+			Renderer::submit(_squareShader, _squareVA);
+			Renderer::submit(_shader, _vertexArray);
 			Renderer::endScene();
 
 			for (Layer* layer : _layerStack)

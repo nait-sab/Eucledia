@@ -110,6 +110,9 @@
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h">
       <Filter>Platform\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="src\Eucledia\Renderer\OrthographicCamera.h">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Eucledia\Application.cpp">
@@ -166,6 +169,9 @@
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp">
       <Filter>Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Eucledia\Renderer\OrthographicCamera.cpp">
+      <Filter>Eucledia\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

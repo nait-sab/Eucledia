@@ -12,6 +12,8 @@
 #include "Eucledia/Renderer/Buffer.h"
 #include "Eucledia/Renderer/VertexArray.h"
 
+#include "Eucledia/Renderer/OrthographicCamera.h"
+
 namespace Eucledia
 {
 	class EUCLEDIA_API Application
@@ -43,6 +45,8 @@ namespace Eucledia
 
 		std::shared_ptr<Shader> _squareShader;
 		std::shared_ptr<VertexArray> _squareVA;
+
+		OrthographicCamera _camera;
 	};
 
 	// To be defined in client

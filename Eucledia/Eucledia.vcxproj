@@ -146,6 +146,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Eucledia\Renderer\OrthographicCamera.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Eucledia\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Eucledia\Renderer\RendererAPI.h" />
@@ -178,6 +179,7 @@
     <ClInclude Include="src\euclediapch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Eucledia\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Eucledia\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Eucledia\Renderer\RendererApi.cpp" />
