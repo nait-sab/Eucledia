@@ -1,7 +1,7 @@
 #include "euclediapch.h"
 #include "Application.h"
 
-#include <glad/glad.h>
+#include "Eucledia/Renderer/Renderer.h"
 
 namespace Eucledia
 {
@@ -119,7 +119,7 @@ namespace Eucledia
 
 			void main()
 			{
-				color = vec4(0.7, 0, 0.6, 1.0);
+				color = vec4(0.7, 0.3, 0, 1.0);
 			}
 		)";
 
@@ -161,16 +161,18 @@ namespace Eucledia
 	{
 		while (_running)
 		{
-			glClearColor(.15f, .15f, .15f, 1);
-			glClear(GL_COLOR_BUFFER_BIT);
+			RenderCommand::setClearColor({ .15f, .15f, .15f, 1 });
+			RenderCommand::clear();
+
+			Renderer::beginScene();
 
 			_squareShader->bind();
-			_squareVA->bind();
-			glDrawElements(GL_TRIANGLES, _squareVA->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::submit(_squareVA);
 
 			_shader->bind();
-			_vertexArray->bind();
-			glDrawElements(GL_TRIANGLES, _vertexArray->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::submit(_vertexArray);
+
+			Renderer::endScene();
 
 			for (Layer* layer : _layerStack)
 			{

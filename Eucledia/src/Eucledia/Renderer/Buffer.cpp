@@ -9,13 +9,13 @@ namespace Eucledia
 {
 	VertexBuffer* VertexBuffer::create(float* vertices, uint32_t size)
 	{
-		switch (Renderer::getRendererAPI())
+		switch (Renderer::getAPI())
 		{
-		case RendererAPI::None: 
+		case RendererAPI::API::None: 
 			EUCLEDIA_CORE_ASSERT(false, "RendererAPI::None is currently not supported");
 			return nullptr;
 
-		case RendererAPI::OpenGL:
+		case RendererAPI::API::OpenGL:
 			return new OpenGlVertexBuffer(vertices, size);
 		}
 
@@ -25,13 +25,13 @@ namespace Eucledia
 
 	IndexBuffer* IndexBuffer::create(uint32_t* indices, uint32_t size)
 	{
-		switch (Renderer::getRendererAPI())
+		switch (Renderer::getAPI())
 		{
-		case RendererAPI::None:
+		case RendererAPI::API::None:
 			EUCLEDIA_CORE_ASSERT(false, "RendererAPI::None is currently not supported");
 			return nullptr;
 
-		case RendererAPI::OpenGL:
+		case RendererAPI::API::OpenGL:
 			return new OpenGlIndexBuffer(indices, size);
 		}
 

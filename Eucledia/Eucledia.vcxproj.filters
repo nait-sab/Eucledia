@@ -101,6 +101,15 @@
     <ClInclude Include="src\Platform\OpenGL\OpenGlVertexArray.h">
       <Filter>Platform\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="src\Eucledia\Renderer\RendererAPI.h">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Eucledia\Renderer\RenderCommand.h">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h">
+      <Filter>Platform\OpenGL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Eucledia\Application.cpp">
@@ -147,6 +156,15 @@
       <Filter>Eucledia\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGlVertexArray.cpp">
+      <Filter>Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Eucledia\Renderer\RendererApi.cpp">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Eucledia\Renderer\RenderCommand.cpp">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp">
       <Filter>Platform\OpenGL</Filter>
     </ClCompile>
   </ItemGroup>

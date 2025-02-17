@@ -8,13 +8,13 @@ namespace Eucledia
 {
 	VertexArray* VertexArray::create()
 	{
-		switch (Renderer::getRendererAPI())
+		switch (Renderer::getAPI())
 		{
-		case RendererAPI::None:
+		case RendererAPI::API::None:
 			EUCLEDIA_CORE_ASSERT(false, "RendererAPI::None is currently not supported");
 			return nullptr;
 
-		case RendererAPI::OpenGL:
+		case RendererAPI::API::OpenGL:
 			return new OpenGlVertexArray();
 		}
 

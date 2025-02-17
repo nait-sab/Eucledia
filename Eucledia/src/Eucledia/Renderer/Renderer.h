@@ -1,18 +1,17 @@
 #pragma once
 
+#include "RenderCommand.h"
+
 namespace Eucledia
 {
-	enum class RendererAPI
-	{
-		None = 0, OpenGL = 1
-	};
-
 	class Renderer
 	{
 	public:
-		inline static RendererAPI getRendererAPI() { return _rendererAPI; }
+		static void beginScene();
+		static void endScene();
 
-	private:
-		static RendererAPI _rendererAPI;
+		static void submit(const std::shared_ptr<VertexArray>& vertexArray);
+
+		inline static RendererAPI::API getAPI() { return RendererAPI::getAPI(); }
 	};
 }
