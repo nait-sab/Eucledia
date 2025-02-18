@@ -4,26 +4,26 @@
     <Filter Include="Eucledia">
       <UniqueIdentifier>{21959946-0D62-F451-367B-E2F922A729E0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Eucledia\Core">
+      <UniqueIdentifier>{1916522F-85D6-CD65-4E11-17E3BA901242}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Eucledia\Events">
       <UniqueIdentifier>{E5115251-519D-BF15-5AAE-420AC6B81B16}</UniqueIdentifier>
     </Filter>
     <Filter Include="Eucledia\ImGui">
       <UniqueIdentifier>{0B9FFF19-F76C-F31F-E000-6446CC6DCF84}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Eucledia\Renderer">
+      <UniqueIdentifier>{E72D19E5-5344-177B-9CBB-A29C0811E802}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Platform">
       <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Platform\OpenGL">
+      <UniqueIdentifier>{1E7D2C1D-8A08-9AE1-9319-1DD6FF23F6E1}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Platform\Windows">
       <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Eucledia\Renderer">
-      <UniqueIdentifier>{ee099d73-9f83-4bc0-b1b5-d4017a4f3dc2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Platform\OpenGL">
-      <UniqueIdentifier>{3ca06c17-0e31-4954-9ec9-6bf0bf8267d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Eucledia\Core">
-      <UniqueIdentifier>{1cebc5db-4317-47c8-88e1-e32e4c923446}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -33,6 +33,9 @@
     </ClInclude>
     <ClInclude Include="src\Eucledia\Core.h">
       <Filter>Eucledia</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Eucledia\Core\Timestep.h">
+      <Filter>Eucledia\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\EntryPoint.h">
       <Filter>Eucledia</Filter>
@@ -70,8 +73,47 @@
     <ClInclude Include="src\Eucledia\MouseButtonCodes.h">
       <Filter>Eucledia</Filter>
     </ClInclude>
+    <ClInclude Include="src\Eucledia\Renderer\Buffer.h">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Eucledia\Renderer\GraphicsContext.h">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Eucledia\Renderer\OrthographicCamera.h">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Eucledia\Renderer\RenderCommand.h">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Eucledia\Renderer\Renderer.h">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Eucledia\Renderer\RendererAPI.h">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Eucledia\Renderer\Shader.h">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Eucledia\Renderer\VertexArray.h">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Eucledia\Window.h">
       <Filter>Eucledia</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h">
+      <Filter>Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h">
+      <Filter>Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h">
+      <Filter>Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h">
+      <Filter>Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGlVertexArray.h">
+      <Filter>Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsInput.h">
       <Filter>Platform\Windows</Filter>
@@ -80,49 +122,13 @@
       <Filter>Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\euclediapch.h" />
-    <ClInclude Include="src\Eucledia\Renderer\GraphicsContext.h">
-      <Filter>Eucledia\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h">
-      <Filter>Platform\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Eucledia\Renderer\Shader.h">
-      <Filter>Eucledia\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Eucledia\Renderer\Buffer.h">
-      <Filter>Eucledia\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h">
-      <Filter>Platform\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Eucledia\Renderer\Renderer.h">
-      <Filter>Eucledia\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Eucledia\Renderer\VertexArray.h">
-      <Filter>Eucledia\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\OpenGL\OpenGlVertexArray.h">
-      <Filter>Platform\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Eucledia\Renderer\RendererAPI.h">
-      <Filter>Eucledia\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Eucledia\Renderer\RenderCommand.h">
-      <Filter>Eucledia\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h">
-      <Filter>Platform\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Eucledia\Renderer\OrthographicCamera.h">
-      <Filter>Eucledia\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Eucledia\Core\Timestep.h">
-      <Filter>Eucledia\Core</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Eucledia\Application.cpp">
       <Filter>Eucledia</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Eucledia\Core\Timestep.cpp">
+      <Filter>Eucledia\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Eucledia\ImGui\ImGuiBuild.cpp">
       <Filter>Eucledia\ImGui</Filter>
@@ -139,6 +145,42 @@
     <ClCompile Include="src\Eucledia\Log.cpp">
       <Filter>Eucledia</Filter>
     </ClCompile>
+    <ClCompile Include="src\Eucledia\Renderer\Buffer.cpp">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Eucledia\Renderer\OrthographicCamera.cpp">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Eucledia\Renderer\RenderCommand.cpp">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Eucledia\Renderer\Renderer.cpp">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Eucledia\Renderer\RendererApi.cpp">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Eucledia\Renderer\Shader.cpp">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Eucledia\Renderer\VertexArray.cpp">
+      <Filter>Eucledia\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
+      <Filter>Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp">
+      <Filter>Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp">
+      <Filter>Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp">
+      <Filter>Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGlVertexArray.cpp">
+      <Filter>Platform\OpenGL</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
       <Filter>Platform\Windows</Filter>
     </ClCompile>
@@ -146,41 +188,5 @@
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\euclediapch.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp">
-      <Filter>Platform\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Eucledia\Renderer\Shader.cpp">
-      <Filter>Eucledia\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Eucledia\Renderer\Buffer.cpp">
-      <Filter>Eucledia\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
-      <Filter>Platform\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Eucledia\Renderer\Renderer.cpp">
-      <Filter>Eucledia\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Eucledia\Renderer\VertexArray.cpp">
-      <Filter>Eucledia\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Platform\OpenGL\OpenGlVertexArray.cpp">
-      <Filter>Platform\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Eucledia\Renderer\RendererApi.cpp">
-      <Filter>Eucledia\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Eucledia\Renderer\RenderCommand.cpp">
-      <Filter>Eucledia\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp">
-      <Filter>Platform\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Eucledia\Renderer\OrthographicCamera.cpp">
-      <Filter>Eucledia\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Eucledia\Core\Timestep.cpp">
-      <Filter>Eucledia\Core</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

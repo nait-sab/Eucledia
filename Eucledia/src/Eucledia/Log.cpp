@@ -3,8 +3,8 @@
 
 namespace Eucledia
 {
-	std::shared_ptr<spdlog::logger> Log::_coreLogger;
-	std::shared_ptr<spdlog::logger> Log::_clientLogger;
+	ref<spdlog::logger> Log::_coreLogger;
+	ref<spdlog::logger> Log::_clientLogger;
 
 	void Log::init()
 	{

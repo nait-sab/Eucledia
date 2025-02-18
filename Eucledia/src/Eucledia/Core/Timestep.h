@@ -5,7 +5,7 @@ namespace Eucledia
 	class Timestep
 	{
 	public:
-		Timestep(float time) : _time(time)
+		Timestep(float time = 0) : _time(time)
 		{
 
 		}

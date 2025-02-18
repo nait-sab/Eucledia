@@ -46,7 +46,7 @@ namespace Eucledia
 		glBindVertexArray(0);
 	}
 
-	void OpenGlVertexArray::addVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
+	void OpenGlVertexArray::addVertexBuffer(const ref<VertexBuffer>& vertexBuffer)
 	{
 		EUCLEDIA_CORE_ASSERT(vertexBuffer->getlayout().getElements().size(), "Vertex Buffer has no layout");
 
@@ -72,7 +72,7 @@ namespace Eucledia
 		_vertexBuffers.push_back(vertexBuffer);
 	}
 
-	void OpenGlVertexArray::setIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer)
+	void OpenGlVertexArray::setIndexBuffer(const ref<IndexBuffer>& indexBuffer)
 	{
 		glBindVertexArray(_rendererID);
 		indexBuffer->bind();

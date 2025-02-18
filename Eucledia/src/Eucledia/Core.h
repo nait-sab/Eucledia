@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #ifdef EUCLEDIA_PLATFORM_WNDOWS
 	#if EUCLEDIA_DYNAMIC_LINK
 		#ifdef EUCLEDIA_BUILD_DLL
@@ -29,3 +31,12 @@
 #define BIT(x) (1 << x)
 
 #define EUCLEDIA_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
+
+namespace Eucledia
+{
+	template<typename T>
+	using scope = std::unique_ptr<T>;
+
+	template<typename T>
+	using ref = std::shared_ptr<T>;
+}

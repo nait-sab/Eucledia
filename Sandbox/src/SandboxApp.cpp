@@ -1,7 +1,11 @@
 #include <Eucledia.h>
 
+#include "Platform/OpenGL/OpenGLShader.h"
+
 #include "imgui/imgui.h"
+
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class ExampleLayer : public Eucledia::Layer
 {
@@ -32,10 +36,10 @@ public:
 		_squareVA.reset(Eucledia::VertexArray::create());
 
 		float squareVertices[3 * 4] = {
-			-.75, -.75, 0,
-			.75, -.75, 0,
-			.75, .75, 0,
-			-.75, .75, 0
+			-.5, -.5, 0,
+			.5, -.5, 0,
+			.5, .5, 0,
+			-.5, .5, 0
 		};
 
 		std::shared_ptr<Eucledia::VertexBuffer> squareVB;
@@ -85,9 +89,9 @@ public:
 			}
 		)";
 
-		_triangleShader.reset(new Eucledia::Shader(vertexSrc, fragmentSrc));
+		_triangleShader.reset(Eucledia::Shader::create(vertexSrc, fragmentSrc));
 
-		std::string vertexSrc2 = R"(
+		std::string flatColorShaderVertexSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) in vec3 position;
@@ -104,20 +108,22 @@ public:
 			}
 		)";
 
-		std::string fragmentSrc2 = R"(
+		std::string flatColorShaderFragmentSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) out vec4 color;
 
 			in vec3 v_position;
 
+			uniform vec3 u_color;
+
 			void main()
 			{
-				color = vec4(0.7, 0.3, 0, 1.0);
+				color = vec4(u_color, 1.0);
 			}
 		)";
 
-		_squareShader.reset(new Eucledia::Shader(vertexSrc2, fragmentSrc2));
+		_flatColorShader.reset(Eucledia::Shader::create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
 	}
 
 	void onUpdate(Eucledia::Timestep ts) override
@@ -156,14 +162,22 @@ public:
 		_camera.setRotation(_cameraRotation);
 
 		Eucledia::Renderer::beginScene(_camera);
-		Eucledia::Renderer::submit(_squareShader, _squareVA);
+
+		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(_flatColorShader)->bind();
+		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(_flatColorShader)->uploadUniformFloat3("u_color", _squareColor);
+
+		Eucledia::Renderer::submit(_flatColorShader, _squareVA);
+
+
 		Eucledia::Renderer::submit(_triangleShader, _triangleVA);
 		Eucledia::Renderer::endScene();
 	}
 
 	virtual void onImGuiRender() override
 	{
-
+		ImGui::Begin("Settings");
+		ImGui::ColorEdit3("Square Color", glm::value_ptr(_squareColor));
+		ImGui::End();
 	}
 
 	void onEvent(Eucledia::Event& event) override
@@ -172,11 +186,11 @@ public:
 	}
 
 private:
-	std::shared_ptr<Eucledia::Shader> _triangleShader;
-	std::shared_ptr<Eucledia::VertexArray> _triangleVA;
+	Eucledia::ref<Eucledia::Shader> _triangleShader;
+	Eucledia::ref<Eucledia::VertexArray> _triangleVA;
 
-	std::shared_ptr<Eucledia::Shader> _squareShader;
-	std::shared_ptr<Eucledia::VertexArray> _squareVA;
+	Eucledia::ref<Eucledia::Shader> _flatColorShader;
+	Eucledia::ref<Eucledia::VertexArray> _squareVA;
 
 	Eucledia::OrthographicCamera _camera;
 	glm::vec3 _cameraPosition;
@@ -184,6 +198,8 @@ private:
 
 	float _cameraRotation = 0;
 	float _cameraRotationSpeed = 180.f;
+
+	glm::vec3 _squareColor = { 0.8, 0.8, 0.8 };
 };
 
 class Sandbox : public Eucledia::Application

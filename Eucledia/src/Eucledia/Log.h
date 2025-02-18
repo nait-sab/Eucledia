@@ -12,12 +12,12 @@ namespace Eucledia
 	public:
 		static void init();
 
-		inline static std::shared_ptr<spdlog::logger>& getCoreLogger() { return _coreLogger; }
-		inline static std::shared_ptr<spdlog::logger>& getClientLogger() { return _clientLogger; }
+		inline static ref<spdlog::logger>& getCoreLogger() { return _coreLogger; }
+		inline static ref<spdlog::logger>& getClientLogger() { return _clientLogger; }
 
 	private:
-		static std::shared_ptr<spdlog::logger> _coreLogger;
-		static std::shared_ptr<spdlog::logger> _clientLogger;
+		static ref<spdlog::logger> _coreLogger;
+		static ref<spdlog::logger> _clientLogger;
 	};
 }
 

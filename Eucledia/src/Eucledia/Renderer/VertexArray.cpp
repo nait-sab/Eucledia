@@ -10,12 +10,12 @@ namespace Eucledia
 	{
 		switch (Renderer::getAPI())
 		{
-		case RendererAPI::API::None:
-			EUCLEDIA_CORE_ASSERT(false, "RendererAPI::None is currently not supported");
-			return nullptr;
+			case RendererAPI::API::None:
+				EUCLEDIA_CORE_ASSERT(false, "RendererAPI::None is currently not supported");
+				return nullptr;
 
-		case RendererAPI::API::OpenGL:
-			return new OpenGlVertexArray();
+			case RendererAPI::API::OpenGL:
+				return new OpenGlVertexArray();
 		}
 
 		EUCLEDIA_CORE_ASSERT(false, "Unknow RendererAPI");
