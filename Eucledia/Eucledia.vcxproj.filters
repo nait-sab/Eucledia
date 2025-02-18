@@ -22,6 +22,9 @@
     <Filter Include="Platform\OpenGL">
       <UniqueIdentifier>{3ca06c17-0e31-4954-9ec9-6bf0bf8267d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Eucledia\Core">
+      <UniqueIdentifier>{1cebc5db-4317-47c8-88e1-e32e4c923446}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Eucledia.h" />
@@ -113,6 +116,9 @@
     <ClInclude Include="src\Eucledia\Renderer\OrthographicCamera.h">
       <Filter>Eucledia\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Eucledia\Core\Timestep.h">
+      <Filter>Eucledia\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Eucledia\Application.cpp">
@@ -172,6 +178,9 @@
     </ClCompile>
     <ClCompile Include="src\Eucledia\Renderer\OrthographicCamera.cpp">
       <Filter>Eucledia\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Eucledia\Core\Timestep.cpp">
+      <Filter>Eucledia\Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

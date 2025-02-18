@@ -6,13 +6,9 @@
 #include "Events/Event.h"
 #include "Eucledia/Events/ApplicationEvent.h"
 
+#include "Eucledia/Core/Timestep.h"
+
 #include "Eucledia/ImGui/ImGuiLayer.h"
-
-#include "Eucledia/Renderer/Shader.h"
-#include "Eucledia/Renderer/Buffer.h"
-#include "Eucledia/Renderer/VertexArray.h"
-
-#include "Eucledia/Renderer/OrthographicCamera.h"
 
 namespace Eucledia
 {
@@ -39,14 +35,7 @@ namespace Eucledia
 		ImGuiLayer* _imGuiLayer;
 		bool _running = true;
 		LayerStack _layerStack;
-
-		std::shared_ptr<Shader> _shader;
-		std::shared_ptr<VertexArray> _vertexArray;
-
-		std::shared_ptr<Shader> _squareShader;
-		std::shared_ptr<VertexArray> _squareVA;
-
-		OrthographicCamera _camera;
+		float _lasFrameTime = 0;
 	};
 
 	// To be defined in client

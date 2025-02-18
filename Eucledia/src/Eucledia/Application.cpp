@@ -3,6 +3,8 @@
 
 #include "Eucledia/Renderer/Renderer.h"
 
+#include <GLFW/glfw3.h>
+
 namespace Eucledia
 {
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1) 
@@ -10,7 +12,6 @@ namespace Eucledia
 	Application* Application::_instance = nullptr;
 
 	Application::Application()
-		: _camera(-1.f, 1.f, -1.f, 1.f)
 	{
 		EUCLEDIA_CORE_ASSERT(!_instance, "Application already exists")
 		_instance = this;
@@ -20,115 +21,6 @@ namespace Eucledia
 
 		_imGuiLayer = new ImGuiLayer();
 		pushOverlay(_imGuiLayer);
-
-		_vertexArray.reset(VertexArray::create());
-
-		float vertices[3 * 7] = {
-			-.5, -.5, 0, .5, 0, 1, 1,
-			.5, -.5, 0, 1, 1, 1, 1,
-			0, .5, 0, 1, 0, 1, 1
-		};
-
-		std::shared_ptr<VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(VertexBuffer::create(vertices, sizeof(vertices)));
-		vertexBuffer->setLayout({
-			{ ShaderDataType::Float3, "position" },
-			{ ShaderDataType::Float4, "color" }
-		});
-		_vertexArray->addVertexBuffer(vertexBuffer);
-
-		uint32_t indices[3] = { 0, 1, 2 };
-		std::shared_ptr<IndexBuffer> indexBuffer;
-		indexBuffer.reset(IndexBuffer::create(indices, sizeof(indices) / sizeof(uint32_t)));
-		_vertexArray->setIndexBuffer(indexBuffer);
-
-		_squareVA.reset(VertexArray::create());
-
-		float squareVertices[3 * 4] = {
-			-.75, -.75, 0,
-			.75, -.75, 0,
-			.75, .75, 0,
-			-.75, .75, 0
-		};
-
-		std::shared_ptr<VertexBuffer> squareVB;
-		squareVB.reset(VertexBuffer::create(squareVertices, sizeof(squareVertices)));
-		squareVB->setLayout({
-			{ ShaderDataType::Float3, "position" },
-		});
-		_squareVA->addVertexBuffer(squareVB);
-
-		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		std::shared_ptr<IndexBuffer> squareIB;
-		squareIB.reset(IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
-		_squareVA->setIndexBuffer(squareIB);
-
-		std::string vertexSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) in vec3 position;
-			layout(location = 1) in vec4 color;
-
-			uniform mat4 viewProjection;
-
-			out vec3 v_position;
-			out vec4 v_color;
-
-			void main()
-			{
-				v_position = position;
-				v_color = color;
-				gl_Position = viewProjection * vec4(position, 1.0);
-			}
-		)";
-
-		std::string fragmentSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) out vec4 color;
-
-			in vec3 v_position;
-			in vec4 v_color;
-
-			void main()
-			{
-				color = vec4(v_position * .5 + .5, 1.0);
-				color = v_color;
-			}
-		)";
-
-		_shader.reset(new Shader(vertexSrc, fragmentSrc));
-
-		std::string vertexSrc2 = R"(
-			#version 330 core
-			
-			layout(location = 0) in vec3 position;
-
-			uniform mat4 viewProjection;
-
-			out vec3 v_position;
-
-			void main()
-			{
-				v_position = position;
-				gl_Position = viewProjection * vec4(position, 1.0);
-			}
-		)";
-
-		std::string fragmentSrc2 = R"(
-			#version 330 core
-			
-			layout(location = 0) out vec4 color;
-
-			in vec3 v_position;
-
-			void main()
-			{
-				color = vec4(0.7, 0.3, 0, 1.0);
-			}
-		)";
-
-		_squareShader.reset(new Shader(vertexSrc2, fragmentSrc2));
 	}
 
 	Application::~Application()
@@ -164,32 +56,15 @@ namespace Eucledia
 
 	void Application::run()
 	{
-		float speed = 0.001;
-
 		while (_running)
 		{
-			RenderCommand::setClearColor({ .15f, .15f, .15f, 1 });
-			RenderCommand::clear();
-
-			_camera.setPosition({ _camera.getPosition().x, _camera.getPosition().y + speed, _camera.getPosition().z });
-			std::cout << _camera.getPosition().y << std::endl;
-
-			if (_camera.getPosition().y > 0.8) {
-				speed = -0.001;
-			}
-
-			if (_camera.getPosition().y < -0.8) {
-				speed = 0.001;
-			}
-
-			Renderer::beginScene(_camera);
-			Renderer::submit(_squareShader, _squareVA);
-			Renderer::submit(_shader, _vertexArray);
-			Renderer::endScene();
+			float time = (float)glfwGetTime();
+			Timestep timestep = time - _lasFrameTime;
+			_lasFrameTime = time;
 
 			for (Layer* layer : _layerStack)
 			{
-				layer->onUpdate();
+				layer->onUpdate(timestep);
 			}
 
 			_imGuiLayer->begin();

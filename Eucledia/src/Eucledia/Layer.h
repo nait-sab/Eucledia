@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Eucledia/Core.h"
+#include "Eucledia/Core/Timestep.h"
 #include "Eucledia/Events/Event.h"
 
 namespace Eucledia
@@ -13,7 +14,7 @@ namespace Eucledia
 
 		virtual void onAttach() {}
 		virtual void onDetach() {}
-		virtual void onUpdate() {}
+		virtual void onUpdate(Timestep ts) {}
 		virtual void onImGuiRender() {}
 		virtual void onEvent(Event& event) {}
 
