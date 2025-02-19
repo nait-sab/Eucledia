@@ -19,6 +19,8 @@ namespace Eucledia
 		_window = std::unique_ptr<Window>(Window::create());
 		_window->setEventCallback(BIND_EVENT_FN(onEvent));
 
+		Renderer::init();
+
 		_imGuiLayer = new ImGuiLayer();
 		pushOverlay(_imGuiLayer);
 	}

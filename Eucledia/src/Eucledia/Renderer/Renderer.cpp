@@ -7,6 +7,11 @@ namespace Eucledia
 {
 	Renderer::SceneData* Renderer::_sceneData = new Renderer::SceneData;
 
+	void Renderer::init()
+	{
+		RenderCommand::init();
+	}
+
 	void Renderer::beginScene(OrthographicCamera& camera)
 	{
 		_sceneData->_viewProjectionMatrix = camera.getViewProjectionMatrix();

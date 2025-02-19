@@ -18,8 +18,9 @@
 #include "Eucledia/Renderer/Renderer.h"
 #include "Eucledia/Renderer/RenderCommand.h"
 
-#include "Eucledia/Renderer/Shader.h"
 #include "Eucledia/Renderer/Buffer.h"
+#include "Eucledia/Renderer/Shader.h"
+#include "Eucledia/Renderer/Texture.h"
 #include "Eucledia/Renderer/VertexArray.h"
 
 #include "Eucledia/Renderer/OrthographicCamera.h"

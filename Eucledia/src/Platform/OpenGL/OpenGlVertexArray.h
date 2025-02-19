@@ -21,6 +21,7 @@ namespace Eucledia
 
 	private:
 		uint32_t _rendererID;
+		uint32_t _vertexBufferIndex = 0;
 		std::vector<ref<VertexBuffer>> _vertexBuffers;
 		ref<IndexBuffer> _indexBuffer;
 	};

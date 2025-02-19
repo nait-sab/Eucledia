@@ -53,20 +53,19 @@ namespace Eucledia
 		glBindVertexArray(_rendererID);
 		vertexBuffer->bind();
 
-		uint32_t index = 0;
 		const auto& layout = vertexBuffer->getlayout();
 		for (const auto& element : layout)
 		{
-			glEnableVertexAttribArray(index);
+			glEnableVertexAttribArray(_vertexBufferIndex);
 			glVertexAttribPointer(
-				index,
+				_vertexBufferIndex,
 				element.getComponentCount(),
 				ShaderDataTypeToOpenGLBaseType(element._type),
 				element._normalized ? GL_TRUE : GL_FALSE,
 				layout.getStride(),
-				(const void*)element._offset
+				(const void*)(intptr_t)element._offset
 			);
-			index++;
+			_vertexBufferIndex++;
 		}
 
 		_vertexBuffers.push_back(vertexBuffer);

@@ -32,7 +32,7 @@ namespace Eucledia
 	{
 		auto it = std::find(_layers.begin(), _layers.begin() + _layerInsertIndex, layer);
 
-		if (it != _layers.end())
+		if (it != _layers.begin() + _layerInsertIndex)
 		{
 			_layers.erase(it);
 			layer->onDetach();

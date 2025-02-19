@@ -1,192 +1,225 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Eucledia">
-      <UniqueIdentifier>{21959946-0D62-F451-367B-E2F922A729E0}</UniqueIdentifier>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Eucledia\Core">
-      <UniqueIdentifier>{1916522F-85D6-CD65-4E11-17E3BA901242}</UniqueIdentifier>
+    <Filter Include="src\Eucledia">
+      <UniqueIdentifier>{18981377-04FB-A21B-AD80-DBD199C26E9E}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Eucledia\Events">
-      <UniqueIdentifier>{E5115251-519D-BF15-5AAE-420AC6B81B16}</UniqueIdentifier>
+    <Filter Include="src\Eucledia\Core">
+      <UniqueIdentifier>{708B87A6-DCA1-853C-2519-115E916E56C4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Eucledia\ImGui">
-      <UniqueIdentifier>{0B9FFF19-F76C-F31F-E000-6446CC6DCF84}</UniqueIdentifier>
+    <Filter Include="src\Eucledia\Events">
+      <UniqueIdentifier>{FC38BA6B-689A-9779-F107-DE2B5D68CE38}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Eucledia\Renderer">
-      <UniqueIdentifier>{E72D19E5-5344-177B-9CBB-A29C0811E802}</UniqueIdentifier>
+    <Filter Include="src\Eucledia\ImGui">
+      <UniqueIdentifier>{42BFE377-2EA3-A4CD-9703-9F2083068F4F}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Platform">
-      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    <Filter Include="src\Eucledia\Renderer">
+      <UniqueIdentifier>{BE76273A-2AE3-E234-F3D6-7A925F02059D}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Platform\OpenGL">
-      <UniqueIdentifier>{1E7D2C1D-8A08-9AE1-9319-1DD6FF23F6E1}</UniqueIdentifier>
+    <Filter Include="src\Platform">
+      <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Platform\Windows">
-      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
+    <Filter Include="src\Platform\OpenGL">
+      <UniqueIdentifier>{35A49437-A105-7245-2A73-B8F796D3A804}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Platform\Windows">
+      <UniqueIdentifier>{5B054582-4794-CE4B-F0B2-E246DC20DFF1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor">
+      <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\stb_image">
+      <UniqueIdentifier>{0DA0BA59-F998-D9AB-22CB-BE300E23B9B7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Eucledia.h" />
+    <ClInclude Include="src\Eucledia.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="src\Eucledia\Application.h">
-      <Filter>Eucledia</Filter>
+      <Filter>src\Eucledia</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\Core.h">
-      <Filter>Eucledia</Filter>
+      <Filter>src\Eucledia</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\Core\Timestep.h">
-      <Filter>Eucledia\Core</Filter>
+      <Filter>src\Eucledia\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\EntryPoint.h">
-      <Filter>Eucledia</Filter>
+      <Filter>src\Eucledia</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\Events\ApplicationEvent.h">
-      <Filter>Eucledia\Events</Filter>
+      <Filter>src\Eucledia\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\Events\Event.h">
-      <Filter>Eucledia\Events</Filter>
+      <Filter>src\Eucledia\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\Events\KeyEvent.h">
-      <Filter>Eucledia\Events</Filter>
+      <Filter>src\Eucledia\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\Events\MouseEvent.h">
-      <Filter>Eucledia\Events</Filter>
+      <Filter>src\Eucledia\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\ImGui\ImGuiLayer.h">
-      <Filter>Eucledia\ImGui</Filter>
+      <Filter>src\Eucledia\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\Input.h">
-      <Filter>Eucledia</Filter>
+      <Filter>src\Eucledia</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\KeyCodes.h">
-      <Filter>Eucledia</Filter>
+      <Filter>src\Eucledia</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\Layer.h">
-      <Filter>Eucledia</Filter>
+      <Filter>src\Eucledia</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\LayerStack.h">
-      <Filter>Eucledia</Filter>
+      <Filter>src\Eucledia</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\Log.h">
-      <Filter>Eucledia</Filter>
+      <Filter>src\Eucledia</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\MouseButtonCodes.h">
-      <Filter>Eucledia</Filter>
+      <Filter>src\Eucledia</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\Renderer\Buffer.h">
-      <Filter>Eucledia\Renderer</Filter>
+      <Filter>src\Eucledia\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\Renderer\GraphicsContext.h">
-      <Filter>Eucledia\Renderer</Filter>
+      <Filter>src\Eucledia\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\Renderer\OrthographicCamera.h">
-      <Filter>Eucledia\Renderer</Filter>
+      <Filter>src\Eucledia\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\Renderer\RenderCommand.h">
-      <Filter>Eucledia\Renderer</Filter>
+      <Filter>src\Eucledia\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\Renderer\Renderer.h">
-      <Filter>Eucledia\Renderer</Filter>
+      <Filter>src\Eucledia\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\Renderer\RendererAPI.h">
-      <Filter>Eucledia\Renderer</Filter>
+      <Filter>src\Eucledia\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\Renderer\Shader.h">
-      <Filter>Eucledia\Renderer</Filter>
+      <Filter>src\Eucledia\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Eucledia\Renderer\Texture.h">
+      <Filter>src\Eucledia\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\Renderer\VertexArray.h">
-      <Filter>Eucledia\Renderer</Filter>
+      <Filter>src\Eucledia\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Eucledia\Window.h">
-      <Filter>Eucledia</Filter>
+      <Filter>src\Eucledia</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h">
-      <Filter>Platform\OpenGL</Filter>
+      <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h">
-      <Filter>Platform\OpenGL</Filter>
+      <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h">
-      <Filter>Platform\OpenGL</Filter>
+      <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h">
-      <Filter>Platform\OpenGL</Filter>
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h">
+      <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGlVertexArray.h">
-      <Filter>Platform\OpenGL</Filter>
+      <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsInput.h">
-      <Filter>Platform\Windows</Filter>
+      <Filter>src\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
-      <Filter>Platform\Windows</Filter>
+      <Filter>src\Platform\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="src\euclediapch.h" />
+    <ClInclude Include="src\euclediapch.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\stb_image\stb_image.h">
+      <Filter>vendor\stb_image</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Eucledia\Application.cpp">
-      <Filter>Eucledia</Filter>
+      <Filter>src\Eucledia</Filter>
     </ClCompile>
     <ClCompile Include="src\Eucledia\Core\Timestep.cpp">
-      <Filter>Eucledia\Core</Filter>
+      <Filter>src\Eucledia\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Eucledia\ImGui\ImGuiBuild.cpp">
-      <Filter>Eucledia\ImGui</Filter>
+      <Filter>src\Eucledia\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\Eucledia\ImGui\ImGuiLayer.cpp">
-      <Filter>Eucledia\ImGui</Filter>
+      <Filter>src\Eucledia\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\Eucledia\Layer.cpp">
-      <Filter>Eucledia</Filter>
+      <Filter>src\Eucledia</Filter>
     </ClCompile>
     <ClCompile Include="src\Eucledia\LayerStack.cpp">
-      <Filter>Eucledia</Filter>
+      <Filter>src\Eucledia</Filter>
     </ClCompile>
     <ClCompile Include="src\Eucledia\Log.cpp">
-      <Filter>Eucledia</Filter>
+      <Filter>src\Eucledia</Filter>
     </ClCompile>
     <ClCompile Include="src\Eucledia\Renderer\Buffer.cpp">
-      <Filter>Eucledia\Renderer</Filter>
+      <Filter>src\Eucledia\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Eucledia\Renderer\OrthographicCamera.cpp">
-      <Filter>Eucledia\Renderer</Filter>
+      <Filter>src\Eucledia\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Eucledia\Renderer\RenderCommand.cpp">
-      <Filter>Eucledia\Renderer</Filter>
+      <Filter>src\Eucledia\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Eucledia\Renderer\Renderer.cpp">
-      <Filter>Eucledia\Renderer</Filter>
+      <Filter>src\Eucledia\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Eucledia\Renderer\RendererApi.cpp">
-      <Filter>Eucledia\Renderer</Filter>
+      <Filter>src\Eucledia\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Eucledia\Renderer\Shader.cpp">
-      <Filter>Eucledia\Renderer</Filter>
+      <Filter>src\Eucledia\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Eucledia\Renderer\Texture.cpp">
+      <Filter>src\Eucledia\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Eucledia\Renderer\VertexArray.cpp">
-      <Filter>Eucledia\Renderer</Filter>
+      <Filter>src\Eucledia\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
-      <Filter>Platform\OpenGL</Filter>
+      <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp">
-      <Filter>Platform\OpenGL</Filter>
+      <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp">
-      <Filter>Platform\OpenGL</Filter>
+      <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp">
-      <Filter>Platform\OpenGL</Filter>
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGlVertexArray.cpp">
-      <Filter>Platform\OpenGL</Filter>
+      <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
-      <Filter>Platform\Windows</Filter>
+      <Filter>src\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
-      <Filter>Platform\Windows</Filter>
+      <Filter>src\Platform\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="src\euclediapch.cpp" />
+    <ClCompile Include="src\euclediapch.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\stb_image\stb_image.cpp">
+      <Filter>vendor\stb_image</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

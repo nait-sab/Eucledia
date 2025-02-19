@@ -35,17 +35,18 @@ public:
 
 		_squareVA.reset(Eucledia::VertexArray::create());
 
-		float squareVertices[3 * 4] = {
-			-.5, -.5, 0,
-			.5, -.5, 0,
-			.5, .5, 0,
-			-.5, .5, 0
+		float squareVertices[5 * 4] = {
+			-.5, -.5, 0, 0, 0,
+			.5, -.5, 0, 1, 0,
+			.5, .5, 0, 1, 1,
+			-.5, .5, 0, 0, 1
 		};
 
 		std::shared_ptr<Eucledia::VertexBuffer> squareVB;
 		squareVB.reset(Eucledia::VertexBuffer::create(squareVertices, sizeof(squareVertices)));
 		squareVB->setLayout({
 			{ Eucledia::ShaderDataType::Float3, "position" },
+			{ Eucledia::ShaderDataType::Float2, "textCoord" },
 		});
 		_squareVA->addVertexBuffer(squareVB);
 
@@ -124,35 +125,75 @@ public:
 		)";
 
 		_flatColorShader.reset(Eucledia::Shader::create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
+
+		std::string textureShaderVertexSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) in vec3 position;
+			layout(location = 1) in vec2 textCoord;
+
+			uniform mat4 viewProjection;
+			uniform mat4 transform;
+
+			out vec2 v_textCoord;
+
+			void main()
+			{
+				v_textCoord = textCoord;
+				gl_Position = viewProjection * transform * vec4(position, 1.0);
+			}
+		)";
+
+		std::string textureShaderFragmentSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) out vec4 color;
+
+			in vec2 v_textCoord;
+
+			uniform sampler2D u_texture;
+
+			void main()
+			{
+				color = texture(u_texture, v_textCoord);
+			}
+		)";
+
+		_textureShader.reset(Eucledia::Shader::create(textureShaderVertexSrc, textureShaderFragmentSrc));
+
+		_texture = Eucledia::Texture2D::create("assets/textures/texture.png");
+
+		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(_textureShader)->bind();
+		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(_textureShader)->uploadUniformInt("u_texture", 0);
 	}
 
 	void onUpdate(Eucledia::Timestep ts) override
 	{
 		if (Eucledia::Input::isKeyPressed(EUCLEDIA_KEY_A))
 		{
-			_cameraPosition.x += _cameraMoveSpeed * ts;
+			_cameraPosition.x -= _cameraMoveSpeed * ts;
 		}
 		else if (Eucledia::Input::isKeyPressed(EUCLEDIA_KEY_D))
 		{
-			_cameraPosition.x -= _cameraMoveSpeed * ts;
+			_cameraPosition.x += _cameraMoveSpeed * ts;
 		}
 
 		if (Eucledia::Input::isKeyPressed(EUCLEDIA_KEY_W))
 		{
-			_cameraPosition.y -= _cameraMoveSpeed * ts;
+			_cameraPosition.y += _cameraMoveSpeed * ts;
 		}
 		else if (Eucledia::Input::isKeyPressed(EUCLEDIA_KEY_S))
 		{
-			_cameraPosition.y += _cameraMoveSpeed * ts;
+			_cameraPosition.y -= _cameraMoveSpeed * ts;
 		}
 
 		if (Eucledia::Input::isKeyPressed(EUCLEDIA_KEY_Q))
 		{
-			_cameraRotation -= _cameraRotationSpeed * ts;
+			_cameraRotation += _cameraRotationSpeed * ts;
 		}
 		else if (Eucledia::Input::isKeyPressed(EUCLEDIA_KEY_E))
 		{
-			_cameraRotation += _cameraRotationSpeed * ts;
+			_cameraRotation -= _cameraRotationSpeed * ts;
 		}
 
 		Eucledia::RenderCommand::setClearColor({ .15f, .15f, .15f, 1 });
@@ -163,13 +204,25 @@ public:
 
 		Eucledia::Renderer::beginScene(_camera);
 
+		glm::mat4 scale = glm::scale(glm::mat4(1), glm::vec3(0.1));
+
 		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(_flatColorShader)->bind();
 		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(_flatColorShader)->uploadUniformFloat3("u_color", _squareColor);
 
-		Eucledia::Renderer::submit(_flatColorShader, _squareVA);
+		for (int y = 0; y < 20; y++)
+		{
+			for (int x = 0; x < 20; x++)
+			{
+				glm::vec3 position(x * .11f, y * .11f, 0);
+				glm::mat4 transform = glm::translate(glm::mat4(1), position) * scale;
+				Eucledia::Renderer::submit(_flatColorShader, _squareVA, transform);
+			}
+		}
 
+		_texture->bind();
+		Eucledia::Renderer::submit(_textureShader, _squareVA, glm::scale(glm::mat4(1), glm::vec3(1.5)));
 
-		Eucledia::Renderer::submit(_triangleShader, _triangleVA);
+		//Eucledia::Renderer::submit(_triangleShader, _triangleVA);
 		Eucledia::Renderer::endScene();
 	}
 
@@ -189,8 +242,10 @@ private:
 	Eucledia::ref<Eucledia::Shader> _triangleShader;
 	Eucledia::ref<Eucledia::VertexArray> _triangleVA;
 
-	Eucledia::ref<Eucledia::Shader> _flatColorShader;
+	Eucledia::ref<Eucledia::Shader> _flatColorShader, _textureShader;
 	Eucledia::ref<Eucledia::VertexArray> _squareVA;
+
+	Eucledia::ref<Eucledia::Texture2D> _texture;
 
 	Eucledia::OrthographicCamera _camera;
 	glm::vec3 _cameraPosition;

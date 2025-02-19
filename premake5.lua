@@ -16,6 +16,7 @@ IncludeDir["GLFW"] = "Eucledia/vendor/GLFW/include"
 IncludeDir["Glad"] = "Eucledia/vendor/Glad/include"
 IncludeDir["ImGui"] = "Eucledia/vendor/imgui"
 IncludeDir["glm"] = "Eucledia/vendor/glm"
+IncludeDir["stb_image"] = "Eucledia/vendor/stb_image"
 
 group "Dependencies"
 	include "Eucledia/vendor/GLFW"
@@ -41,7 +42,9 @@ project "Eucledia"
 	files 
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/stb_image/**.h",
+		"%{prj.name}/vendor/stb_image/**.cpp"
 	}
 
 	defines
@@ -56,7 +59,8 @@ project "Eucledia"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb_image}"
 	}
 
 	links
