@@ -38,8 +38,8 @@ namespace Eucledia
 	OpenGlIndexBuffer::OpenGlIndexBuffer(uint32_t* indices, uint32_t count) : _count(count)
 	{
 		glCreateBuffers(1, &_rendererID);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _rendererID);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, _rendererID);
+		glBufferData(GL_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
 	}
 
 	OpenGlIndexBuffer::~OpenGlIndexBuffer()

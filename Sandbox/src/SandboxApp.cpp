@@ -55,113 +55,10 @@ public:
 		squareIB.reset(Eucledia::IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 		_squareVA->setIndexBuffer(squareIB);
 
-		std::string vertexSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) in vec3 position;
-			layout(location = 1) in vec4 color;
-
-			uniform mat4 viewProjection;
-			uniform mat4 transform;
-
-			out vec3 v_position;
-			out vec4 v_color;
-
-			void main()
-			{
-				v_position = position;
-				v_color = color;
-				gl_Position = viewProjection * transform * vec4(position, 1.0);
-			}
-		)";
-
-		std::string fragmentSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) out vec4 color;
-
-			in vec3 v_position;
-			in vec4 v_color;
-
-			void main()
-			{
-				color = vec4(v_position * .5 + .5, 1.0);
-				color = v_color;
-			}
-		)";
-
-		_triangleShader.reset(Eucledia::Shader::create(vertexSrc, fragmentSrc));
-
-		std::string flatColorShaderVertexSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) in vec3 position;
-
-			uniform mat4 viewProjection;
-			uniform mat4 transform;
-
-			out vec3 v_position;
-
-			void main()
-			{
-				v_position = position;
-				gl_Position = viewProjection * transform * vec4(position, 1.0);
-			}
-		)";
-
-		std::string flatColorShaderFragmentSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) out vec4 color;
-
-			in vec3 v_position;
-
-			uniform vec3 u_color;
-
-			void main()
-			{
-				color = vec4(u_color, 1.0);
-			}
-		)";
-
-		_flatColorShader.reset(Eucledia::Shader::create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
-
-		std::string textureShaderVertexSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) in vec3 position;
-			layout(location = 1) in vec2 textCoord;
-
-			uniform mat4 viewProjection;
-			uniform mat4 transform;
-
-			out vec2 v_textCoord;
-
-			void main()
-			{
-				v_textCoord = textCoord;
-				gl_Position = viewProjection * transform * vec4(position, 1.0);
-			}
-		)";
-
-		std::string textureShaderFragmentSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) out vec4 color;
-
-			in vec2 v_textCoord;
-
-			uniform sampler2D u_texture;
-
-			void main()
-			{
-				color = texture(u_texture, v_textCoord);
-			}
-		)";
-
-		_textureShader.reset(Eucledia::Shader::create(textureShaderVertexSrc, textureShaderFragmentSrc));
-
-		_texture = Eucledia::Texture2D::create("assets/textures/texture.png");
+		_triangleShader.reset(Eucledia::Shader::create("assets/shaders/triangle.glsl"));
+		_flatColorShader.reset(Eucledia::Shader::create("assets/shaders/square.glsl"));
+		_textureShader.reset(Eucledia::Shader::create("assets/shaders/texture.glsl"));
+		_texture = Eucledia::Texture2D::create("assets/textures/default.png");
 
 		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(_textureShader)->bind();
 		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(_textureShader)->uploadUniformInt("u_texture", 0);
@@ -222,7 +119,7 @@ public:
 		_texture->bind();
 		Eucledia::Renderer::submit(_textureShader, _squareVA, glm::scale(glm::mat4(1), glm::vec3(1.5)));
 
-		//Eucledia::Renderer::submit(_triangleShader, _triangleVA);
+		// Eucledia::Renderer::submit(_triangleShader, _triangleVA);
 		Eucledia::Renderer::endScene();
 	}
 

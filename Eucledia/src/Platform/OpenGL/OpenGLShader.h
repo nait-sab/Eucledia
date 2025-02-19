@@ -3,11 +3,15 @@
 #include "Eucledia/Renderer/Shader.h"
 #include <glm/glm.hpp>
 
+// TODO: Remove this ref
+typedef unsigned int GLenum;
+
 namespace Eucledia
 {
 	class OpenGLShader : public Shader
 	{
 	public:
+		OpenGLShader(const std::string& filepath);
 		OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc);
 		~OpenGLShader();
 
@@ -26,5 +30,9 @@ namespace Eucledia
 
 	private:
 		uint32_t _rendererID;
+
+		std::string readFile(const std::string& filepath);
+		std::unordered_map<GLenum, std::string> preProcess(const std::string& source);
+		void compile(const std::unordered_map<GLenum, std::string>& shaderSources);
 	};
 }
