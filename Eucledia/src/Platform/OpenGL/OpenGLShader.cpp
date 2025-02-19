@@ -28,9 +28,16 @@ namespace Eucledia
 		std::string source = readFile(filepath);
 		auto shaderSources = preProcess(source);
 		compile(shaderSources);
+
+		auto lastSlash = filepath.find_last_of("/\\");
+		lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
+		auto lastDot = filepath.rfind('.');
+		auto count = lastDot == std::string::npos ? filepath.size() - lastSlash : lastDot - lastSlash;
+		_name = filepath.substr(lastSlash, count);
 	}
 
-	OpenGLShader::OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc)
+	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
+		: _name(name)
 	{
 		std::unordered_map<GLenum, std::string> shaderSources;
 		shaderSources[GL_VERTEX_SHADER] = vertexSrc;
@@ -46,7 +53,7 @@ namespace Eucledia
 	std::string OpenGLShader::readFile(const std::string& filepath)
 	{
 		std::string result;
-		std::ifstream file(filepath, std::ios::in, std::ios::binary);
+		std::ifstream file(filepath, std::ios::in | std::ios::binary);
 
 		if (file)
 		{
@@ -93,7 +100,9 @@ namespace Eucledia
 	void OpenGLShader::compile(const std::unordered_map<GLenum, std::string>& shaderSources)
 	{
 		GLuint program = glCreateProgram();
-		std::vector<GLenum> glShaderIds(shaderSources.size());
+		EUCLEDIA_CORE_ASSERT(shaderSources.size() <= 2, "Only two shaders supported");
+		std::array<GLenum, 2> glShaderIds;
+		int glShaderIdIndex = 0;
 
 		for (auto& keyValue : shaderSources)
 		{
@@ -122,7 +131,7 @@ namespace Eucledia
 			}
 
 			glAttachShader(program, shader);
-			glShaderIds.push_back(shader);
+			glShaderIds[glShaderIdIndex++] = shader;
 		}
 
 		glLinkProgram(program);

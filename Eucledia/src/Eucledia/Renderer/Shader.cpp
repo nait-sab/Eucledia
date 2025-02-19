@@ -6,7 +6,7 @@
 
 namespace Eucledia
 {
-	Shader* Shader::create(const std::string& filepath)
+	ref<Shader> Shader::create(const std::string& filepath)
 	{
 		switch (Renderer::getAPI())
 		{
@@ -15,14 +15,14 @@ namespace Eucledia
 			return nullptr;
 
 		case RendererAPI::API::OpenGL:
-			return new OpenGLShader(filepath);
+			return std::make_shared<OpenGLShader>(filepath);
 		}
 
 		EUCLEDIA_CORE_ASSERT(false, "Unknow RendererAPI");
 		return nullptr;
 	}
 
-	Shader* Shader::create(const std::string& vertexSrc, const std::string& fragmentSrc)
+	ref<Shader> Shader::create(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
 	{
 		switch (Renderer::getAPI())
 		{
@@ -31,10 +31,47 @@ namespace Eucledia
 				return nullptr;
 
 			case RendererAPI::API::OpenGL:
-				return new OpenGLShader(vertexSrc, fragmentSrc);
+				return std::make_shared<OpenGLShader>(name, vertexSrc, fragmentSrc);
 		}
 
 		EUCLEDIA_CORE_ASSERT(false, "Unknow RendererAPI");
 		return nullptr;
+	}
+
+	void ShaderLibrary::add(const std::string& name, const ref<Shader>& shader)
+	{
+		EUCLEDIA_CORE_ASSERT(!exists(name), "Shader already exists");
+		_shaders[name] = shader;
+	}
+
+	void ShaderLibrary::add(const ref<Shader>& shader)
+	{
+		auto& name = shader->getName();
+		add(name, shader);
+	}
+
+	ref<Shader> ShaderLibrary::load(const std::string& filepath)
+	{
+		auto shader = Shader::create(filepath);
+		add(shader);
+		return shader;
+	}
+
+	ref<Shader> ShaderLibrary::load(const std::string& name, const std::string& filepath)
+	{
+		auto shader = Shader::create(filepath);
+		add(name, shader);
+		return shader;
+	}
+
+	ref<Shader> ShaderLibrary::get(const std::string& name)
+	{
+		EUCLEDIA_CORE_ASSERT(exists(name), "Shader not found");
+		return _shaders[name];
+	}
+
+	bool ShaderLibrary::exists(const std::string& name)
+	{
+		return _shaders.find(name) != _shaders.end();
 	}
 }

@@ -15,9 +15,9 @@ public:
 		_triangleVA.reset(Eucledia::VertexArray::create());
 
 		float vertices[3 * 7] = {
-			-.5, -.5, 0, .5, 0, 1, 1,
-			.5, -.5, 0, 1, 1, 1, 1,
-			0, .5, 0, 1, 0, 1, 1
+			-1.5, 0, 0, .5, 0, 1, 1,
+			-.5, 0, 0, 1, 1, 1, 1,
+			-1, .5, 0, 1, 0, 1, 1
 		};
 
 		std::shared_ptr<Eucledia::VertexBuffer> vertexBuffer;
@@ -55,13 +55,13 @@ public:
 		squareIB.reset(Eucledia::IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 		_squareVA->setIndexBuffer(squareIB);
 
-		_triangleShader.reset(Eucledia::Shader::create("assets/shaders/triangle.glsl"));
-		_flatColorShader.reset(Eucledia::Shader::create("assets/shaders/square.glsl"));
-		_textureShader.reset(Eucledia::Shader::create("assets/shaders/texture.glsl"));
+		_shaderLibrary.load("assets/shaders/triangle.glsl");
+		_shaderLibrary.load("assets/shaders/square.glsl");
+		auto textureShader =  _shaderLibrary.load("assets/shaders/texture.glsl");
 		_texture = Eucledia::Texture2D::create("assets/textures/default.png");
 
-		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(_textureShader)->bind();
-		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(_textureShader)->uploadUniformInt("u_texture", 0);
+		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(textureShader)->bind();
+		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(textureShader)->uploadUniformInt("u_texture", 0);
 	}
 
 	void onUpdate(Eucledia::Timestep ts) override
@@ -103,8 +103,8 @@ public:
 
 		glm::mat4 scale = glm::scale(glm::mat4(1), glm::vec3(0.1));
 
-		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(_flatColorShader)->bind();
-		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(_flatColorShader)->uploadUniformFloat3("u_color", _squareColor);
+		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(_shaderLibrary.get("square"))->bind();
+		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(_shaderLibrary.get("square"))->uploadUniformFloat3("u_color", _squareColor);
 
 		for (int y = 0; y < 20; y++)
 		{
@@ -112,14 +112,13 @@ public:
 			{
 				glm::vec3 position(x * .11f, y * .11f, 0);
 				glm::mat4 transform = glm::translate(glm::mat4(1), position) * scale;
-				Eucledia::Renderer::submit(_flatColorShader, _squareVA, transform);
+				Eucledia::Renderer::submit(_shaderLibrary.get("square"), _squareVA, transform);
 			}
 		}
 
 		_texture->bind();
-		Eucledia::Renderer::submit(_textureShader, _squareVA, glm::scale(glm::mat4(1), glm::vec3(1.5)));
-
-		// Eucledia::Renderer::submit(_triangleShader, _triangleVA);
+		Eucledia::Renderer::submit(_shaderLibrary.get("texture"), _squareVA, glm::scale(glm::mat4(1), glm::vec3(1.5)));
+		Eucledia::Renderer::submit(_shaderLibrary.get("triangle"), _triangleVA);
 		Eucledia::Renderer::endScene();
 	}
 
@@ -136,12 +135,9 @@ public:
 	}
 
 private:
-	Eucledia::ref<Eucledia::Shader> _triangleShader;
-	Eucledia::ref<Eucledia::VertexArray> _triangleVA;
+	Eucledia::ShaderLibrary _shaderLibrary;
 
-	Eucledia::ref<Eucledia::Shader> _flatColorShader, _textureShader;
-	Eucledia::ref<Eucledia::VertexArray> _squareVA;
-
+	Eucledia::ref<Eucledia::VertexArray> _triangleVA, _squareVA;
 	Eucledia::ref<Eucledia::Texture2D> _texture;
 
 	Eucledia::OrthographicCamera _camera;
