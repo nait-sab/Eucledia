@@ -11,6 +11,7 @@ namespace Eucledia
 	{
 	public:
 		static void init();
+		static void onWindowRisized(uint32_t width, uint32_t height);
 
 		static void beginScene(OrthographicCamera& camera);
 		static void endScene();

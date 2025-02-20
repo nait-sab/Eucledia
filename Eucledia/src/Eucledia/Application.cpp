@@ -44,6 +44,7 @@ namespace Eucledia
 	{
 		EventDispatcher dispatcher(event);
 		dispatcher.dispatch<WindowCloseEvent>(BIND_EVENT_FN(onWindowClosed));
+		dispatcher.dispatch<WindowResizeEvent>(BIND_EVENT_FN(onWindowResized));
 
 		for (auto it = _layerStack.end(); it != _layerStack.begin();)
 		{
@@ -64,9 +65,12 @@ namespace Eucledia
 			Timestep timestep = time - _lasFrameTime;
 			_lasFrameTime = time;
 
-			for (Layer* layer : _layerStack)
+			if (!_minimized)
 			{
-				layer->onUpdate(timestep);
+				for (Layer* layer : _layerStack)
+				{
+					layer->onUpdate(timestep);
+				}
 			}
 
 			_imGuiLayer->begin();
@@ -86,5 +90,19 @@ namespace Eucledia
 	{
 		_running = false;
 		return true;
+	}
+
+	bool Application::onWindowResized(WindowResizeEvent& event)
+	{
+		if (event.getWidth() == 0 || event.getHeight() == 0)
+		{
+			_minimized = true;
+			return false;
+		}
+
+		_minimized = false;
+		Renderer::onWindowRisized(event.getWidth(), event.getHeight());
+
+		return false;
 	}
 }

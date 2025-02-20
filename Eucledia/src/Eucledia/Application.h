@@ -30,11 +30,16 @@ namespace Eucledia
 	private:
 		static Application* _instance;
 
-		bool onWindowClosed(WindowCloseEvent& event);
 		std::unique_ptr<Window> _window;
-		ImGuiLayer* _imGuiLayer;
-		bool _running = true;
+
+		bool onWindowClosed(WindowCloseEvent& event);
+		bool onWindowResized(WindowResizeEvent& event);
+
 		LayerStack _layerStack;
+		ImGuiLayer* _imGuiLayer;
+
+		bool _running = true;
+		bool _minimized = false;
 		float _lasFrameTime = 0;
 	};
 

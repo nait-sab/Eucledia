@@ -19,6 +19,9 @@ namespace Eucledia
 		OrthographicCamera& getCamera() { return _camera; }
 		const OrthographicCamera& getCamera() const { return _camera; }
 
+		float getZoomLevel() const { return _zoomLevel; }
+		void setZoomLevel(float zoomLevel) { _zoomLevel = zoomLevel; }
+
 	private:
 		float _aspectRatio;
 		float _zoomLevel = 1;
