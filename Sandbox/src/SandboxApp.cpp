@@ -10,7 +10,7 @@
 class ExampleLayer : public Eucledia::Layer
 {
 public:
-	ExampleLayer() : Layer("Example"), _camera(-1.6f, 1.6f, -0.9f, 0.9f), _cameraPosition(0)
+	ExampleLayer() : Layer("Example"), _cameraController(16 / 9)
 	{
 		_triangleVA.reset(Eucledia::VertexArray::create());
 
@@ -66,40 +66,12 @@ public:
 
 	void onUpdate(Eucledia::Timestep ts) override
 	{
-		if (Eucledia::Input::isKeyPressed(EUCLEDIA_KEY_A))
-		{
-			_cameraPosition.x -= _cameraMoveSpeed * ts;
-		}
-		else if (Eucledia::Input::isKeyPressed(EUCLEDIA_KEY_D))
-		{
-			_cameraPosition.x += _cameraMoveSpeed * ts;
-		}
-
-		if (Eucledia::Input::isKeyPressed(EUCLEDIA_KEY_W))
-		{
-			_cameraPosition.y += _cameraMoveSpeed * ts;
-		}
-		else if (Eucledia::Input::isKeyPressed(EUCLEDIA_KEY_S))
-		{
-			_cameraPosition.y -= _cameraMoveSpeed * ts;
-		}
-
-		if (Eucledia::Input::isKeyPressed(EUCLEDIA_KEY_Q))
-		{
-			_cameraRotation += _cameraRotationSpeed * ts;
-		}
-		else if (Eucledia::Input::isKeyPressed(EUCLEDIA_KEY_E))
-		{
-			_cameraRotation -= _cameraRotationSpeed * ts;
-		}
+		_cameraController.onUpdate(ts);
 
 		Eucledia::RenderCommand::setClearColor({ .15f, .15f, .15f, 1 });
 		Eucledia::RenderCommand::clear();
 
-		_camera.setPosition(_cameraPosition);
-		_camera.setRotation(_cameraRotation);
-
-		Eucledia::Renderer::beginScene(_camera);
+		Eucledia::Renderer::beginScene(_cameraController.getCamera());
 
 		glm::mat4 scale = glm::scale(glm::mat4(1), glm::vec3(0.1));
 
@@ -131,7 +103,7 @@ public:
 
 	void onEvent(Eucledia::Event& event) override
 	{
-
+		_cameraController.onEvent(event);
 	}
 
 private:
@@ -140,12 +112,7 @@ private:
 	Eucledia::ref<Eucledia::VertexArray> _triangleVA, _squareVA;
 	Eucledia::ref<Eucledia::Texture2D> _texture;
 
-	Eucledia::OrthographicCamera _camera;
-	glm::vec3 _cameraPosition;
-	float _cameraMoveSpeed = 1.5f;
-
-	float _cameraRotation = 0;
-	float _cameraRotationSpeed = 180.f;
+	Eucledia::OrthographicCameraController _cameraController;
 
 	glm::vec3 _squareColor = { 0.8, 0.8, 0.8 };
 };

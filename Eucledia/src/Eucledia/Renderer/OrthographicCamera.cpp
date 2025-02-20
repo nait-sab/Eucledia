@@ -6,8 +6,14 @@
 namespace Eucledia
 {
 	OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top)
-		:_projectionMatrix(glm::ortho(left, right, bottom, top, -1.f, 1.f)), _viewMatrix(1.f)
+		: _projectionMatrix(glm::ortho(left, right, bottom, top, -1.f, 1.f)), _viewMatrix(1.f)
 	{
+		_viewProjectionMatrix = _projectionMatrix * _viewMatrix;
+	}
+
+	void OrthographicCamera::setProjection(float left, float right, float bottom, float top)
+	{
+		_projectionMatrix = glm::ortho(left, right, bottom, top, -1.f, 1.f);
 		_viewProjectionMatrix = _projectionMatrix * _viewMatrix;
 	}
 

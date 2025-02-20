@@ -11,6 +11,7 @@
 #include "Eucledia/Input.h"
 #include "Eucledia/KeyCodes.h"
 #include "Eucledia/MouseButtonCodes.h"
+#include "Eucledia/OrthographicCameraController.h"
 
 #include "Eucledia/ImGui/ImGuiLayer.h"
 
@@ -22,8 +23,6 @@
 #include "Eucledia/Renderer/Shader.h"
 #include "Eucledia/Renderer/Texture.h"
 #include "Eucledia/Renderer/VertexArray.h"
-
-#include "Eucledia/Renderer/OrthographicCamera.h"
 // --------------------------------------------
 
 // --- Entry Point ----------------------------
