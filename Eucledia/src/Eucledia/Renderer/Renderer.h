@@ -26,6 +26,6 @@ namespace Eucledia
 			glm::mat4 _viewProjectionMatrix;
 		};
 
-		static SceneData* _sceneData;
+		static scope<SceneData> _sceneData;
 	};
 }

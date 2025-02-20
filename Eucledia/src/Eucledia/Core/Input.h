@@ -28,6 +28,6 @@ namespace Eucledia
 		virtual float getMouseYImpl() = 0;
 
 	private:
-		static Input* _instance;
+		static scope<Input> _instance;
 	};
 }

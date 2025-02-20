@@ -7,7 +7,7 @@
 
 namespace Eucledia
 {
-	Input* Input::_instance = new WindowsInput();
+	scope<Input> Input::_instance = createScope<WindowsInput>();
 
 	bool WindowsInput::isKeyPressedImpl(int keycode)
 	{

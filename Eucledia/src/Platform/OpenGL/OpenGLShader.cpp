@@ -87,11 +87,11 @@ namespace Eucledia
 			std::string type = source.substr(begin, eol - begin);
 			EUCLEDIA_CORE_ASSERT(ShaderTypeFromString(type), "Invalid shader type specified");
 			size_t nextLinePosition = source.find_first_of("\r\n", position);
+			EUCLEDIA_CORE_ASSERT(nextLinePosition != std::string::npos, "Syntax error");
 			position = source.find(typeToken, nextLinePosition);
-			shaderSources[ShaderTypeFromString(type)] = source.substr(
-				nextLinePosition, 
-				position - (nextLinePosition == std::string::npos ? source.size() - 1 : nextLinePosition)
-			);
+			shaderSources[ShaderTypeFromString(type)] = (position == std::string::npos)
+				? source.substr(nextLinePosition)
+				: source.substr(nextLinePosition, position - nextLinePosition);
 		}
 
 		return shaderSources;
@@ -160,6 +160,7 @@ namespace Eucledia
 		for (auto id : glShaderIds)
 		{
 			glDetachShader(program, id);
+			glDeleteShader(id);
 		}
 
 		_rendererID = program;

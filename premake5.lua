@@ -81,7 +81,6 @@ project "Eucledia"
 
 		defines 
 		{
-			"EUCLEDIA_PLATFORM_WNDOWS",
 			"EUCLEDIA_BUILD_DLL",
 			"GLFW_INCLUDE_NONE"
 		}
@@ -140,11 +139,6 @@ project "Sandbox"
 
 	filter "system:windows"
 		systemversion "latest"
-
-		defines 
-		{
-			"EUCLEDIA_PLATFORM_WNDOWS"
-		}
 
 	filter "configurations:Debug"
 		defines "EUCLEDIA_DEBUG"

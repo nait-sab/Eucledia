@@ -39,7 +39,7 @@ namespace Eucledia
 
 		GLFWwindow* _window;
 		WindowData _data;
-		GraphicsContext* _context;
+		scope<GraphicsContext> _context;
 
 		virtual void init(const WindowProps& props);
 		virtual void shutdown();

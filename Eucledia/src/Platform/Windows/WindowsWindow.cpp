@@ -49,7 +49,7 @@ namespace Eucledia
 		}
 
 		_window = glfwCreateWindow((int)props._width, (int)props._height, _data._title.c_str(), nullptr, nullptr);
-		_context = new OpenGLContext(_window);
+		_context = createScope<OpenGLContext>(_window);
 		_context->init();
 		glfwSetWindowUserPointer(_window, &_data);
 		setVSync(true);

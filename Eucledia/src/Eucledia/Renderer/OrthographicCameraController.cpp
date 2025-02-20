@@ -16,20 +16,24 @@ namespace Eucledia
 	{
 		if (Input::isKeyPressed(EUCLEDIA_KEY_A))
 		{
-			_cameraPosition.x -= _cameraTranslationSpeed * ts;
+			_cameraPosition.x -= cos(glm::radians(_cameraRotation)) * _cameraTranslationSpeed * ts;
+			_cameraPosition.y -= sin(glm::radians(_cameraRotation)) * _cameraTranslationSpeed * ts;
 		}
 		else if (Input::isKeyPressed(EUCLEDIA_KEY_D))
 		{
-			_cameraPosition.x += _cameraTranslationSpeed * ts;
+			_cameraPosition.x += cos(glm::radians(_cameraRotation)) * _cameraTranslationSpeed * ts;
+			_cameraPosition.y += sin(glm::radians(_cameraRotation)) * _cameraTranslationSpeed * ts;
 		}
 
 		if (Input::isKeyPressed(EUCLEDIA_KEY_W))
 		{
-			_cameraPosition.y += _cameraTranslationSpeed * ts;
+			_cameraPosition.x += -sin(glm::radians(_cameraRotation)) * _cameraTranslationSpeed * ts;
+			_cameraPosition.y += cos(glm::radians(_cameraRotation)) * _cameraTranslationSpeed * ts;
 		}
 		else if (Input::isKeyPressed(EUCLEDIA_KEY_S))
 		{
-			_cameraPosition.y -= _cameraTranslationSpeed * ts;
+			_cameraPosition.x -= -sin(glm::radians(_cameraRotation)) * _cameraTranslationSpeed * ts;
+			_cameraPosition.y -= cos(glm::radians(_cameraRotation)) * _cameraTranslationSpeed * ts;
 		}
 
 		if (_rotation)
@@ -41,6 +45,15 @@ namespace Eucledia
 			else if (Input::isKeyPressed(EUCLEDIA_KEY_E))
 			{
 				_cameraRotation -= _cameraRotationSpeed * ts;
+			}
+
+			if (_cameraRotation > 180)
+			{
+				_cameraRotation -= 360;
+			}
+			else if (_cameraRotation <= -180)
+			{
+				_cameraRotation += 360;
 			}
 
 			_camera.setRotation(_cameraRotation);

@@ -5,5 +5,5 @@
 
 namespace Eucledia
 {
-	RendererAPI* RenderCommand::_rendererAPI = new OpenGLRendererAPI;
+	scope<RendererAPI> RenderCommand::_rendererAPI = createScope<OpenGLRendererAPI>();
 }

@@ -11,6 +11,7 @@ namespace Eucledia
 	{
 		for (Layer* layer : _layers)
 		{
+			layer->onDetach();
 			delete layer;
 		}
 	}

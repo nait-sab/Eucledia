@@ -5,7 +5,7 @@
 
 namespace Eucledia
 {
-	Renderer::SceneData* Renderer::_sceneData = new Renderer::SceneData;
+	scope<Renderer::SceneData> Renderer::_sceneData = createScope<Renderer::SceneData>();
 
 	void Renderer::init()
 	{

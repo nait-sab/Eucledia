@@ -33,7 +33,7 @@ namespace Eucledia
 		}
 
 	private:
-		static RendererAPI* _rendererAPI;
+		static scope<RendererAPI> _rendererAPI;
 	};
 }
 

@@ -2,6 +2,15 @@
 
 #include <memory>
 
+/* Prevent 32bit uses */
+#ifdef _WIN32
+	#ifdef _WIN64
+		#define EUCLEDIA_PLATFORM_WNDOWS
+	#else
+		#error "x86 are not supported"
+	#endif
+#endif
+
 #ifdef EUCLEDIA_PLATFORM_WNDOWS
 	#if EUCLEDIA_DYNAMIC_LINK
 		#ifdef EUCLEDIA_BUILD_DLL
@@ -36,7 +45,17 @@ namespace Eucledia
 {
 	template<typename T>
 	using scope = std::unique_ptr<T>;
+	template<typename T, typename ... Args>
+	constexpr scope<T> createScope(Args&& ... args)
+	{
+		return std::make_unique<T>(std::forward<Args>(args)...);
+	}
 
 	template<typename T>
 	using ref = std::shared_ptr<T>;
+	template<typename T, typename ... Args>
+	constexpr scope<T> createRef(Args&& ... args)
+	{
+		return std::make_shared<T>(std::forward<Args>(args)...);
+	}
 }
