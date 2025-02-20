@@ -7,7 +7,7 @@
 
 namespace Eucledia
 {
-	VertexBuffer* VertexBuffer::create(float* vertices, uint32_t size)
+	ref<VertexBuffer> VertexBuffer::create(float* vertices, uint32_t size)
 	{
 		switch (Renderer::getAPI())
 		{
@@ -16,14 +16,14 @@ namespace Eucledia
 				return nullptr;
 
 			case RendererAPI::API::OpenGL:
-				return new OpenGlVertexBuffer(vertices, size);
+				return std::make_shared<OpenGlVertexBuffer>(vertices, size);
 		}
 
 		EUCLEDIA_CORE_ASSERT(false, "Unknow RendererAPI");
 		return nullptr;
 	}
 
-	IndexBuffer* IndexBuffer::create(uint32_t* indices, uint32_t size)
+	ref<IndexBuffer> IndexBuffer::create(uint32_t* indices, uint32_t size)
 	{
 		switch (Renderer::getAPI())
 		{
@@ -32,7 +32,7 @@ namespace Eucledia
 				return nullptr;
 
 			case RendererAPI::API::OpenGL:
-				return new OpenGlIndexBuffer(indices, size);
+				return std::make_shared<OpenGlIndexBuffer>(indices, size);
 		}
 
 		EUCLEDIA_CORE_ASSERT(false, "Unknow RendererAPI");

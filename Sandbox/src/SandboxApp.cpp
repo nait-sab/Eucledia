@@ -1,8 +1,10 @@
 #include <Eucledia.h>
+#include <Eucledia/Core/EntryPoint.h>
 
 #include "Platform/OpenGL/OpenGLShader.h"
 
 #include "imgui/imgui.h"
+#include "Sandbox2D.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -12,7 +14,7 @@ class ExampleLayer : public Eucledia::Layer
 public:
 	ExampleLayer() : Layer("Example"), _cameraController(16 / 9, true)
 	{
-		_triangleVA.reset(Eucledia::VertexArray::create());
+		_triangleVA = Eucledia::VertexArray::create();
 
 		float vertices[3 * 7] = {
 			-1.5, 0, 0, .5, 0, 1, 1,
@@ -21,7 +23,7 @@ public:
 		};
 
 		std::shared_ptr<Eucledia::VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(Eucledia::VertexBuffer::create(vertices, sizeof(vertices)));
+		vertexBuffer = Eucledia::VertexBuffer::create(vertices, sizeof(vertices));
 		vertexBuffer->setLayout({
 			{ Eucledia::ShaderDataType::Float3, "position" },
 			{ Eucledia::ShaderDataType::Float4, "color" }
@@ -30,10 +32,10 @@ public:
 
 		uint32_t indices[3] = { 0, 1, 2 };
 		std::shared_ptr<Eucledia::IndexBuffer> indexBuffer;
-		indexBuffer.reset(Eucledia::IndexBuffer::create(indices, sizeof(indices) / sizeof(uint32_t)));
+		indexBuffer = Eucledia::IndexBuffer::create(indices, sizeof(indices) / sizeof(uint32_t));
 		_triangleVA->setIndexBuffer(indexBuffer);
 
-		_squareVA.reset(Eucledia::VertexArray::create());
+		_squareVA = Eucledia::VertexArray::create();
 
 		float squareVertices[5 * 4] = {
 			-.5, -.5, 0, 0, 0,
@@ -43,7 +45,7 @@ public:
 		};
 
 		std::shared_ptr<Eucledia::VertexBuffer> squareVB;
-		squareVB.reset(Eucledia::VertexBuffer::create(squareVertices, sizeof(squareVertices)));
+		squareVB = Eucledia::VertexBuffer::create(squareVertices, sizeof(squareVertices));
 		squareVB->setLayout({
 			{ Eucledia::ShaderDataType::Float3, "position" },
 			{ Eucledia::ShaderDataType::Float2, "textCoord" },
@@ -52,7 +54,7 @@ public:
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
 		std::shared_ptr<Eucledia::IndexBuffer> squareIB;
-		squareIB.reset(Eucledia::IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+		squareIB = Eucledia::IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 		_squareVA->setIndexBuffer(squareIB);
 
 		_shaderLibrary.load("assets/shaders/triangle.glsl");
@@ -76,7 +78,7 @@ public:
 		glm::mat4 scale = glm::scale(glm::mat4(1), glm::vec3(0.1));
 
 		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(_shaderLibrary.get("square"))->bind();
-		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(_shaderLibrary.get("square"))->uploadUniformFloat3("u_color", _squareColor);
+		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(_shaderLibrary.get("square"))->uploadUniformFloat4("u_color", _squareColor);
 
 		for (int y = 0; y < 20; y++)
 		{
@@ -114,7 +116,7 @@ private:
 
 	Eucledia::OrthographicCameraController _cameraController;
 
-	glm::vec3 _squareColor = { 0.8, 0.8, 0.8 };
+	glm::vec4 _squareColor = { 0.8, 0.8, 0.8, 1.0 };
 };
 
 class Sandbox : public Eucledia::Application
@@ -122,7 +124,8 @@ class Sandbox : public Eucledia::Application
 public:
 	Sandbox()
 	{
-		pushLayer(new ExampleLayer());
+		// pushLayer(new ExampleLayer());
+		pushLayer(new Sandbox2D());
 	}
 
 	~Sandbox()

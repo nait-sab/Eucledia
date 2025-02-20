@@ -6,7 +6,7 @@
 
 namespace Eucledia
 {
-	VertexArray* VertexArray::create()
+	ref<VertexArray> VertexArray::create()
 	{
 		switch (Renderer::getAPI())
 		{
@@ -15,7 +15,7 @@ namespace Eucledia
 				return nullptr;
 
 			case RendererAPI::API::OpenGL:
-				return new OpenGlVertexArray();
+				return std::make_shared<OpenGlVertexArray>();
 		}
 
 		EUCLEDIA_CORE_ASSERT(false, "Unknow RendererAPI");

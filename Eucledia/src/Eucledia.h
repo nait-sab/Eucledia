@@ -24,7 +24,3 @@
 #include "Eucledia/Renderer/Texture.h"
 #include "Eucledia/Renderer/VertexArray.h"
 // --------------------------------------------
-
-// --- Entry Point ----------------------------
-#include "Eucledia/Core/EntryPoint.h"
-// --------------------------------------------

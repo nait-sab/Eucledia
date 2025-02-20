@@ -113,7 +113,7 @@ namespace Eucledia
 		virtual void setLayout(const BufferLayout& layout) = 0;
 		virtual const BufferLayout& getlayout() const = 0;
 
-		static VertexBuffer* create(float* vertices, uint32_t size);
+		static ref<VertexBuffer> create(float* vertices, uint32_t size);
 	};
 
 	class IndexBuffer
@@ -126,6 +126,6 @@ namespace Eucledia
 
 		virtual uint32_t getCount() const = 0;
 
-		static IndexBuffer* create(uint32_t* indices, uint32_t size);
+		static ref<IndexBuffer> create(uint32_t* indices, uint32_t size);
 	};
 }

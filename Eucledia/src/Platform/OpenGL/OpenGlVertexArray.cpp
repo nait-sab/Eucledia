@@ -9,7 +9,7 @@ namespace Eucledia
 	{
 		switch (type)
 		{
-		case Eucledia::ShaderDataType::Float:		return GL_FLOAT;
+		case Eucledia::ShaderDataType::Float:	return GL_FLOAT;
 		case Eucledia::ShaderDataType::Float2:	return GL_FLOAT;
 		case Eucledia::ShaderDataType::Float3:	return GL_FLOAT;
 		case Eucledia::ShaderDataType::Float4:	return GL_FLOAT;

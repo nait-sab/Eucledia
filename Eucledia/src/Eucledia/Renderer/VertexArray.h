@@ -20,6 +20,6 @@ namespace Eucledia
 		virtual const std::vector<ref<VertexBuffer>>& getVertexBuffers() const = 0;
 		virtual const ref<IndexBuffer>& getIndexBuffer() const = 0;
 
-		static VertexArray* create();
+		static ref<VertexArray> create();
 	};
 }
