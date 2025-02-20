@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Core.h"
-#include "Window.h"
-#include "Eucledia/LayerStack.h"
-#include "Events/Event.h"
+#include "Eucledia/Core/Core.h"
+#include "Eucledia/Core/Window.h"
+#include "Eucledia/Core/LayerStack.h"
+#include "Eucledia/Events/Event.h"
 #include "Eucledia/Events/ApplicationEvent.h"
 
 #include "Eucledia/Core/Timestep.h"

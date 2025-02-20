@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "Eucledia/Core.h"
+#include "Eucledia/Core/Core.h"
 
 namespace Eucledia
 {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "euclediapch.h"
-#include "Eucledia/Core.h"
+#include "Eucledia/Core/Core.h"
 
 namespace Eucledia
 {

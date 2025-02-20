@@ -1,7 +1,7 @@
 #include "euclediapch.h"
 #include "WindowsInput.h"
 
-#include "Eucledia/Application.h"
+#include "Eucledia/Core/Application.h"
 
 #include <GLFW/glfw3.h>
 

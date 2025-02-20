@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Eucledia/Window.h"
+#include "Eucledia/Core/Window.h"
 #include "Eucledia/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>

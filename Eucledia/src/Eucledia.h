@@ -2,16 +2,16 @@
 
 // For use by Eucledia applications
 
-#include "Eucledia/Application.h"
-#include "Eucledia/Layer.h"
-#include "Eucledia/Log.h"
+#include "Eucledia/Core/Application.h"
+#include "Eucledia/Core/Layer.h"
+#include "Eucledia/Core/Log.h"
 
 #include "Eucledia/Core/Timestep.h"
 
-#include "Eucledia/Input.h"
-#include "Eucledia/KeyCodes.h"
-#include "Eucledia/MouseButtonCodes.h"
-#include "Eucledia/OrthographicCameraController.h"
+#include "Eucledia/Core/Input.h"
+#include "Eucledia/Core/KeyCodes.h"
+#include "Eucledia/Core/MouseButtonCodes.h"
+#include "Eucledia/Renderer/OrthographicCameraController.h"
 
 #include "Eucledia/ImGui/ImGuiLayer.h"
 
@@ -26,5 +26,5 @@
 // --------------------------------------------
 
 // --- Entry Point ----------------------------
-#include "Eucledia/EntryPoint.h"
+#include "Eucledia/Core/EntryPoint.h"
 // --------------------------------------------

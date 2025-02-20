@@ -1,11 +1,11 @@
+# Binaries
+**/bin/
+!vendor/bin/premake/
+bin-int/
+
 # Directories
 .vs/
-bin/*
-bin-int/*
-
-# Vendor directories
-Eucledia/vendor/*/bin/*
-Eucledia/vendor/*/bin-int/*
-
-# Files
-*.user
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user

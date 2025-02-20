@@ -5,7 +5,7 @@
 #include "backends/imgui_impl_opengl3.h"
 #include "backends/imgui_impl_glfw.h"
 
-#include "Eucledia/Application.h"
+#include "Eucledia/Core/Application.h"
 
 // Temporary
 #include <GLFW/glfw3.h>

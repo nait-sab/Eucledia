@@ -13,7 +13,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "Eucledia/Log.h"
+#include "Eucledia/Core/Log.h"
 
 #ifdef EUCLEDIA_PLATFORM_WNDOWS
 	#include <Windows.h>

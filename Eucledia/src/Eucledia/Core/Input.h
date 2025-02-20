@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Eucledia/Core.h"
+#include "Eucledia/Core/Core.h"
 
 namespace Eucledia
 {

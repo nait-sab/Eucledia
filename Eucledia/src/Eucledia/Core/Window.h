@@ -2,7 +2,7 @@
 
 #include "euclediapch.h"
 
-#include "Eucledia/Core.h"
+#include "Eucledia/Core/Core.h"
 #include "Eucledia/Events/Event.h"
 
 namespace Eucledia

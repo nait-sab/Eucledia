@@ -1,8 +1,8 @@
 #include "euclediapch.h"
 #include "OrthographicCameraController.h"
 
-#include "Eucledia/Input.h"
-#include "Eucledia/KeyCodes.h"
+#include "Eucledia/Core/Input.h"
+#include "Eucledia/Core/KeyCodes.h"
 
 namespace Eucledia
 {
