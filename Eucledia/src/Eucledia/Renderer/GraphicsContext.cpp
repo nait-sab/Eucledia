@@ -1,12 +1,12 @@
 #include "euclediapch.h"
-#include "Eucledia/Renderer/VertexArray.h"
+#include "Eucledia/Renderer/GraphicsContext.h"
 
 #include "Eucledia/Renderer/Renderer.h"
-#include "Platform/OpenGL/OpenGLVertexArray.h"
+#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Eucledia
 {
-	ref<VertexArray> VertexArray::create()
+	scope<GraphicsContext> GraphicsContext::create(void* window)
 	{
 		switch (Renderer::getAPI())
 		{
@@ -15,7 +15,7 @@ namespace Eucledia
 				return nullptr;
 
 			case RendererAPI::API::OpenGL:
-				return createRef<OpenGlVertexArray>();
+				return createScope<OpenGLContext>(static_cast<GLFWwindow*>(window));
 		}
 
 		EUCLEDIA_CORE_ASSERT(false, "Unknow RendererAPI");

@@ -1,5 +1,5 @@
 #include "euclediapch.h"
-#include "OrthographicCamera.h"
+#include "Eucledia/Renderer/OrthographicCamera.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 

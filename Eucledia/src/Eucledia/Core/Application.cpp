@@ -1,5 +1,5 @@
 #include "euclediapch.h"
-#include "Application.h"
+#include "Eucledia/Core/Application.h"
 
 #include "Eucledia/Renderer/Renderer.h"
 
@@ -7,8 +7,6 @@
 
 namespace Eucledia
 {
-#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1) 
-
 	Application* Application::_instance = nullptr;
 
 	Application::Application()
@@ -16,8 +14,8 @@ namespace Eucledia
 		EUCLEDIA_CORE_ASSERT(!_instance, "Application already exists")
 		_instance = this;
 
-		_window = std::unique_ptr<Window>(Window::create());
-		_window->setEventCallback(BIND_EVENT_FN(onEvent));
+		_window = Window::create();
+		_window->setEventCallback(EUCLEDIA_BIND_EVENT_FN(Application::onEvent));
 
 		Renderer::init();
 
@@ -27,7 +25,7 @@ namespace Eucledia
 
 	Application::~Application()
 	{
-		delete _imGuiLayer;
+		Renderer::shutdown();
 	}
 
 	void Application::pushLayer(Layer* layer)
@@ -43,8 +41,8 @@ namespace Eucledia
 	void Application::onEvent(Event& event)
 	{
 		EventDispatcher dispatcher(event);
-		dispatcher.dispatch<WindowCloseEvent>(BIND_EVENT_FN(onWindowClosed));
-		dispatcher.dispatch<WindowResizeEvent>(BIND_EVENT_FN(onWindowResized));
+		dispatcher.dispatch<WindowCloseEvent>(EUCLEDIA_BIND_EVENT_FN(Application::onWindowClosed));
+		dispatcher.dispatch<WindowResizeEvent>(EUCLEDIA_BIND_EVENT_FN(Application::onWindowResized));
 
 		for (auto it = _layerStack.end(); it != _layerStack.begin();)
 		{

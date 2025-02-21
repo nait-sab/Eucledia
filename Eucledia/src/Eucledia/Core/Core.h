@@ -11,20 +11,6 @@
 	#endif
 #endif
 
-#ifdef EUCLEDIA_PLATFORM_WNDOWS
-	#if EUCLEDIA_DYNAMIC_LINK
-		#ifdef EUCLEDIA_BUILD_DLL
-			#define EUCLEDIA_API __declspec(dllexport)
-		#else
-			#define EUCLEDIA_API __declspec(dllimport)
-		#endif
-	#else
-		#define EUCLEDIA_API
-	#endif
-#else
-	#error Eucledia only supports Windows
-#endif
-
 #ifdef EUCLEDIA_DEBUG
 	#define EUCLEDIA_ENABLE_ASSERTS
 #endif

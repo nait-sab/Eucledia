@@ -1,9 +1,9 @@
 #pragma once
 
-#include "RenderCommand.h"
+#include "Eucledia/Renderer/RenderCommand.h"
 
-#include "OrthographicCamera.h"
-#include "Shader.h"
+#include "Eucledia/Renderer/OrthographicCamera.h"
+#include "Eucledia/Renderer/Shader.h"
 
 namespace Eucledia
 {
@@ -11,6 +11,8 @@ namespace Eucledia
 	{
 	public:
 		static void init();
+		static void shutdown();
+
 		static void onWindowRisized(uint32_t width, uint32_t height);
 
 		static void beginScene(OrthographicCamera& camera);

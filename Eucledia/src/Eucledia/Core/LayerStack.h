@@ -1,16 +1,16 @@
 #pragma once
 
 #include "Eucledia/Core/Core.h"
-#include "Layer.h"
+#include "Eucledia/Core/Layer.h"
 
 #include <vector>
 
 namespace Eucledia
 {
-	class EUCLEDIA_API LayerStack
+	class LayerStack
 	{
 	public:
-		LayerStack();
+		LayerStack() = default;
 		~LayerStack();
 
 		void pushLayer(Layer* layer);

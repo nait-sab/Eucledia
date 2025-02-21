@@ -1,5 +1,7 @@
 #include "euclediapch.h"
-#include "Log.h"
+#include "Eucledia/Core/Log.h"
+
+#include "spdlog/sinks/stdout_color_sinks.h"
 
 namespace Eucledia
 {

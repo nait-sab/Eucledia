@@ -4,7 +4,7 @@
 
 namespace Eucledia
 {
-	class EUCLEDIA_API Input
+	class Input
 	{
 	public:
 		Input(const Input&) = delete;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "euclediapch.h"
+
 #include "Eucledia/Core/Core.h"
 
 namespace Eucledia
@@ -30,7 +31,7 @@ namespace Eucledia
 
 #define EVENT_CLASS_CATEGORY(category) virtual int getCategoryFlags() const override { return category; }
 
-	class EUCLEDIA_API Event
+	class Event
 	{
 	public:
 		virtual ~Event() = default;

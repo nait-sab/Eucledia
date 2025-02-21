@@ -1,12 +1,8 @@
 #include "euclediapch.h"
-#include "LayerStack.h"
+#include "Eucledia/Core/LayerStack.h"
 
 namespace Eucledia
 {
-	LayerStack::LayerStack()
-	{
-	}
-
 	LayerStack::~LayerStack()
 	{
 		for (Layer* layer : _layers)

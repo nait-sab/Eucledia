@@ -1,9 +1,9 @@
 #include "euclediapch.h"
-#include "Renderer2D.h"
+#include "Eucledia/Renderer/Renderer2D.h"
 
-#include "VertexArray.h"
-#include "Shader.h"
-#include "RenderCommand.h"
+#include "Eucledia/Renderer/VertexArray.h"
+#include "Eucledia/Renderer/Shader.h"
+#include "Eucledia/Renderer/RenderCommand.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -30,8 +30,7 @@ namespace Eucledia
 			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
 		};
 
-		ref<VertexBuffer> squareVB;
-		squareVB = VertexBuffer::create(squareVertices, sizeof(squareVertices));
+		ref<VertexBuffer> squareVB = VertexBuffer::create(squareVertices, sizeof(squareVertices));
 		squareVB->setLayout({
 			{ ShaderDataType::Float3, "position" },
 			{ ShaderDataType::Float2, "textCoord" }
@@ -39,8 +38,7 @@ namespace Eucledia
 		_store->quadVA->addVertexBuffer(squareVB);
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		ref<IndexBuffer> squareIB;
-		squareIB = IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
+		ref<IndexBuffer> squareIB = IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 		_store->quadVA->setIndexBuffer(squareIB);
 
 		_store->emptyTexture = Texture2D::create(1, 1);

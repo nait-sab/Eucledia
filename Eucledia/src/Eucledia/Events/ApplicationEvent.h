@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Event.h"
+#include "Eucledia/Events/Event.h"
 
 namespace Eucledia
 {
-	class EUCLEDIA_API WindowResizeEvent : public Event
+	class WindowResizeEvent : public Event
 	{
 	public:
 		WindowResizeEvent(unsigned int width, unsigned int height) : _width(width), _height(height) {}
@@ -26,37 +26,37 @@ namespace Eucledia
 		unsigned int _width, _height;
 	};
 
-	class EUCLEDIA_API WindowCloseEvent : public Event
+	class WindowCloseEvent : public Event
 	{
 	public:
-		WindowCloseEvent() {}
+		WindowCloseEvent() = default;
 
 		EVENT_CLASS_TYPE(WindowClose)
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
-	class EUCLEDIA_API AppTickEvent : public Event
+	class AppTickEvent : public Event
 	{
 	public:
-		AppTickEvent() {}
+		AppTickEvent() = default;
 
 		EVENT_CLASS_TYPE(AppTick)
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
-	class EUCLEDIA_API AppUpdateEvent : public Event
+	class AppUpdateEvent : public Event
 	{
 	public:
-		AppUpdateEvent() {}
+		AppUpdateEvent() = default;
 
 		EVENT_CLASS_TYPE(AppUpdate)
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
-	class EUCLEDIA_API AppRenderEvent : public Event
+	class AppRenderEvent : public Event
 	{
 	public:
-		AppRenderEvent() {}
+		AppRenderEvent() = default;
 
 		EVENT_CLASS_TYPE(AppRender)
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)

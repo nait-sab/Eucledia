@@ -1,7 +1,7 @@
 #include "euclediapch.h"
-#include "Shader.h"
+#include "Eucledia/Renderer/Shader.h"
 
-#include "Renderer.h"
+#include "Eucledia/Renderer/Renderer.h"
 #include "Platform/OpenGL/OpenGLShader.h"
 
 namespace Eucledia

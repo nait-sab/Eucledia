@@ -1,5 +1,5 @@
 #include "euclediapch.h"
-#include "WindowsWindow.h"
+#include "Platform/Windows/WindowsWindow.h"
 
 #include "Eucledia/Events/ApplicationEvent.h"
 #include "Eucledia/Events/MouseEvent.h"
@@ -16,9 +16,9 @@ namespace Eucledia
 		EUCLEDIA_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
 	}
 
-	Window* Window::create(const WindowProps& props)
+	scope<Window> Window::create(const WindowProps& props)
 	{
-		return new WindowsWindow(props);
+		return createScope<WindowsWindow>(props);
 	}
 
 	WindowsWindow::WindowsWindow(const WindowProps& props)
@@ -49,7 +49,7 @@ namespace Eucledia
 
 		_window = glfwCreateWindow((int)props._width, (int)props._height, _data._title.c_str(), nullptr, nullptr);
 		_GLFWWindowCount++;
-		_context = createScope<OpenGLContext>(_window);
+		_context = OpenGLContext::create(_window);
 		_context->init();
 		glfwSetWindowUserPointer(_window, &_data);
 		setVSync(true);
@@ -144,6 +144,7 @@ namespace Eucledia
 	void WindowsWindow::shutdown()
 	{
 		glfwDestroyWindow(_window);
+		--_GLFWWindowCount;
 
 		if (--_GLFWWindowCount == 0)
 		{

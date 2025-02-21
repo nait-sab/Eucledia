@@ -1,8 +1,6 @@
 #include "euclediapch.h"
-#include "Renderer.h"
-
-#include "Platform/OpenGL/OpenGLShader.h"
-#include "Renderer2D.h"
+#include "Eucledia/Renderer/Renderer.h"
+#include "Eucledia/Renderer/Renderer2D.h"
 
 namespace Eucledia
 {
@@ -12,6 +10,11 @@ namespace Eucledia
 	{
 		RenderCommand::init();
 		Renderer2D::init();
+	}
+
+	void Renderer::shutdown()
+	{
+		Renderer2D::shutdown();
 	}
 
 	void Renderer::onWindowRisized(uint32_t width, uint32_t height)
@@ -31,8 +34,9 @@ namespace Eucledia
 	void Renderer::submit(const ref<Shader>& shader, const ref<VertexArray>& vertexArray, const glm::mat4& transform)
 	{
 		shader->bind();
-		std::dynamic_pointer_cast<OpenGLShader>(shader)->uploadUniformMat4("viewProjection", _sceneData->_viewProjectionMatrix);
-		std::dynamic_pointer_cast<OpenGLShader>(shader)->uploadUniformMat4("transform", transform);
+		shader->setMat4("viewProjection", _sceneData->_viewProjectionMatrix);
+		shader->setMat4("transform", transform);
+
 		vertexArray->bind();
 		RenderCommand::drawIndexed(vertexArray);
 	}

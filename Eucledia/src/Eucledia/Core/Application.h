@@ -1,18 +1,18 @@
 #pragma once
 
 #include "Eucledia/Core/Core.h"
+
 #include "Eucledia/Core/Window.h"
 #include "Eucledia/Core/LayerStack.h"
 #include "Eucledia/Events/Event.h"
 #include "Eucledia/Events/ApplicationEvent.h"
 
 #include "Eucledia/Core/Timestep.h"
-
 #include "Eucledia/ImGui/ImGuiLayer.h"
 
 namespace Eucledia
 {
-	class EUCLEDIA_API Application
+	class Application
 	{
 	public:
 		Application();

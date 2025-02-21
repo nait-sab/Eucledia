@@ -1,9 +1,7 @@
 #include "euclediapch.h"
-#include "RenderCommand.h"
-
-#include "Platform/OpenGL/OpenGLRendererAPI.h"
+#include "Eucledia/Renderer/RenderCommand.h"
 
 namespace Eucledia
 {
-	scope<RendererAPI> RenderCommand::_rendererAPI = createScope<OpenGLRendererAPI>();
+	scope<RendererAPI> RenderCommand::_rendererAPI = RendererAPI::create();
 }

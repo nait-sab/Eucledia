@@ -1,7 +1,7 @@
 #include "euclediapch.h"
-#include "Texture.h"
+#include "Eucledia/Renderer/Texture.h"
 
-#include "Renderer.h"
+#include "Eucledia/Renderer/Renderer.h"
 #include "Platform/OpenGL/OpenGLTexture.h"
 
 namespace Eucledia

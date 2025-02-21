@@ -1,5 +1,5 @@
 #include "euclediapch.h"
-#include "WindowsInput.h"
+#include "Platform/Windows/WindowsInput.h"
 
 #include "Eucledia/Core/Application.h"
 

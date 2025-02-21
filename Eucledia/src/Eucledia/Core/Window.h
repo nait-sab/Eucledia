@@ -18,7 +18,7 @@ namespace Eucledia
 	};
 
 	// Interface of a desktop system based Window
-	class EUCLEDIA_API Window
+	class Window
 	{
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;
@@ -37,6 +37,6 @@ namespace Eucledia
 
 		virtual void* getNativeWindow() const = 0;
 
-		static Window* create(const WindowProps& props = WindowProps());
+		static scope<Window> create(const WindowProps& props = WindowProps());
 	};
 }

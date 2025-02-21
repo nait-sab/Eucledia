@@ -1,5 +1,5 @@
 #include "euclediapch.h"
-#include "OrthographicCameraController.h"
+#include "Eucledia/Renderer/OrthographicCameraController.h"
 
 #include "Eucledia/Core/Input.h"
 #include "Eucledia/Core/KeyCodes.h"

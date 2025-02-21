@@ -22,8 +22,7 @@ public:
 			-1, .5, 0, 1, 0, 1, 1
 		};
 
-		std::shared_ptr<Eucledia::VertexBuffer> vertexBuffer;
-		vertexBuffer = Eucledia::VertexBuffer::create(vertices, sizeof(vertices));
+		Eucledia::ref<Eucledia::VertexBuffer> vertexBuffer = Eucledia::VertexBuffer::create(vertices, sizeof(vertices));
 		vertexBuffer->setLayout({
 			{ Eucledia::ShaderDataType::Float3, "position" },
 			{ Eucledia::ShaderDataType::Float4, "color" }
@@ -31,8 +30,7 @@ public:
 		_triangleVA->addVertexBuffer(vertexBuffer);
 
 		uint32_t indices[3] = { 0, 1, 2 };
-		std::shared_ptr<Eucledia::IndexBuffer> indexBuffer;
-		indexBuffer = Eucledia::IndexBuffer::create(indices, sizeof(indices) / sizeof(uint32_t));
+		Eucledia::ref<Eucledia::IndexBuffer> indexBuffer = Eucledia::IndexBuffer::create(indices, sizeof(indices) / sizeof(uint32_t));
 		_triangleVA->setIndexBuffer(indexBuffer);
 
 		_squareVA = Eucledia::VertexArray::create();
@@ -44,8 +42,7 @@ public:
 			-.5, .5, 0, 0, 1
 		};
 
-		std::shared_ptr<Eucledia::VertexBuffer> squareVB;
-		squareVB = Eucledia::VertexBuffer::create(squareVertices, sizeof(squareVertices));
+		Eucledia::ref<Eucledia::VertexBuffer> squareVB = Eucledia::VertexBuffer::create(squareVertices, sizeof(squareVertices));
 		squareVB->setLayout({
 			{ Eucledia::ShaderDataType::Float3, "position" },
 			{ Eucledia::ShaderDataType::Float2, "textCoord" },
@@ -53,8 +50,7 @@ public:
 		_squareVA->addVertexBuffer(squareVB);
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		std::shared_ptr<Eucledia::IndexBuffer> squareIB;
-		squareIB = Eucledia::IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
+		Eucledia::ref<Eucledia::IndexBuffer> squareIB = Eucledia::IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 		_squareVA->setIndexBuffer(squareIB);
 
 		_shaderLibrary.load("assets/shaders/triangle.glsl");
@@ -62,8 +58,8 @@ public:
 		auto textureShader = _shaderLibrary.load("assets/shaders/texture.glsl");
 		_texture = Eucledia::Texture2D::create("assets/textures/default.png");
 
-		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(textureShader)->bind();
-		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(textureShader)->uploadUniformInt("u_texture", 0);
+		textureShader->bind();
+		textureShader->setInt("u_texture", 0);
 	}
 
 	void onUpdate(Eucledia::Timestep ts) override
@@ -77,8 +73,8 @@ public:
 
 		glm::mat4 scale = glm::scale(glm::mat4(1), glm::vec3(0.1));
 
-		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(_shaderLibrary.get("square"))->bind();
-		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(_shaderLibrary.get("square"))->uploadUniformFloat4("u_color", _squareColor);
+		_shaderLibrary.get("square")->bind();
+		_shaderLibrary.get("square")->setFloat4("u_color", _squareColor);
 
 		for (int y = 0; y < 20; y++)
 		{

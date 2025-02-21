@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Event.h"
+#include "Eucledia/Events/Event.h"
 
 namespace Eucledia
 {
-	class EUCLEDIA_API MouseMovedEvent : public Event
+	class MouseMovedEvent : public Event
 	{
 	public:
 		MouseMovedEvent(float x, float y) : _mouseX(x), _mouseY(y) {}
@@ -26,7 +26,7 @@ namespace Eucledia
 		float _mouseX, _mouseY;
 	};
 
-	class EUCLEDIA_API MouseScrolledEvent : public Event
+	class MouseScrolledEvent : public Event
 	{
 	public:
 		MouseScrolledEvent(float xOffset, float yOffset) 
@@ -49,7 +49,7 @@ namespace Eucledia
 		float _xOffset, _yOffset;
 	};
 
-	class EUCLEDIA_API MouseButtonEvent : public Event
+	class MouseButtonEvent : public Event
 	{
 	public:
 		inline int getMouseButton() const { return _button; }
@@ -62,7 +62,7 @@ namespace Eucledia
 		int _button;
 	};
 
-	class EUCLEDIA_API MouseButtonPressedEvent : public MouseButtonEvent
+	class MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonPressedEvent(int button) : MouseButtonEvent(button) {}
@@ -77,7 +77,7 @@ namespace Eucledia
 		EVENT_CLASS_TYPE(MouseButtonPressed)
 	};
 
-	class EUCLEDIA_API MouseButtonReleasedEvent : public MouseButtonEvent
+	class MouseButtonReleasedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonReleasedEvent(int button) : MouseButtonEvent(button) {}

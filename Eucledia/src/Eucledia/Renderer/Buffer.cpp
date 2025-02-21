@@ -1,7 +1,7 @@
 #include "euclediapch.h"
-#include "Buffer.h"
+#include "Eucledia/Renderer/Buffer.h"
 
-#include "Renderer.h"
+#include "Eucledia/Renderer/Renderer.h"
 
 #include "Platform/OpenGL/OpenGLBuffer.h"
 

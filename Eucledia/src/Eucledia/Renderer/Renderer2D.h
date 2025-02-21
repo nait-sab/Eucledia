@@ -1,8 +1,8 @@
 #pragma once
 
-#include "OrthographicCamera.h"
+#include "Eucledia/Renderer/OrthographicCamera.h"
 
-#include "Texture.h"
+#include "Eucledia/Renderer/Texture.h"
 
 namespace Eucledia
 {
