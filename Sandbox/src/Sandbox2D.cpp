@@ -7,7 +7,7 @@
 
 #include "Platform/OpenGL/OpenGLShader.h"
 
-Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), _cameraController(1280 / 780)
+Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), _cameraController(16.f / 9.f)
 {
 }
 
