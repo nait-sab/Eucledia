@@ -15,7 +15,7 @@ namespace Eucledia
 			return nullptr;
 
 		case RendererAPI::API::OpenGL:
-			return std::make_shared<OpenGLShader>(filepath);
+			return createRef<OpenGLShader>(filepath);
 		}
 
 		EUCLEDIA_CORE_ASSERT(false, "Unknow RendererAPI");
@@ -31,7 +31,7 @@ namespace Eucledia
 				return nullptr;
 
 			case RendererAPI::API::OpenGL:
-				return std::make_shared<OpenGLShader>(name, vertexSrc, fragmentSrc);
+				return createRef<OpenGLShader>(name, vertexSrc, fragmentSrc);
 		}
 
 		EUCLEDIA_CORE_ASSERT(false, "Unknow RendererAPI");

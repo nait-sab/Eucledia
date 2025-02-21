@@ -15,7 +15,7 @@ namespace Eucledia
 				return nullptr;
 
 			case RendererAPI::API::OpenGL:
-				return std::make_shared<OpenGlVertexArray>();
+				return createRef<OpenGlVertexArray>();
 		}
 
 		EUCLEDIA_CORE_ASSERT(false, "Unknow RendererAPI");

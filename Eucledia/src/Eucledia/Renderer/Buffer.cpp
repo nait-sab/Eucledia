@@ -16,7 +16,7 @@ namespace Eucledia
 				return nullptr;
 
 			case RendererAPI::API::OpenGL:
-				return std::make_shared<OpenGlVertexBuffer>(vertices, size);
+				return createRef<OpenGlVertexBuffer>(vertices, size);
 		}
 
 		EUCLEDIA_CORE_ASSERT(false, "Unknow RendererAPI");
@@ -32,7 +32,7 @@ namespace Eucledia
 				return nullptr;
 
 			case RendererAPI::API::OpenGL:
-				return std::make_shared<OpenGlIndexBuffer>(indices, size);
+				return createRef<OpenGlIndexBuffer>(indices, size);
 		}
 
 		EUCLEDIA_CORE_ASSERT(false, "Unknow RendererAPI");

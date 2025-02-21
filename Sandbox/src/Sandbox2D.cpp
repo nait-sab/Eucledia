@@ -30,7 +30,7 @@ void Sandbox2D::onUpdate(Eucledia::Timestep ts)
 	Eucledia::Renderer2D::beginScene(_cameraController.getCamera());
 	Eucledia::Renderer2D::drawQuad({ -1, 0 }, { .8, .8 }, { 0.8, 0.2, 0.2, 1 });
 	Eucledia::Renderer2D::drawQuad({ .5, -.5 }, { .5, .75 }, { 0.8, 0.2, 0.8, 1 });
-	Eucledia::Renderer2D::drawQuad({ 0, 0, -.1 }, { 10, 10 }, _texture);
+	Eucledia::Renderer2D::drawQuad({ .5, .5, -.1 }, { .75, .7 }, _texture);
 	Eucledia::Renderer2D::endScene();
 }
 
