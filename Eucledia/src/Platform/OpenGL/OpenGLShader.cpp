@@ -58,10 +58,18 @@ namespace Eucledia
 		if (file)
 		{
 			file.seekg(0, std::ios::end);
-			result.resize(file.tellg());
-			file.seekg(0, std::ios::beg);
-			file.read(&result[0], result.size());
-			file.close();
+			size_t size = file.tellg();
+			if (size != -1)
+			{
+				result.resize(file.tellg());
+				file.seekg(0, std::ios::beg);
+				file.read(&result[0], result.size());
+				file.close();
+			}
+			else
+			{
+				EUCLEDIA_CORE_ERROR("Could not read from file '{0}'", filepath);
+			}
 		}
 		else
 		{
