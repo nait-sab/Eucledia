@@ -18,11 +18,16 @@ namespace Eucledia
 		virtual void bind() const override;
 		virtual void unbind() const override;
 
+		virtual void setInt(const std::string& name, const int& value) override;
+		virtual void setFloat3(const std::string& name, const glm::vec3& values) override;
+		virtual void setFloat4(const std::string& name, const glm::vec4& values) override;
+		virtual void setMat4(const std::string& name, const glm::mat4& matrix) override;
+
 		virtual const std::string& getName() const override { return _name; }
 
-		void uploadUniformInt(const std::string& name, const int value);
+		void uploadUniformInt(const std::string& name, const int& value);
 
-		void uploadUniformFloat(const std::string& name, const float value);
+		void uploadUniformFloat(const std::string& name, const float& value);
 		void uploadUniformFloat2(const std::string& name, const glm::vec2& values);
 		void uploadUniformFloat3(const std::string& name, const glm::vec3& values);
 		void uploadUniformFloat4(const std::string& name, const glm::vec4& values);

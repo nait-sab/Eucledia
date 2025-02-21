@@ -20,6 +20,7 @@ private:
 	// Temp
 	Eucledia::ref<Eucledia::VertexArray> _squareVA;
 	Eucledia::ShaderLibrary _shaderLibrary;
+	Eucledia::ref<Eucledia::Texture2D> _texture;
 
 	glm::vec4 _squareColor = { 0.2, 0.3, 0.8, 1.0 };
 };

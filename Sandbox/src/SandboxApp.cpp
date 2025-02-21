@@ -59,7 +59,7 @@ public:
 
 		_shaderLibrary.load("assets/shaders/triangle.glsl");
 		_shaderLibrary.load("assets/shaders/square.glsl");
-		auto textureShader =  _shaderLibrary.load("assets/shaders/texture.glsl");
+		auto textureShader = _shaderLibrary.load("assets/shaders/texture.glsl");
 		_texture = Eucledia::Texture2D::create("assets/textures/default.png");
 
 		std::dynamic_pointer_cast<Eucledia::OpenGLShader>(textureShader)->bind();
