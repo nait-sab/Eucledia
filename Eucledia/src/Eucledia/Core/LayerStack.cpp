@@ -35,8 +35,8 @@ namespace Eucledia
 
 		if (it != _layers.begin() + _layerInsertIndex)
 		{
-			_layers.erase(it);
 			layer->onDetach();
+			_layers.erase(it);
 			_layerInsertIndex--;
 		}
 	}

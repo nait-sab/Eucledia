@@ -63,7 +63,7 @@ namespace Eucledia
 				ShaderDataTypeToOpenGLBaseType(element._type),
 				element._normalized ? GL_TRUE : GL_FALSE,
 				layout.getStride(),
-				(const void*)(intptr_t)element._offset
+				(const void*)element._offset
 			);
 			_vertexBufferIndex++;
 		}

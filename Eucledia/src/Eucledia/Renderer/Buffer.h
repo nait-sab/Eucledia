@@ -37,10 +37,10 @@ namespace Eucledia
 		ShaderDataType _type;
 		std::string _name;
 		uint32_t _size;
-		uint32_t _offset;
+		size_t _offset;
 		bool _normalized;
 
-		BufferElement() {}
+		BufferElement() = default;
 		BufferElement(ShaderDataType type, const std::string& name, bool normalized = false)
 			: _type(type), _name(name), _size(ShaderDateTypeSize(type)), _offset(0), _normalized(normalized) {}
 
@@ -90,7 +90,7 @@ namespace Eucledia
 
 		void calculateOffesetsAndStride()
 		{
-			uint32_t offset = 0;
+			size_t offset = 0;
 			_stride = 0;
 
 			for (auto& element : _elements)

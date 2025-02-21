@@ -9,7 +9,7 @@
 
 namespace Eucledia
 {
-	static bool _GLFWInitialized = false;
+	static uint8_t _GLFWWindowCount = 0;
 
 	static void GLFWErrorCallback(int error, const char* description)
 	{
@@ -28,7 +28,7 @@ namespace Eucledia
 
 	WindowsWindow::~WindowsWindow()
 	{
-
+		shutdown();
 	}
 
 	void WindowsWindow::init(const WindowProps& props)
@@ -39,16 +39,16 @@ namespace Eucledia
 
 		EUCLEDIA_CORE_INFO("Creating window {0} ({1}, {2})", props._title, props._width, props._height);
 
-		if (!_GLFWInitialized)
+		if (_GLFWWindowCount == 0)
 		{
-			// Todo: glfwTerminate on system shutdown
+			EUCLEDIA_CORE_INFO("Initializing GLFW");
 			int success = glfwInit();
 			EUCLEDIA_CORE_ASSERT(success, "Could not initialize GLFW");
 			glfwSetErrorCallback(GLFWErrorCallback);
-			_GLFWInitialized = true;
 		}
 
 		_window = glfwCreateWindow((int)props._width, (int)props._height, _data._title.c_str(), nullptr, nullptr);
+		_GLFWWindowCount++;
 		_context = createScope<OpenGLContext>(_window);
 		_context->init();
 		glfwSetWindowUserPointer(_window, &_data);
@@ -144,6 +144,11 @@ namespace Eucledia
 	void WindowsWindow::shutdown()
 	{
 		glfwDestroyWindow(_window);
+
+		if (--_GLFWWindowCount == 0)
+		{
+			glfwTerminate();
+		}
 	}
 
 	void WindowsWindow::onUpdate()

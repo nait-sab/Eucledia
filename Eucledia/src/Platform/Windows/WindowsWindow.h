@@ -29,6 +29,9 @@ namespace Eucledia
 		inline virtual void* getNativeWindow() const { return _window; }
 
 	private:
+		GLFWwindow* _window;
+		scope<GraphicsContext> _context;
+
 		struct WindowData
 		{
 			std::string _title;
@@ -37,9 +40,7 @@ namespace Eucledia
 			EventCallbackFn _eventCallback;
 		};
 
-		GLFWwindow* _window;
 		WindowData _data;
-		scope<GraphicsContext> _context;
 
 		virtual void init(const WindowProps& props);
 		virtual void shutdown();

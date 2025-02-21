@@ -17,6 +17,7 @@
 
 // --- Renderer -------------------------------
 #include "Eucledia/Renderer/Renderer.h"
+#include "Eucledia/Renderer/Renderer2D.h"
 #include "Eucledia/Renderer/RenderCommand.h"
 
 #include "Eucledia/Renderer/Buffer.h"

@@ -12,7 +12,7 @@
 class ExampleLayer : public Eucledia::Layer
 {
 public:
-	ExampleLayer() : Layer("Example"), _cameraController(16 / 9, true)
+	ExampleLayer() : Layer("Example"), _cameraController(1280 / 780, true)
 	{
 		_triangleVA = Eucledia::VertexArray::create();
 

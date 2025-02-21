@@ -2,6 +2,7 @@
 #include "Renderer.h"
 
 #include "Platform/OpenGL/OpenGLShader.h"
+#include "Renderer2D.h"
 
 namespace Eucledia
 {
@@ -10,6 +11,7 @@ namespace Eucledia
 	void Renderer::init()
 	{
 		RenderCommand::init();
+		Renderer2D::init();
 	}
 
 	void Renderer::onWindowRisized(uint32_t width, uint32_t height)
