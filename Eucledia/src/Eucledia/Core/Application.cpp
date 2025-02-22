@@ -54,9 +54,9 @@ namespace Eucledia
 		dispatcher.dispatch<WindowCloseEvent>(EUCLEDIA_BIND_EVENT_FN(Application::onWindowClosed));
 		dispatcher.dispatch<WindowResizeEvent>(EUCLEDIA_BIND_EVENT_FN(Application::onWindowResized));
 
-		for (auto it = _layerStack.end(); it != _layerStack.begin();)
+		for (auto it = _layerStack.rbegin(); it != _layerStack.rend(); ++it)
 		{
-			(*--it)->onEvent(event);
+			(*it)->onEvent(event);
 			
 			if (event._handled)
 			{
