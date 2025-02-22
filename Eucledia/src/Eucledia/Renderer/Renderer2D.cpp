@@ -81,36 +81,82 @@ namespace Eucledia
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
 
-		_store->textureShader->setFloat4("u_color", color);
-		_store->emptyTexture->bind();
-
-		// Setup the transform with the position and size
+		// Create the transform with the position and size
 		glm::mat4 transform = glm::translate(glm::mat4(1), position);
 		transform *= glm::scale(glm::mat4(1), { size.x, size.y, 1 });
 
 		_store->textureShader->setMat4("transform", transform);
+		_store->textureShader->setFloat4("u_color", color);
+		_store->textureShader->setFloat("u_multiplier", 1);
+		_store->emptyTexture->bind();
 
 		_store->quadVA->bind();
 		RenderCommand::drawIndexed(_store->quadVA);
 	}
 
-	void Renderer2D::drawQuad(const glm::vec2& position, const glm::vec2& size, const ref<Texture2D>& texture)
+	void Renderer2D::drawQuad(const glm::vec2& position, const glm::vec2& size, const ref<Texture2D>& texture, float multiplier, const glm::vec4& tintColor)
 	{
-		drawQuad({ position.x, position.y, 0 }, size, texture);
+		drawQuad({ position.x, position.y, 0 }, size, texture, multiplier);
 	}
 
-	void Renderer2D::drawQuad(const glm::vec3& position, const glm::vec2& size, const ref<Texture2D>& texture)
+	void Renderer2D::drawQuad(const glm::vec3& position, const glm::vec2& size, const ref<Texture2D>& texture, float multiplier, const glm::vec4& tintColor)
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
 
-		_store->textureShader->setFloat4("u_color", glm::vec4(1));
-		texture->bind();
-
-		// Setup the transform with the position and size
+		// Create the transform with the position and size
 		glm::mat4 transform = glm::translate(glm::mat4(1), position);
 		transform *= glm::scale(glm::mat4(1), { size.x, size.y, 1 });
 
 		_store->textureShader->setMat4("transform", transform);
+		_store->textureShader->setFloat4("u_color", tintColor);
+		_store->textureShader->setFloat("u_multiplier", multiplier);
+		texture->bind();
+
+		_store->quadVA->bind();
+		RenderCommand::drawIndexed(_store->quadVA);
+	}
+
+	void Renderer2D::drawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color)
+	{
+		drawRotatedQuad({ position.x, position.y, 0 }, size, rotation, color);
+	}
+
+	void Renderer2D::drawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const glm::vec4& color)
+	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
+		// Create the transform with the position and size
+		glm::mat4 transform = glm::translate(glm::mat4(1), position);
+		transform *= glm::rotate(glm::mat4(1), rotation, { 0, 0, 1 });
+		transform *= glm::scale(glm::mat4(1), { size.x, size.y, 1 });
+
+		_store->textureShader->setMat4("transform", transform);
+		_store->textureShader->setFloat4("u_color", color);
+		_store->textureShader->setFloat("u_multiplier", 1);
+		_store->emptyTexture->bind();
+
+		_store->quadVA->bind();
+		RenderCommand::drawIndexed(_store->quadVA);
+	}
+
+	void Renderer2D::drawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const ref<Texture2D>& texture, float multiplier, const glm::vec4& tintColor)
+	{
+		drawRotatedQuad({ position.x, position.y, 0 }, size, rotation, texture, multiplier, tintColor);
+	}
+
+	void Renderer2D::drawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const ref<Texture2D>& texture, float multiplier, const glm::vec4& tintColor)
+	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
+		// Create the transform with the position and size
+		glm::mat4 transform = glm::translate(glm::mat4(1), position);
+		transform *= glm::rotate(glm::mat4(1), rotation, { 0, 0, 1 });
+		transform *= glm::scale(glm::mat4(1), { size.x, size.y, 1 });
+
+		_store->textureShader->setMat4("transform", transform);
+		_store->textureShader->setFloat4("u_color", tintColor);
+		_store->textureShader->setFloat("u_multiplier", multiplier);
+		texture->bind();
 
 		_store->quadVA->bind();
 		RenderCommand::drawIndexed(_store->quadVA);

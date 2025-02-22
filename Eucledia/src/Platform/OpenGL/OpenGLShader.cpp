@@ -205,6 +205,20 @@ namespace Eucledia
 		uploadUniformInt(name, value);
 	}
 
+	void OpenGLShader::setFloat(const std::string& name, const float value)
+	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
+		uploadUniformFloat(name, value);
+	}
+
+	void OpenGLShader::setFloat2(const std::string& name, const glm::vec2& values)
+	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
+		uploadUniformFloat2(name, values);
+	}
+
 	void OpenGLShader::setFloat3(const std::string& name, const glm::vec3& values)
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
