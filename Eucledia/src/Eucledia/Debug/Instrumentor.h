@@ -1,10 +1,9 @@
 #pragma once
 
-#include <string>
-#include <chrono>
 #include <algorithm>
+#include <chrono>
 #include <fstream>
-
+#include <string>
 #include <thread>
 
 namespace Eucledia
@@ -13,7 +12,7 @@ namespace Eucledia
     {
         std::string name;
         long long start, end;
-        uint32_t threadID;
+        std::thread::id threadID;
     };
 
     struct InstrumentationSession
@@ -24,55 +23,68 @@ namespace Eucledia
     class Instrumentor
     {
     public:
-        Instrumentor() : _currentSession(nullptr), _profileCount(0) {}
+        Instrumentor() : _currentSession(nullptr) {}
 
         void beginSession(const std::string& name, const std::string& filepath = "results.json")
         {
+            std::lock_guard lock(_mutex);
+
+            if (_currentSession)
+            {
+                if (Log::getCoreLogger)
+                {
+                    EUCLEDIA_CORE_ERROR("Instrumentor::beginSession('{0}') when session '{1}' already open", name, _currentSession->name);
+                }
+
+                internalEndSession();
+            }
+
             _outputStream.open(filepath);
-            writeHeader();
-            _currentSession = new InstrumentationSession{ name };
+            
+            if (_outputStream.is_open())
+            {
+                _currentSession = new InstrumentationSession({ name });
+                writeHeader();
+            }
+            else
+            {
+                if (Log::getCoreLogger())
+                {
+                    EUCLEDIA_CORE_ERROR("Instrumentor::beginSession could not open results file '{0}'", filepath);
+                }
+            }
         }
 
         void endSession()
         {
-            writeFooter();
-            _outputStream.close();
-            delete _currentSession;
-            _currentSession = nullptr;
-            _profileCount = 0;
+            std::lock_guard lock(_mutex);
+            internalEndSession();
         }
 
         void writeProfile(const ProfileResult& result)
         {
-            if (_profileCount++ > 0)
-                _outputStream << ",";
+            std::stringstream json;
 
             std::string name = result.name;
             std::replace(name.begin(), name.end(), '"', '\'');
 
-            _outputStream << "{";
-            _outputStream << "\"cat\":\"function\",";
-            _outputStream << "\"dur\":" << (result.end - result.start) << ',';
-            _outputStream << "\"name\":\"" << name << "\",";
-            _outputStream << "\"ph\":\"X\",";
-            _outputStream << "\"pid\":0,";
-            _outputStream << "\"tid\":" << result.threadID << ",";
-            _outputStream << "\"ts\":" << result.start;
-            _outputStream << "}";
+            json << ",{";
+            json << "\"cat\":\"function\",";
+            json << "\"dur\":" << (result.end - result.start) << ',';
+            json << "\"name\":\"" << name << "\",";
+            json << "\"ph\":\"X\",";
+            json << "\"pid\":0,";
+            json << "\"tid\":" << result.threadID << ",";
+            json << "\"ts\":" << result.start;
+            json << "}";
 
-            _outputStream.flush();
-        }
+            std::lock_guard lock(_mutex);
 
-        void writeHeader()
-        {
-            _outputStream << "{\"otherData\": {},\"traceEvents\":[";
-            _outputStream.flush();
-        }
-
-        void writeFooter()
-        {
-            _outputStream << "]}";
-            _outputStream.flush();
+            if (_currentSession)
+            {
+                _outputStream << json.str();
+                _outputStream.flush();
+            }
         }
 
         static Instrumentor& get()
@@ -82,9 +94,33 @@ namespace Eucledia
         }
 
     private:
+        std::mutex _mutex;
         InstrumentationSession* _currentSession;
         std::ofstream _outputStream;
         int _profileCount;
+
+        void writeHeader()
+        {
+            _outputStream << "{\"otherData\": {},\"traceEvents\":[{}";
+            _outputStream.flush();
+        }
+
+        void writeFooter()
+        {
+            _outputStream << "]}";
+            _outputStream.flush();
+        }
+
+        void internalEndSession()
+        {
+            if (_currentSession)
+            {
+                writeFooter();
+                _outputStream.close();
+                delete _currentSession;
+                _currentSession = nullptr;
+            }
+        }
     };
 
     class InstrumentationTimer
@@ -110,8 +146,7 @@ namespace Eucledia
             long long start = std::chrono::time_point_cast<std::chrono::microseconds>(_startTimepoint).time_since_epoch().count();
             long long end = std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint).time_since_epoch().count();
 
-            uint32_t threadID = std::hash<std::thread::id>{}(std::this_thread::get_id());
-            Instrumentor::get().writeProfile({ _name, start, end, threadID });
+            Instrumentor::get().writeProfile({ _name, start, end, std::this_thread::get_id()});
 
             _stopped = true;
         }
