@@ -18,11 +18,6 @@ namespace Eucledia
 		EUCLEDIA_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
 	}
 
-	scope<Window> Window::create(const WindowProps& props)
-	{
-		return createScope<WindowsWindow>(props);
-	}
-
 	WindowsWindow::WindowsWindow(const WindowProps& props)
 	{
 		EUCLEDIA_PROFILE_FUNCTION();

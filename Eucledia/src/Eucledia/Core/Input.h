@@ -17,6 +17,8 @@ namespace Eucledia
 		inline static float getMouseX() { return _instance->getMouseXImpl(); }
 		inline static float getMouseY() { return _instance->getMouseYImpl(); }
 
+		static scope<Input> create();
+
 	protected:
 		Input() = default;
 

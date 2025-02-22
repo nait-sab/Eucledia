@@ -7,8 +7,6 @@
 
 namespace Eucledia
 {
-	scope<Input> Input::_instance = createScope<WindowsInput>();
-
 	bool WindowsInput::isKeyPressedImpl(int keycode)
 	{
 		auto window = static_cast<GLFWwindow*>(Application::get().getWindow().getNativeWindow());
