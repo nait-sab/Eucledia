@@ -5,9 +5,37 @@
 
 namespace Eucledia
 {
+	void OpenGLMessageCallback(
+		unsigned source,
+		unsigned type,
+		unsigned id,
+		unsigned severity,
+		int length,
+		const char* message,
+		const void* userParam
+	)
+	{
+		switch (severity)
+		{
+			case GL_DEBUG_SEVERITY_HIGH: EUCLEDIA_CORE_CRITICAL(message); return;
+			case GL_DEBUG_SEVERITY_MEDIUM: EUCLEDIA_CORE_ERROR(message); return;
+			case GL_DEBUG_SEVERITY_LOW: EUCLEDIA_CORE_WARN(message); return;
+			case GL_DEBUG_SEVERITY_NOTIFICATION: EUCLEDIA_CORE_TRACE(message); return;
+		}
+
+		EUCLEDIA_CORE_ASSERT(false, "Unknow severity level");
+	}
+
 	void OpenGLRendererAPI::init()
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
+
+	#ifdef EUCLEDIA_DEBUG
+		glEnable(GL_DEBUG_OUTPUT);
+		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+		glDebugMessageCallback(OpenGLMessageCallback, nullptr);
+	#endif
+
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

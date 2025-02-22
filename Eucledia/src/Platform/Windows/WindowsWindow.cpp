@@ -5,6 +5,8 @@
 #include "Eucledia/Events/MouseEvent.h"
 #include "Eucledia/Events/KeyEvent.h"
 
+#include "Eucledia/Renderer/Renderer.h"
+
 #include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Eucledia
@@ -54,6 +56,14 @@ namespace Eucledia
 
 		{
 			EUCLEDIA_PROFILE_SCOPE("WindowsWindow::init glfw create window");
+
+		#if defined(EUCLEDIA_DEBUG)
+			if (Renderer::getAPI() == RendererAPI::API::OpenGL)
+			{
+				glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+			}
+		#endif
+
 			_window = glfwCreateWindow((int)props._width, (int)props._height, _data._title.c_str(), nullptr, nullptr);
 			_GLFWWindowCount++;
 		}
