@@ -15,6 +15,8 @@
 
 #include "Eucledia/Core/Log.h"
 
+#include "Eucledia/Debug/Instrumentor.h"
+
 #ifdef EUCLEDIA_PLATFORM_WNDOWS
 	#include <Windows.h>
 #endif

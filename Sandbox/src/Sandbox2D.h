@@ -22,14 +22,6 @@ private:
 	Eucledia::ShaderLibrary _shaderLibrary;
 	Eucledia::ref<Eucledia::Texture2D> _texture;
 
-	struct ProfileResult
-	{
-		const char* name;
-		float time;
-	};
-
-	std::vector<ProfileResult> _profileResults;
-
 	glm::vec4 _squareColor = { 0.2, 0.3, 0.8, 1.0 };
 };
 
