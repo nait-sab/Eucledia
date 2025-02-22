@@ -8,6 +8,8 @@ namespace Eucledia
 
 	void Renderer::init()
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		RenderCommand::init();
 		Renderer2D::init();
 	}

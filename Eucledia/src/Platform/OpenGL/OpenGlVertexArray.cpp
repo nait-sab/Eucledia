@@ -28,26 +28,36 @@ namespace Eucledia
 
 	OpenGlVertexArray::OpenGlVertexArray()
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		glCreateVertexArrays(1, &_rendererID);
 	}
 
 	OpenGlVertexArray::~OpenGlVertexArray()
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		glDeleteVertexArrays(1, &_rendererID);
 	}
 
 	void OpenGlVertexArray::bind() const
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		glBindVertexArray(_rendererID);
 	}
 
 	void OpenGlVertexArray::unbind() const
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		glBindVertexArray(0);
 	}
 
 	void OpenGlVertexArray::addVertexBuffer(const ref<VertexBuffer>& vertexBuffer)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		EUCLEDIA_CORE_ASSERT(vertexBuffer->getlayout().getElements().size(), "Vertex Buffer has no layout");
 
 		glBindVertexArray(_rendererID);
@@ -73,6 +83,8 @@ namespace Eucledia
 
 	void OpenGlVertexArray::setIndexBuffer(const ref<IndexBuffer>& indexBuffer)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		glBindVertexArray(_rendererID);
 		indexBuffer->bind();
 		_indexBuffer = indexBuffer;

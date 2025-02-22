@@ -13,6 +13,8 @@ namespace Eucledia
 
 	void OpenGLContext::init()
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		glfwMakeContextCurrent(_windowHandle);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		EUCLEDIA_CORE_ASSERT(status, "Failed no initialize Glad");
@@ -35,6 +37,8 @@ namespace Eucledia
 
 	void OpenGLContext::swapBuffers()
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		glfwSwapBuffers(_windowHandle);
 	}
 }

@@ -25,6 +25,8 @@ namespace Eucledia
 
 	OpenGLShader::OpenGLShader(const std::string& filepath)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		std::string source = readFile(filepath);
 		auto shaderSources = preProcess(source);
 		compile(shaderSources);
@@ -39,6 +41,8 @@ namespace Eucledia
 	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
 		: _name(name)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> shaderSources;
 		shaderSources[GL_VERTEX_SHADER] = vertexSrc;
 		shaderSources[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -47,6 +51,8 @@ namespace Eucledia
 
 	OpenGLShader::~OpenGLShader()
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		glDeleteProgram(_rendererID);
 	}
 
@@ -81,6 +87,8 @@ namespace Eucledia
 
 	std::unordered_map<GLenum, std::string> OpenGLShader::preProcess(const std::string& source)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> shaderSources;
 
 		const char* typeToken = "#type";
@@ -107,6 +115,8 @@ namespace Eucledia
 
 	void OpenGLShader::compile(const std::unordered_map<GLenum, std::string>& shaderSources)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		GLuint program = glCreateProgram();
 		EUCLEDIA_CORE_ASSERT(shaderSources.size() <= 2, "Only two shaders supported");
 		std::array<GLenum, 2> glShaderIds;
@@ -176,31 +186,43 @@ namespace Eucledia
 
 	void OpenGLShader::bind() const
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		glUseProgram(_rendererID);
 	}
 
 	void OpenGLShader::unbind() const
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		glUseProgram(0);
 	}
 
 	void OpenGLShader::setInt(const std::string& name, const int& value)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		uploadUniformInt(name, value);
 	}
 
 	void OpenGLShader::setFloat3(const std::string& name, const glm::vec3& values)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		uploadUniformFloat3(name, values);
 	}
 
 	void OpenGLShader::setFloat4(const std::string& name, const glm::vec4& values)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		uploadUniformFloat4(name, values);
 	}
 
 	void OpenGLShader::setMat4(const std::string& name, const glm::mat4& matrix)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		uploadUniformMat4(name, matrix);
 	}
 

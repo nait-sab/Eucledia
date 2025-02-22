@@ -19,6 +19,8 @@ namespace Eucledia
 
 	void ImGuiLayer::onAttach()
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -42,6 +44,8 @@ namespace Eucledia
 
 	void ImGuiLayer::onDetach()
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
@@ -49,6 +53,8 @@ namespace Eucledia
 
 	void ImGuiLayer::begin()
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -56,6 +62,8 @@ namespace Eucledia
 
 	void ImGuiLayer::end()
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		ImGuiIO& io = ImGui::GetIO();
 		Application& app = Application::get();
 		io.DisplaySize = ImVec2((float)app.getWindow().getWidth(), (float)app.getWindow().getHeight());

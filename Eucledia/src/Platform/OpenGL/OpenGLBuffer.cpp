@@ -11,6 +11,8 @@ namespace Eucledia
 
 	OpenGlVertexBuffer::OpenGlVertexBuffer(float* vertices, uint32_t size)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		glCreateBuffers(1, &_rendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, _rendererID);
 		glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
@@ -18,16 +20,22 @@ namespace Eucledia
 
 	OpenGlVertexBuffer::~OpenGlVertexBuffer()
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		glDeleteBuffers(1, &_rendererID);
 	}
 
 	void OpenGlVertexBuffer::bind() const
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		glBindBuffer(GL_ARRAY_BUFFER, _rendererID);
 	}
 
 	void OpenGlVertexBuffer::unbind() const
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
@@ -37,6 +45,8 @@ namespace Eucledia
 
 	OpenGlIndexBuffer::OpenGlIndexBuffer(uint32_t* indices, uint32_t count) : _count(count)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		glCreateBuffers(1, &_rendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, _rendererID);
 		glBufferData(GL_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
@@ -44,16 +54,22 @@ namespace Eucledia
 
 	OpenGlIndexBuffer::~OpenGlIndexBuffer()
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		glDeleteBuffers(1, &_rendererID);
 	}
 
 	void OpenGlIndexBuffer::bind() const
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _rendererID);
 	}
 
 	void OpenGlIndexBuffer::unbind() const
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 }

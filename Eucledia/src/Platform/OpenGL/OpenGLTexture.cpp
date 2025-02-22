@@ -7,6 +7,8 @@ namespace Eucledia
 {
 	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height) : _width(width), _height(height)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		_internalFormat = GL_RGBA8;
 		_dataFormat = GL_RGBA;
 
@@ -22,9 +24,15 @@ namespace Eucledia
 
 	OpenGLTexture2D::OpenGLTexture2D(const std::string& path) : _path(path)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		int width, height, channels;
 		stbi_set_flip_vertically_on_load(1);
-		stbi_uc* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+		stbi_uc* data = nullptr;
+		{
+			EUCLEDIA_PROFILE_SCOPE("OpenGLTexture2D::OpenGLTexture2D stbi load")
+			data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+		}
 		EUCLEDIA_CORE_ASSERT(data, "Failed to load image");
 		_width = width;
 		_height = height;
@@ -63,11 +71,15 @@ namespace Eucledia
 
 	OpenGLTexture2D::~OpenGLTexture2D()
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		glDeleteTextures(1, &_rendererID);
 	}
 
 	void OpenGLTexture2D::setData(void* data, uint32_t size)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		uint32_t channelsCount = _dataFormat == GL_RGBA ? 4 : 3;
 		EUCLEDIA_CORE_ASSERT(size == _width * _height * channelsCount, "Data must be entire texture");
 		glTextureSubImage2D(_rendererID, 0, 0, 0, _width, _height, _dataFormat, GL_UNSIGNED_BYTE, data);
@@ -75,6 +87,8 @@ namespace Eucledia
 
 	void OpenGLTexture2D::bind(uint32_t slot) const
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		glBindTextureUnit(slot, _rendererID);
 	}
 }

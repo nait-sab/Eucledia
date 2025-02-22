@@ -23,6 +23,8 @@ namespace Eucledia
 
 	WindowsWindow::WindowsWindow(const WindowProps& props)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		init(props);
 	}
 
@@ -33,6 +35,8 @@ namespace Eucledia
 
 	void WindowsWindow::init(const WindowProps& props)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		_data._title = props._title;
 		_data._width = props._width;
 		_data._height = props._height;
@@ -41,14 +45,19 @@ namespace Eucledia
 
 		if (_GLFWWindowCount == 0)
 		{
+			EUCLEDIA_PROFILE_SCOPE("WindowsWindow::init glfw init");
 			EUCLEDIA_CORE_INFO("Initializing GLFW");
 			int success = glfwInit();
 			EUCLEDIA_CORE_ASSERT(success, "Could not initialize GLFW");
 			glfwSetErrorCallback(GLFWErrorCallback);
 		}
 
-		_window = glfwCreateWindow((int)props._width, (int)props._height, _data._title.c_str(), nullptr, nullptr);
-		_GLFWWindowCount++;
+		{
+			EUCLEDIA_PROFILE_SCOPE("WindowsWindow::init glfw create window");
+			_window = glfwCreateWindow((int)props._width, (int)props._height, _data._title.c_str(), nullptr, nullptr);
+			_GLFWWindowCount++;
+		}
+
 		_context = OpenGLContext::create(_window);
 		_context->init();
 		glfwSetWindowUserPointer(_window, &_data);
@@ -143,6 +152,8 @@ namespace Eucledia
 
 	void WindowsWindow::shutdown()
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		glfwDestroyWindow(_window);
 		--_GLFWWindowCount;
 
@@ -154,12 +165,16 @@ namespace Eucledia
 
 	void WindowsWindow::onUpdate()
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		glfwPollEvents();
 		_context->swapBuffers();
 	}
 
 	void WindowsWindow::setVSync(bool enabled)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		if (enabled)
 		{
 			glfwSwapInterval(1);

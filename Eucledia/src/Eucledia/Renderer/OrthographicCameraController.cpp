@@ -14,6 +14,8 @@ namespace Eucledia
 
 	void OrthographicCameraController::onUpdate(Timestep ts)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		if (Input::isKeyPressed(EUCLEDIA_KEY_A))
 		{
 			_cameraPosition.x -= cos(glm::radians(_cameraRotation)) * _cameraTranslationSpeed * ts;
@@ -65,6 +67,8 @@ namespace Eucledia
 
 	void OrthographicCameraController::onEvent(Event& event)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		EventDispatcher dispatcher(event);
 		dispatcher.dispatch<MouseScrolledEvent>(EUCLEDIA_BIND_EVENT_FN(OrthographicCameraController::onMouseScrolled));
 		dispatcher.dispatch<WindowResizeEvent>(EUCLEDIA_BIND_EVENT_FN(OrthographicCameraController::onWindowResized));
@@ -72,6 +76,8 @@ namespace Eucledia
 
 	bool OrthographicCameraController::onMouseScrolled(MouseScrolledEvent& event)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		_zoomLevel -= event.getYOffset() * .25;
 		_zoomLevel = std::max(_zoomLevel, .25f);
 		_camera.setProjection(-_aspectRatio * _zoomLevel, _aspectRatio * _zoomLevel, -_zoomLevel, _zoomLevel);
@@ -80,6 +86,8 @@ namespace Eucledia
 
 	bool OrthographicCameraController::onWindowResized(WindowResizeEvent& event)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		_aspectRatio = (float)event.getWidth() / (float)event.getHeight();
 		_camera.setProjection(-_aspectRatio * _zoomLevel, _aspectRatio * _zoomLevel, -_zoomLevel, _zoomLevel);
 		return false;

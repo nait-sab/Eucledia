@@ -11,6 +11,8 @@ namespace Eucledia
 
 	Application::Application()
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+		 
 		EUCLEDIA_CORE_ASSERT(!_instance, "Application already exists")
 		_instance = this;
 
@@ -25,17 +27,25 @@ namespace Eucledia
 
 	Application::~Application()
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		Renderer::shutdown();
 	}
 
 	void Application::pushLayer(Layer* layer)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		_layerStack.pushLayer(layer);
+		layer->onAttach();
 	}
 
 	void Application::pushOverlay(Layer* layer)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		_layerStack.pushOverlay(layer);
+		layer->onAttach();
 	}
 
 	void Application::onEvent(Event& event)
@@ -57,28 +67,40 @@ namespace Eucledia
 
 	void Application::run()
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		while (_running)
 		{
+			EUCLEDIA_PROFILE_SCOPE("Application::run loop")
+
 			float time = (float)glfwGetTime();
 			Timestep timestep = time - _lasFrameTime;
 			_lasFrameTime = time;
 
 			if (!_minimized)
 			{
-				for (Layer* layer : _layerStack)
 				{
-					layer->onUpdate(timestep);
+					EUCLEDIA_PROFILE_SCOPE("Application::run layerStack update");
+
+					for (Layer* layer : _layerStack)
+					{
+						layer->onUpdate(timestep);
+					}
 				}
+
+				_imGuiLayer->begin();
+
+				{
+					EUCLEDIA_PROFILE_SCOPE("Application::run ImGui Render");
+
+					for (Layer* layer : _layerStack)
+					{
+						layer->onImGuiRender();
+					}
+				}
+
+				_imGuiLayer->end();
 			}
-
-			_imGuiLayer->begin();
-
-			for (Layer* layer : _layerStack)
-			{
-				layer->onImGuiRender();
-			}
-
-			_imGuiLayer->end();
 
 			_window->onUpdate();
 		}
@@ -92,6 +114,8 @@ namespace Eucledia
 
 	bool Application::onWindowResized(WindowResizeEvent& event)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		if (event.getWidth() == 0 || event.getHeight() == 0)
 		{
 			_minimized = true;

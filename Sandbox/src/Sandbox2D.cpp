@@ -15,21 +15,21 @@ Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), _cameraController(16.f / 9.f)
 
 void Sandbox2D::onAttach()
 {
+	EUCLEDIA_PROFILE_FUNCTION();
+
 	_texture = Eucledia::Texture2D::create("assets/textures/default.png");
 }
 
 void Sandbox2D::onDetach()
 {
+	EUCLEDIA_PROFILE_FUNCTION();
 }
 
 void Sandbox2D::onUpdate(Eucledia::Timestep ts)
 {
 	EUCLEDIA_PROFILE_FUNCTION();
 
-	{
-		EUCLEDIA_PROFILE_SCOPE("_cameraController.onUpdate");
-		_cameraController.onUpdate(ts);
-	}
+	_cameraController.onUpdate(ts);
 
 	{
 		EUCLEDIA_PROFILE_SCOPE("Renderer clean");

@@ -20,6 +20,8 @@ namespace Eucledia
 
 	void Renderer2D::init()
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		_store = new Renderer2DStore();
 		_store->quadVA = VertexArray::create();
 
@@ -52,17 +54,22 @@ namespace Eucledia
 
 	void Renderer2D::shutdown()
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		delete _store;
 	}
 
 	void Renderer2D::beginScene(const OrthographicCamera& camera)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		_store->textureShader->bind();
 		_store->textureShader->setMat4("viewProjection", camera.getViewProjectionMatrix());
 	}
 
 	void Renderer2D::endScene()
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
 	}
 
 	void Renderer2D::drawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
@@ -72,6 +79,8 @@ namespace Eucledia
 
 	void Renderer2D::drawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		_store->textureShader->setFloat4("u_color", color);
 		_store->emptyTexture->bind();
 
@@ -92,6 +101,8 @@ namespace Eucledia
 
 	void Renderer2D::drawQuad(const glm::vec3& position, const glm::vec2& size, const ref<Texture2D>& texture)
 	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		_store->textureShader->setFloat4("u_color", glm::vec4(1));
 		texture->bind();
 
