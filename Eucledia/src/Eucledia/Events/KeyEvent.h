@@ -7,7 +7,7 @@ namespace Eucledia
 	class KeyEvent : public Event
 	{
 	public:
-		inline int getKeyCode() const { return _keyCode; }
+		int getKeyCode() const { return _keyCode; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 			
@@ -23,7 +23,7 @@ namespace Eucledia
 		KeyPressedEvent(int keyCode, int repeatCount) 
 			: KeyEvent(keyCode), _repeatCount(repeatCount) {}
 
-		inline int getRepeatCount() const { return _repeatCount; }
+		int getRepeatCount() const { return _repeatCount; }
 
 		std::string toString() const override
 		{

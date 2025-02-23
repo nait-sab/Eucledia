@@ -9,8 +9,8 @@ namespace Eucledia
 	public:
 		WindowResizeEvent(unsigned int width, unsigned int height) : _width(width), _height(height) {}
 
-		inline unsigned int getWidth() const { return _width; }
-		inline unsigned int getHeight() const { return _height; }
+		unsigned int getWidth() const { return _width; }
+		unsigned int getHeight() const { return _height; }
 
 		std::string toString() const override
 		{

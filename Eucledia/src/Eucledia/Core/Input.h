@@ -10,12 +10,12 @@ namespace Eucledia
 		Input(const Input&) = delete;
 		Input& operator=(const Input&) = delete;
 
-		inline static bool isKeyPressed(int keycode) { return _instance->isKeyPressedImpl(keycode); }
+		static bool isKeyPressed(int keycode) { return _instance->isKeyPressedImpl(keycode); }
 
-		inline static bool isMouseButtonPressed(int button) { return _instance->isMouseButtonPressedImpl(button); }
-		inline static std::pair<float, float> getMousePosition() { return _instance->getMousePositionImpl(); }
-		inline static float getMouseX() { return _instance->getMouseXImpl(); }
-		inline static float getMouseY() { return _instance->getMouseYImpl(); }
+		static bool isMouseButtonPressed(int button) { return _instance->isMouseButtonPressedImpl(button); }
+		static std::pair<float, float> getMousePosition() { return _instance->getMousePositionImpl(); }
+		static float getMouseX() { return _instance->getMouseXImpl(); }
+		static float getMouseY() { return _instance->getMouseYImpl(); }
 
 		static scope<Input> create();
 

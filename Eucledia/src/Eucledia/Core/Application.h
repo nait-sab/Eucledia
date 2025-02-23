@@ -24,8 +24,9 @@ namespace Eucledia
 		void pushLayer(Layer* layer);
 		void pushOverlay(Layer* layer);
 
-		inline static Application& get() { return *_instance; }
-		inline Window& getWindow() { return *_window; }
+		Window& getWindow() { return *_window; }
+
+		static Application& get() { return *_instance; }
 
 	private:
 		static Application* _instance;

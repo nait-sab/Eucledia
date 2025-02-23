@@ -15,18 +15,18 @@ namespace Eucledia
 
 		void onUpdate() override;
 
-		inline unsigned int getWidth() const override { return _data._width; }
-		inline unsigned int getHeight() const override { return _data._height; }
+		unsigned int getWidth() const override { return _data._width; }
+		unsigned int getHeight() const override { return _data._height; }
 
 		// Window attributes
-		inline void setEventCallback(const EventCallbackFn& callback) override 
+		void setEventCallback(const EventCallbackFn& callback) override 
 		{
 			_data._eventCallback = callback;
 		};
 		void setVSync(bool enabled) override;
 		bool isVSync() const override;
 		
-		inline virtual void* getNativeWindow() const { return _window; }
+		virtual void* getNativeWindow() const { return _window; }
 
 	private:
 		GLFWwindow* _window;

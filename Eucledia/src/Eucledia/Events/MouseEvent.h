@@ -9,8 +9,8 @@ namespace Eucledia
 	public:
 		MouseMovedEvent(float x, float y) : _mouseX(x), _mouseY(y) {}
 
-		inline float getX() const { return _mouseX; }
-		inline float getY() const { return _mouseY; }
+		float getX() const { return _mouseX; }
+		float getY() const { return _mouseY; }
 
 		std::string toString() const override
 		{
@@ -32,8 +32,8 @@ namespace Eucledia
 		MouseScrolledEvent(float xOffset, float yOffset) 
 			: _xOffset(xOffset), _yOffset(yOffset) {}
 
-		inline float getXOffset() const { return _xOffset; }
-		inline float getYOffset() const { return _yOffset; }
+		float getXOffset() const { return _xOffset; }
+		float getYOffset() const { return _yOffset; }
 
 		std::string toString() const override
 		{

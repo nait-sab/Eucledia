@@ -70,14 +70,13 @@ namespace Eucledia
 	{
 	public:
 		BufferLayout() {}
-		BufferLayout(const std::initializer_list<BufferElement>& elements)
-			: _elements(elements)
+		BufferLayout(const std::initializer_list<BufferElement>& elements) : _elements(elements)
 		{
 			calculateOffesetsAndStride();
 		}
 
-		inline uint32_t getStride() const { return _stride; }
-		inline const std::vector<BufferElement>& getElements() const { return _elements; }
+		uint32_t getStride() const { return _stride; }
+		const std::vector<BufferElement>& getElements() const { return _elements; }
 
 		std::vector<BufferElement>::iterator begin() { return _elements.begin(); }
 		std::vector<BufferElement>::iterator end() { return _elements.end(); }

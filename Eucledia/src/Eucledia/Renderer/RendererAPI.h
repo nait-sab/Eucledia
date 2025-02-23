@@ -23,7 +23,7 @@ namespace Eucledia
 
 		virtual void drawIndexed(const ref<VertexArray>& vertexArray, uint32_t indexCount = 0) = 0;
 
-		inline static API getAPI() { return _api; }
+		static API getAPI() { return _api; }
 
 	private:
 		static API _api;

@@ -18,7 +18,7 @@ namespace Eucledia
 		virtual void onImGuiRender() {}
 		virtual void onEvent(Event& event) {}
 
-		inline const std::string& getName() const { return _debugName; }
+		const std::string& getName() const { return _debugName; }
 
 	protected:
 		std::string _debugName;

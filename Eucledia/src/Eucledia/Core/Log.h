@@ -12,8 +12,8 @@ namespace Eucledia
 	public:
 		static void init();
 
-		inline static ref<spdlog::logger>& getCoreLogger() { return _coreLogger; }
-		inline static ref<spdlog::logger>& getClientLogger() { return _clientLogger; }
+		static ref<spdlog::logger>& getCoreLogger() { return _coreLogger; }
+		static ref<spdlog::logger>& getClientLogger() { return _clientLogger; }
 
 	private:
 		static ref<spdlog::logger> _coreLogger;
