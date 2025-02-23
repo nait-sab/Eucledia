@@ -2,17 +2,25 @@
 #version 330 core
 
 layout(location = 0) in vec3 position;
-layout(location = 1) in vec2 textCoord;
+layout(location = 1) in vec4 color;
+layout(location = 2) in vec2 textCoord;
+layout(location = 3) in float textureIndex;
+layout(location = 4) in float textureMultiplier;
 
 uniform mat4 viewProjection;
-uniform mat4 transform;
 
+out vec4 v_color;
 out vec2 v_textCoord;
+out float v_textureIndex;
+out float v_textureMultiplier;
 
 void main()
 {
+	v_color = color;
 	v_textCoord = textCoord;
-	gl_Position = viewProjection * transform * vec4(position, 1.0);
+	v_textureIndex = textureIndex;
+	v_textureMultiplier = textureMultiplier;
+	gl_Position = viewProjection * vec4(position, 1.0);
 }
 
 #type fragment
@@ -20,13 +28,14 @@ void main()
 
 layout(location = 0) out vec4 color;
 
+in vec4 v_color;
 in vec2 v_textCoord;
+in float v_textureIndex;
+in float v_textureMultiplier;
 
-uniform vec4 u_color;
-uniform float u_multiplier;
-uniform sampler2D u_texture;
+uniform sampler2D u_textures[32];
 
 void main()
 {
-	color = u_color * texture(u_texture, v_textCoord * u_multiplier);
+	color = texture(u_textures[int(v_textureIndex)], v_textCoord * v_textureMultiplier) * v_color;
 }

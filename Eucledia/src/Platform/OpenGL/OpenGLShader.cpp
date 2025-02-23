@@ -205,6 +205,13 @@ namespace Eucledia
 		uploadUniformInt(name, value);
 	}
 
+	void OpenGLShader::setIntArray(const std::string& name, const int* values, uint32_t count)
+	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
+		uploadUniformIntArray(name, values, count);
+	}
+
 	void OpenGLShader::setFloat(const std::string& name, const float value)
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
@@ -244,6 +251,12 @@ namespace Eucledia
 	{
 		GLint location = glGetUniformLocation(_rendererID, name.c_str());
 		glUniform1i(location, value);
+	}
+
+	void OpenGLShader::uploadUniformIntArray(const std::string& name, const int* values, uint32_t count)
+	{
+		GLint location = glGetUniformLocation(_rendererID, name.c_str());
+		glUniform1iv(location, count, values);
 	}
 
 	void OpenGLShader::uploadUniformFloat(const std::string& name, const float& value)

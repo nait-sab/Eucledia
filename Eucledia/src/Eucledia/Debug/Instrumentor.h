@@ -161,7 +161,7 @@ namespace Eucledia
     };
 }
 
-#define EUCLEDIA_PROFILE 1
+#define EUCLEDIA_PROFILE 0
 
 #if EUCLEDIA_PROFILE
     #define EUCLEDIA_PROFILE_BEGIN_SESSION(name, filepath) ::Eucledia::Instrumentor::get().beginSession(name, filepath)

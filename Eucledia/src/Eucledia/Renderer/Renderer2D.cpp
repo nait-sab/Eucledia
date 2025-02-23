@@ -9,67 +9,130 @@
 
 namespace Eucledia
 {
-	struct Renderer2DStore
+	struct QuadVertex
 	{
-		ref<VertexArray> quadVA;
-		ref<Shader> textureShader;
-		ref<Texture2D> emptyTexture;
+		glm::vec3 position;
+		glm::vec4 color;
+		glm::vec2 textCoord;
+		float textureIndex;
+		float textureMultiplier;
 	};
 
-	static Renderer2DStore* _store;
+	struct Renderer2DData
+	{
+		const uint32_t maxQuads = 10000;
+		const uint32_t maxVertices = maxQuads * 4;
+		const uint32_t maxIndices = maxQuads * 6;
+		static const uint32_t maxTextureSlots = 32;
+
+		ref<VertexArray> quadVA;
+		ref<VertexBuffer> quadVB;
+		ref<Shader> textureShader;
+		ref<Texture2D> emptyTexture;
+
+		uint32_t quadIndexCount = 0;
+		QuadVertex* quadVBBase = nullptr;
+		QuadVertex* quadVBPointer = nullptr;
+
+		std::array<ref<Texture2D>, maxTextureSlots> textureSlots;
+		uint32_t textureSlotsIndex = 1; // 0 is for the empty texture
+	};
+
+	static Renderer2DData _data;
 
 	void Renderer2D::init()
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
 
-		_store = new Renderer2DStore();
-		_store->quadVA = VertexArray::create();
+		_data.quadVA = VertexArray::create();
 
-		float squareVertices[5 * 4] = {
-			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
-			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
-		};
-
-		ref<VertexBuffer> squareVB = VertexBuffer::create(squareVertices, sizeof(squareVertices));
-		squareVB->setLayout({
+		_data.quadVB = VertexBuffer::create(_data.maxVertices * sizeof(QuadVertex));
+		_data.quadVB->setLayout({
 			{ ShaderDataType::Float3, "position" },
-			{ ShaderDataType::Float2, "textCoord" }
+			{ ShaderDataType::Float4, "color" },
+			{ ShaderDataType::Float2, "textCoord" },
+			{ ShaderDataType::Float, "textureIndex" },
+			{ ShaderDataType::Float, "textureMultiplier" }
 		});
-		_store->quadVA->addVertexBuffer(squareVB);
+		_data.quadVA->addVertexBuffer(_data.quadVB);
+		_data.quadVBBase = new QuadVertex[_data.maxVertices];
 
-		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		ref<IndexBuffer> squareIB = IndexBuffer::create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
-		_store->quadVA->setIndexBuffer(squareIB);
+		uint32_t* quadIndices = new uint32_t[_data.maxIndices];
 
-		_store->emptyTexture = Texture2D::create(1, 1);
+		uint32_t offset = 0;
+		for (uint32_t index = 0; index < _data.maxIndices; index += 6)
+		{
+			quadIndices[index + 0] = offset + 0;
+			quadIndices[index + 1] = offset + 1;
+			quadIndices[index + 2] = offset + 2;
+
+			quadIndices[index + 3] = offset + 2;
+			quadIndices[index + 4] = offset + 3;
+			quadIndices[index + 5] = offset + 0;
+
+			offset += 4;
+		}
+
+		ref<IndexBuffer> quadIB = IndexBuffer::create(quadIndices, _data.maxIndices);
+		_data.quadVA->setIndexBuffer(quadIB);
+		delete[] quadIndices;
+
+		_data.emptyTexture = Texture2D::create(1, 1);
 		uint32_t emptyTextureData = 0xffffffff;
-		_store->emptyTexture->setData(&emptyTextureData, sizeof(uint32_t));
+		_data.emptyTexture->setData(&emptyTextureData, sizeof(uint32_t));
 
-		_store->textureShader = Shader::create("assets/shaders/texture.glsl");
-		_store->textureShader->bind();
-		_store->textureShader->setInt("u_texture", 0);
+		int32_t samplers[_data.maxTextureSlots];
+
+		for (uint32_t index = 0; index < _data.maxTextureSlots; index++)
+		{
+			samplers[index] = index;
+		}
+
+		_data.textureShader = Shader::create("assets/shaders/texture.glsl");
+		_data.textureShader->bind();
+		_data.textureShader->setIntArray("u_textures", samplers, _data.maxTextureSlots);
+
+		// Set empty texture to first index
+		_data.textureSlots[0] = _data.emptyTexture;
 	}
 
 	void Renderer2D::shutdown()
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
-
-		delete _store;
 	}
 
 	void Renderer2D::beginScene(const OrthographicCamera& camera)
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
 
-		_store->textureShader->bind();
-		_store->textureShader->setMat4("viewProjection", camera.getViewProjectionMatrix());
+		_data.textureShader->bind();
+		_data.textureShader->setMat4("viewProjection", camera.getViewProjectionMatrix());
+
+		_data.quadIndexCount = 0;
+		_data.quadVBPointer = _data.quadVBBase;
+		_data.textureSlotsIndex = 1;
 	}
 
 	void Renderer2D::endScene()
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
+
+		uint32_t dataSize = (uint8_t*)_data.quadVBPointer - (uint8_t*)_data.quadVBBase;
+		_data.quadVB->setData(_data.quadVBBase, dataSize);
+
+		flush();
+	}
+
+	void Renderer2D::flush()
+	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
+		for (uint32_t index = 0; index < _data.textureSlotsIndex; index++)
+		{
+			_data.textureSlots[index]->bind(index);
+		}
+
+		RenderCommand::drawIndexed(_data.quadVA, _data.quadIndexCount);
 	}
 
 	void Renderer2D::drawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
@@ -81,17 +144,39 @@ namespace Eucledia
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
 
-		// Create the transform with the position and size
-		glm::mat4 transform = glm::translate(glm::mat4(1), position);
-		transform *= glm::scale(glm::mat4(1), { size.x, size.y, 1 });
+		// 0 is the empty texture
+		const float textureIndex = 0;
+		const float textureMultiplier = 1;
 
-		_store->textureShader->setMat4("transform", transform);
-		_store->textureShader->setFloat4("u_color", color);
-		_store->textureShader->setFloat("u_multiplier", 1);
-		_store->emptyTexture->bind();
+		_data.quadVBPointer->position = position;
+		_data.quadVBPointer->color = color;
+		_data.quadVBPointer->textCoord = { 0, 0 };
+		_data.quadVBPointer->textureIndex = textureIndex;
+		_data.quadVBPointer->textureMultiplier = textureMultiplier;
+		_data.quadVBPointer++;
 
-		_store->quadVA->bind();
-		RenderCommand::drawIndexed(_store->quadVA);
+		_data.quadVBPointer->position = { position.x + size.x, position.y, 0 };
+		_data.quadVBPointer->color = color;
+		_data.quadVBPointer->textCoord = { 1, 0 };
+		_data.quadVBPointer->textureIndex = textureIndex;
+		_data.quadVBPointer->textureMultiplier = textureMultiplier;
+		_data.quadVBPointer++;
+
+		_data.quadVBPointer->position = { position.x + size.x, position.y + size.y, 0 };
+		_data.quadVBPointer->color = color;
+		_data.quadVBPointer->textCoord = { 1, 1 };
+		_data.quadVBPointer->textureIndex = textureIndex;
+		_data.quadVBPointer->textureMultiplier = textureMultiplier;
+		_data.quadVBPointer++;
+
+		_data.quadVBPointer->position = { position.x, position.y + size.y, 0 };
+		_data.quadVBPointer->color = color;
+		_data.quadVBPointer->textCoord = { 0, 1 };
+		_data.quadVBPointer->textureIndex = textureIndex;
+		_data.quadVBPointer->textureMultiplier = textureMultiplier;
+		_data.quadVBPointer++;
+
+		_data.quadIndexCount += 6;
 	}
 
 	void Renderer2D::drawQuad(const glm::vec2& position, const glm::vec2& size, const ref<Texture2D>& texture, float multiplier, const glm::vec4& tintColor)
@@ -103,17 +188,56 @@ namespace Eucledia
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
 
-		// Create the transform with the position and size
-		glm::mat4 transform = glm::translate(glm::mat4(1), position);
-		transform *= glm::scale(glm::mat4(1), { size.x, size.y, 1 });
+		constexpr glm::vec4 color = { 1, 1, 1, 1 };
 
-		_store->textureShader->setMat4("transform", transform);
-		_store->textureShader->setFloat4("u_color", tintColor);
-		_store->textureShader->setFloat("u_multiplier", multiplier);
-		texture->bind();
+		float textureIndex = 0;
 
-		_store->quadVA->bind();
-		RenderCommand::drawIndexed(_store->quadVA);
+		// Skip index 0 of the empty texture
+		for (uint32_t index = 1; index < _data.textureSlotsIndex; index++)
+		{
+			if (*_data.textureSlots[index].get() == *texture.get())
+			{
+				textureIndex = (float)index;
+				break;
+			}
+		}
+
+		if (textureIndex == 0)
+		{
+			textureIndex = (float)_data.textureSlotsIndex;
+			_data.textureSlots[_data.textureSlotsIndex] = texture;
+			_data.textureSlotsIndex++;
+		}
+
+		_data.quadVBPointer->position = position;
+		_data.quadVBPointer->color = color;
+		_data.quadVBPointer->textCoord = { 0, 0 };
+		_data.quadVBPointer->textureIndex = textureIndex;
+		_data.quadVBPointer->textureMultiplier = multiplier;
+		_data.quadVBPointer++;
+
+		_data.quadVBPointer->position = { position.x + size.x, position.y, 0 };
+		_data.quadVBPointer->color = color;
+		_data.quadVBPointer->textCoord = { 1, 0 };
+		_data.quadVBPointer->textureIndex = textureIndex;
+		_data.quadVBPointer->textureMultiplier = multiplier;
+		_data.quadVBPointer++;
+
+		_data.quadVBPointer->position = { position.x + size.x, position.y + size.y, 0 };
+		_data.quadVBPointer->color = color;
+		_data.quadVBPointer->textCoord = { 1, 1 };
+		_data.quadVBPointer->textureIndex = textureIndex;
+		_data.quadVBPointer->textureMultiplier = multiplier;
+		_data.quadVBPointer++;
+
+		_data.quadVBPointer->position = { position.x, position.y + size.y, 0 };
+		_data.quadVBPointer->color = color;
+		_data.quadVBPointer->textCoord = { 0, 1 };
+		_data.quadVBPointer->textureIndex = textureIndex;
+		_data.quadVBPointer->textureMultiplier = multiplier;
+		_data.quadVBPointer++;
+
+		_data.quadIndexCount += 6;
 	}
 
 	void Renderer2D::drawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color)
@@ -130,13 +254,13 @@ namespace Eucledia
 		transform *= glm::rotate(glm::mat4(1), rotation, { 0, 0, 1 });
 		transform *= glm::scale(glm::mat4(1), { size.x, size.y, 1 });
 
-		_store->textureShader->setMat4("transform", transform);
-		_store->textureShader->setFloat4("u_color", color);
-		_store->textureShader->setFloat("u_multiplier", 1);
-		_store->emptyTexture->bind();
+		_data.textureShader->setMat4("transform", transform);
+		_data.textureShader->setFloat4("u_color", color);
+		_data.textureShader->setFloat("u_multiplier", 1);
+		_data.emptyTexture->bind();
 
-		_store->quadVA->bind();
-		RenderCommand::drawIndexed(_store->quadVA);
+		_data.quadVA->bind();
+		RenderCommand::drawIndexed(_data.quadVA);
 	}
 
 	void Renderer2D::drawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const ref<Texture2D>& texture, float multiplier, const glm::vec4& tintColor)
@@ -153,12 +277,12 @@ namespace Eucledia
 		transform *= glm::rotate(glm::mat4(1), rotation, { 0, 0, 1 });
 		transform *= glm::scale(glm::mat4(1), { size.x, size.y, 1 });
 
-		_store->textureShader->setMat4("transform", transform);
-		_store->textureShader->setFloat4("u_color", tintColor);
-		_store->textureShader->setFloat("u_multiplier", multiplier);
+		_data.textureShader->setMat4("transform", transform);
+		_data.textureShader->setFloat4("u_color", tintColor);
+		_data.textureShader->setFloat("u_multiplier", multiplier);
 		texture->bind();
 
-		_store->quadVA->bind();
-		RenderCommand::drawIndexed(_store->quadVA);
+		_data.quadVA->bind();
+		RenderCommand::drawIndexed(_data.quadVA);
 	}
 }

@@ -9,6 +9,15 @@ namespace Eucledia
 	/// VertexBuffer
 	/// /////////////////////////////////////////////////
 
+	OpenGlVertexBuffer::OpenGlVertexBuffer(uint32_t size)
+	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
+		glCreateBuffers(1, &_rendererID);
+		glBindBuffer(GL_ARRAY_BUFFER, _rendererID);
+		glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
+	}
+
 	OpenGlVertexBuffer::OpenGlVertexBuffer(float* vertices, uint32_t size)
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
@@ -37,6 +46,12 @@ namespace Eucledia
 		EUCLEDIA_PROFILE_FUNCTION();
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
+	void OpenGlVertexBuffer::setData(const void* data, uint32_t size)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, _rendererID);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
 	}
 
 	/// /////////////////////////////////////////////////

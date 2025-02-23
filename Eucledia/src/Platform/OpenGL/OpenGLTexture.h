@@ -18,7 +18,12 @@ namespace Eucledia
 
 		virtual void setData(void* data, uint32_t size) override;
 
-		virtual void bind(uint32_t slot = 0) const override;
+		virtual void bind(uint32_t slot = 0) const override; 
+		
+		virtual bool operator==(const Texture& target) const override
+		{ 
+			return _rendererID == ((OpenGLTexture2D&)target)._rendererID;
+		}
 
 	private:
 		std::string _path;

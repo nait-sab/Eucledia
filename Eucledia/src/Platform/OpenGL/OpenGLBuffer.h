@@ -11,11 +11,14 @@ namespace Eucledia
 	class OpenGlVertexBuffer : public VertexBuffer
 	{
 	public:
+		OpenGlVertexBuffer(uint32_t size);
 		OpenGlVertexBuffer(float* vertices, uint32_t size);
 		virtual ~OpenGlVertexBuffer();
 
 		virtual void bind() const override;
 		virtual void unbind() const override;
+
+		virtual void setData(const void* data, uint32_t size) override;
 
 		virtual void setLayout(const BufferLayout& layout) override { _layout = layout; }
 		virtual const BufferLayout& getlayout() const override { return _layout; }
