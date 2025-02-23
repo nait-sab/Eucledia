@@ -36,6 +36,8 @@ namespace Eucledia
 
 		std::array<ref<Texture2D>, maxTextureSlots> textureSlots;
 		uint32_t textureSlotsIndex = 1; // 0 is for the empty texture
+
+		glm::vec4 quadVertexPositions[4];
 	};
 
 	static Renderer2DData _data;
@@ -94,6 +96,12 @@ namespace Eucledia
 
 		// Set empty texture to first index
 		_data.textureSlots[0] = _data.emptyTexture;
+
+		_data.quadVertexPositions[0] = { -0.5f, -0.5f, 0.0f, 1.0f };
+		_data.quadVertexPositions[1] = {  0.5f, -0.5f, 0.0f, 1.0f };
+		_data.quadVertexPositions[2] = {  0.5f,  0.5f, 0.0f, 1.0f };
+		_data.quadVertexPositions[3] = { -0.5f,  0.5f, 0.0f, 1.0f };
+
 	}
 
 	void Renderer2D::shutdown()
@@ -148,28 +156,31 @@ namespace Eucledia
 		const float textureIndex = 0;
 		const float textureMultiplier = 1;
 
-		_data.quadVBPointer->position = position;
+		glm::mat4 transform = glm::translate(glm::mat4(1), position);
+		transform *= glm::scale(glm::mat4(1), { size.x, size.y, 1 });
+
+		_data.quadVBPointer->position = transform * _data.quadVertexPositions[0];
 		_data.quadVBPointer->color = color;
 		_data.quadVBPointer->textCoord = { 0, 0 };
 		_data.quadVBPointer->textureIndex = textureIndex;
 		_data.quadVBPointer->textureMultiplier = textureMultiplier;
 		_data.quadVBPointer++;
 
-		_data.quadVBPointer->position = { position.x + size.x, position.y, 0 };
+		_data.quadVBPointer->position = transform * _data.quadVertexPositions[1];
 		_data.quadVBPointer->color = color;
 		_data.quadVBPointer->textCoord = { 1, 0 };
 		_data.quadVBPointer->textureIndex = textureIndex;
 		_data.quadVBPointer->textureMultiplier = textureMultiplier;
 		_data.quadVBPointer++;
 
-		_data.quadVBPointer->position = { position.x + size.x, position.y + size.y, 0 };
+		_data.quadVBPointer->position = transform * _data.quadVertexPositions[2];
 		_data.quadVBPointer->color = color;
 		_data.quadVBPointer->textCoord = { 1, 1 };
 		_data.quadVBPointer->textureIndex = textureIndex;
 		_data.quadVBPointer->textureMultiplier = textureMultiplier;
 		_data.quadVBPointer++;
 
-		_data.quadVBPointer->position = { position.x, position.y + size.y, 0 };
+		_data.quadVBPointer->position = transform * _data.quadVertexPositions[3];
 		_data.quadVBPointer->color = color;
 		_data.quadVBPointer->textCoord = { 0, 1 };
 		_data.quadVBPointer->textureIndex = textureIndex;
@@ -209,28 +220,31 @@ namespace Eucledia
 			_data.textureSlotsIndex++;
 		}
 
-		_data.quadVBPointer->position = position;
+		glm::mat4 transform = glm::translate(glm::mat4(1), position);
+		transform *= glm::scale(glm::mat4(1), { size.x, size.y, 1 });
+
+		_data.quadVBPointer->position = transform * _data.quadVertexPositions[0];
 		_data.quadVBPointer->color = color;
 		_data.quadVBPointer->textCoord = { 0, 0 };
 		_data.quadVBPointer->textureIndex = textureIndex;
 		_data.quadVBPointer->textureMultiplier = multiplier;
 		_data.quadVBPointer++;
 
-		_data.quadVBPointer->position = { position.x + size.x, position.y, 0 };
+		_data.quadVBPointer->position = transform * _data.quadVertexPositions[1];
 		_data.quadVBPointer->color = color;
 		_data.quadVBPointer->textCoord = { 1, 0 };
 		_data.quadVBPointer->textureIndex = textureIndex;
 		_data.quadVBPointer->textureMultiplier = multiplier;
 		_data.quadVBPointer++;
 
-		_data.quadVBPointer->position = { position.x + size.x, position.y + size.y, 0 };
+		_data.quadVBPointer->position = transform * _data.quadVertexPositions[2];
 		_data.quadVBPointer->color = color;
 		_data.quadVBPointer->textCoord = { 1, 1 };
 		_data.quadVBPointer->textureIndex = textureIndex;
 		_data.quadVBPointer->textureMultiplier = multiplier;
 		_data.quadVBPointer++;
 
-		_data.quadVBPointer->position = { position.x, position.y + size.y, 0 };
+		_data.quadVBPointer->position = transform * _data.quadVertexPositions[3];
 		_data.quadVBPointer->color = color;
 		_data.quadVBPointer->textCoord = { 0, 1 };
 		_data.quadVBPointer->textureIndex = textureIndex;
@@ -249,18 +263,43 @@ namespace Eucledia
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
 
-		// Create the transform with the position and size
+		// 0 is the empty texture
+		const float textureIndex = 0;
+		const float textureMultiplier = 1;
+
 		glm::mat4 transform = glm::translate(glm::mat4(1), position);
-		transform *= glm::rotate(glm::mat4(1), rotation, { 0, 0, 1 });
+		transform *= glm::rotate(glm::mat4(1), glm::radians(rotation), { 0, 0, 1 });
 		transform *= glm::scale(glm::mat4(1), { size.x, size.y, 1 });
 
-		_data.textureShader->setMat4("transform", transform);
-		_data.textureShader->setFloat4("u_color", color);
-		_data.textureShader->setFloat("u_multiplier", 1);
-		_data.emptyTexture->bind();
+		_data.quadVBPointer->position = transform * _data.quadVertexPositions[0];
+		_data.quadVBPointer->color = color;
+		_data.quadVBPointer->textCoord = { 0, 0 };
+		_data.quadVBPointer->textureIndex = textureIndex;
+		_data.quadVBPointer->textureMultiplier = textureMultiplier;
+		_data.quadVBPointer++;
 
-		_data.quadVA->bind();
-		RenderCommand::drawIndexed(_data.quadVA);
+		_data.quadVBPointer->position = transform * _data.quadVertexPositions[1];
+		_data.quadVBPointer->color = color;
+		_data.quadVBPointer->textCoord = { 1, 0 };
+		_data.quadVBPointer->textureIndex = textureIndex;
+		_data.quadVBPointer->textureMultiplier = textureMultiplier;
+		_data.quadVBPointer++;
+
+		_data.quadVBPointer->position = transform * _data.quadVertexPositions[2];
+		_data.quadVBPointer->color = color;
+		_data.quadVBPointer->textCoord = { 1, 1 };
+		_data.quadVBPointer->textureIndex = textureIndex;
+		_data.quadVBPointer->textureMultiplier = textureMultiplier;
+		_data.quadVBPointer++;
+
+		_data.quadVBPointer->position = transform * _data.quadVertexPositions[3];
+		_data.quadVBPointer->color = color;
+		_data.quadVBPointer->textCoord = { 0, 1 };
+		_data.quadVBPointer->textureIndex = textureIndex;
+		_data.quadVBPointer->textureMultiplier = textureMultiplier;
+		_data.quadVBPointer++;
+
+		_data.quadIndexCount += 6;
 	}
 
 	void Renderer2D::drawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const ref<Texture2D>& texture, float multiplier, const glm::vec4& tintColor)
@@ -272,17 +311,59 @@ namespace Eucledia
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
 
-		// Create the transform with the position and size
+		constexpr glm::vec4 color = { 1, 1, 1, 1 };
+
+		float textureIndex = 0;
+
+		// Skip index 0 of the empty texture
+		for (uint32_t index = 1; index < _data.textureSlotsIndex; index++)
+		{
+			if (*_data.textureSlots[index].get() == *texture.get())
+			{
+				textureIndex = (float)index;
+				break;
+			}
+		}
+
+		if (textureIndex == 0)
+		{
+			textureIndex = (float)_data.textureSlotsIndex;
+			_data.textureSlots[_data.textureSlotsIndex] = texture;
+			_data.textureSlotsIndex++;
+		}
+
 		glm::mat4 transform = glm::translate(glm::mat4(1), position);
-		transform *= glm::rotate(glm::mat4(1), rotation, { 0, 0, 1 });
+		transform *= glm::rotate(glm::mat4(1), glm::radians(rotation), { 0, 0, 1 });
 		transform *= glm::scale(glm::mat4(1), { size.x, size.y, 1 });
 
-		_data.textureShader->setMat4("transform", transform);
-		_data.textureShader->setFloat4("u_color", tintColor);
-		_data.textureShader->setFloat("u_multiplier", multiplier);
-		texture->bind();
+		_data.quadVBPointer->position = transform * _data.quadVertexPositions[0];
+		_data.quadVBPointer->color = color;
+		_data.quadVBPointer->textCoord = { 0, 0 };
+		_data.quadVBPointer->textureIndex = textureIndex;
+		_data.quadVBPointer->textureMultiplier = multiplier;
+		_data.quadVBPointer++;
 
-		_data.quadVA->bind();
-		RenderCommand::drawIndexed(_data.quadVA);
+		_data.quadVBPointer->position = transform * _data.quadVertexPositions[1];
+		_data.quadVBPointer->color = color;
+		_data.quadVBPointer->textCoord = { 1, 0 };
+		_data.quadVBPointer->textureIndex = textureIndex;
+		_data.quadVBPointer->textureMultiplier = multiplier;
+		_data.quadVBPointer++;
+
+		_data.quadVBPointer->position = transform * _data.quadVertexPositions[2];
+		_data.quadVBPointer->color = color;
+		_data.quadVBPointer->textCoord = { 1, 1 };
+		_data.quadVBPointer->textureIndex = textureIndex;
+		_data.quadVBPointer->textureMultiplier = multiplier;
+		_data.quadVBPointer++;
+
+		_data.quadVBPointer->position = transform * _data.quadVertexPositions[3];
+		_data.quadVBPointer->color = color;
+		_data.quadVBPointer->textCoord = { 0, 1 };
+		_data.quadVBPointer->textureIndex = textureIndex;
+		_data.quadVBPointer->textureMultiplier = multiplier;
+		_data.quadVBPointer++;
+
+		_data.quadIndexCount += 6;
 	}
 }

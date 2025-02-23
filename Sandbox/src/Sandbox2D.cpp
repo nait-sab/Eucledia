@@ -39,11 +39,16 @@ void Sandbox2D::onUpdate(Eucledia::Timestep ts)
 
 	{
 		EUCLEDIA_PROFILE_SCOPE("Renderer draw");
+
+		static float rotation = 0.0f;
+		rotation += ts * 40;
+
 		Eucledia::Renderer2D::beginScene(_cameraController.getCamera());
-		Eucledia::Renderer2D::drawQuad({ -1, 0 }, { .8, .8 }, {0.8, 0.2, 0.2, 1});
+		Eucledia::Renderer2D::drawRotatedQuad({ 1, 0 }, { .8, .8 }, -45, {0.5, 0.2, 0.6, 1});
+		Eucledia::Renderer2D::drawQuad({ -1, 0 }, { .8, .8 }, { 0.8, 0.2, 0.2, 1 });
 		Eucledia::Renderer2D::drawQuad({ .5, -.5 }, { .5, .75 }, { 0.8, 0.2, 0.8, 1 });
-		Eucledia::Renderer2D::drawQuad({ .5, .5, -1 }, { 1, .5 }, _texture, 20);
-		Eucledia::Renderer2D::drawQuad({ .5, .5 }, { .75, .7 },  _texture, 3);
+		Eucledia::Renderer2D::drawQuad({ 0, 0, -0.1 }, { 10, 10 },  _texture, 10);
+		Eucledia::Renderer2D::drawRotatedQuad({ -2, 0, 0 }, { 1, 1 }, rotation, _texture, 20);
 		Eucledia::Renderer2D::endScene();
 	}
 }
