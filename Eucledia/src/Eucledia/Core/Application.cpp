@@ -48,6 +48,12 @@ namespace Eucledia
 		layer->onAttach();
 	}
 
+	void Application::close()
+	{
+		EUCLEDIA_PROFILE_FUNCTION();
+		_running = false;
+	}
+
 	void Application::onEvent(Event& event)
 	{
 		EventDispatcher dispatcher(event);

@@ -20,7 +20,7 @@ namespace Eucledia
 
 	struct Renderer2DData
 	{
-		static const uint32_t maxQuads = 1;
+		static const uint32_t maxQuads = 10000;
 		static const uint32_t maxVertices = maxQuads * 4;
 		static const uint32_t maxIndices = maxQuads * 6;
 		static const uint32_t maxTextureSlots = 32;

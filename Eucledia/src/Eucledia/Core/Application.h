@@ -26,6 +26,8 @@ namespace Eucledia
 
 		Window& getWindow() { return *_window; }
 
+		void close();
+
 		static Application& get() { return *_instance; }
 
 	private:
