@@ -20,9 +20,9 @@ namespace Eucledia
 
 	struct Renderer2DData
 	{
-		const uint32_t maxQuads = 10000;
-		const uint32_t maxVertices = maxQuads * 4;
-		const uint32_t maxIndices = maxQuads * 6;
+		static const uint32_t maxQuads = 1;
+		static const uint32_t maxVertices = maxQuads * 4;
+		static const uint32_t maxIndices = maxQuads * 6;
 		static const uint32_t maxTextureSlots = 32;
 
 		ref<VertexArray> quadVA;
@@ -38,6 +38,8 @@ namespace Eucledia
 		uint32_t textureSlotsIndex = 1; // 0 is for the empty texture
 
 		glm::vec4 quadVertexPositions[4];
+
+		Renderer2D::Statistics stats;
 	};
 
 	static Renderer2DData _data;
@@ -141,6 +143,16 @@ namespace Eucledia
 		}
 
 		RenderCommand::drawIndexed(_data.quadVA, _data.quadIndexCount);
+		_data.stats.drawCalls++;
+	}
+
+	void Renderer2D::flushAndReset()
+	{
+		endScene();
+
+		_data.quadIndexCount = 0;
+		_data.quadVBPointer = _data.quadVBBase;
+		_data.textureSlotsIndex = 1;
 	}
 
 	void Renderer2D::drawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
@@ -152,6 +164,11 @@ namespace Eucledia
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
 
+		if (_data.quadIndexCount >= Renderer2DData::maxIndices)
+		{
+			flushAndReset();
+		}
+
 		// 0 is the empty texture
 		const float textureIndex = 0;
 		const float textureMultiplier = 1;
@@ -188,6 +205,8 @@ namespace Eucledia
 		_data.quadVBPointer++;
 
 		_data.quadIndexCount += 6;
+
+		_data.stats.quadCount++;
 	}
 
 	void Renderer2D::drawQuad(const glm::vec2& position, const glm::vec2& size, const ref<Texture2D>& texture, float multiplier, const glm::vec4& tintColor)
@@ -199,6 +218,11 @@ namespace Eucledia
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
 
+		if (_data.quadIndexCount >= Renderer2DData::maxIndices)
+		{
+			flushAndReset();
+		}
+
 		constexpr glm::vec4 color = { 1, 1, 1, 1 };
 
 		float textureIndex = 0;
@@ -252,6 +276,8 @@ namespace Eucledia
 		_data.quadVBPointer++;
 
 		_data.quadIndexCount += 6;
+
+		_data.stats.quadCount++;
 	}
 
 	void Renderer2D::drawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color)
@@ -262,6 +288,11 @@ namespace Eucledia
 	void Renderer2D::drawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const glm::vec4& color)
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
+
+		if (_data.quadIndexCount >= Renderer2DData::maxIndices)
+		{
+			flushAndReset();
+		}
 
 		// 0 is the empty texture
 		const float textureIndex = 0;
@@ -300,6 +331,8 @@ namespace Eucledia
 		_data.quadVBPointer++;
 
 		_data.quadIndexCount += 6;
+
+		_data.stats.quadCount++;
 	}
 
 	void Renderer2D::drawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const ref<Texture2D>& texture, float multiplier, const glm::vec4& tintColor)
@@ -310,6 +343,11 @@ namespace Eucledia
 	void Renderer2D::drawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const ref<Texture2D>& texture, float multiplier, const glm::vec4& tintColor)
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
+
+		if (_data.quadIndexCount >= Renderer2DData::maxIndices)
+		{
+			flushAndReset();
+		}
 
 		constexpr glm::vec4 color = { 1, 1, 1, 1 };
 
@@ -365,5 +403,17 @@ namespace Eucledia
 		_data.quadVBPointer++;
 
 		_data.quadIndexCount += 6;
+
+		_data.stats.quadCount++;
+	}
+
+	void Renderer2D::resetStats()
+	{
+		memset(&_data.stats, 0, sizeof(Statistics));
+	}
+
+	Renderer2D::Statistics Renderer2D::getStats()
+	{
+		return _data.stats;
 	}
 }
