@@ -23,6 +23,7 @@
 
 #include "Eucledia/Renderer/Buffer.h"
 #include "Eucledia/Renderer/Shader.h"
+#include "Eucledia/Renderer/Framebuffer.h"
 #include "Eucledia/Renderer/Texture.h"
 #include "Eucledia/Renderer/VertexArray.h"
 // --------------------------------------------

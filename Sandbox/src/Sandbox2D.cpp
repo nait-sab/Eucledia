@@ -18,6 +18,11 @@ void Sandbox2D::onAttach()
 	EUCLEDIA_PROFILE_FUNCTION();
 
 	_texture = Eucledia::Texture2D::create("assets/textures/default.png");
+
+    Eucledia::FrameBufferSpecification spec;
+    spec.width = 1600;
+    spec.height = 900;
+    _frameBuffer = Eucledia::Framebuffer::create(spec);
 }
 
 void Sandbox2D::onDetach()
@@ -35,6 +40,7 @@ void Sandbox2D::onUpdate(Eucledia::Timestep ts)
 
 	{
 		EUCLEDIA_PROFILE_SCOPE("Renderer clean");
+        _frameBuffer->bind();
 		Eucledia::RenderCommand::setClearColor({ .15f, .15f, .15f, 1 });
 		Eucledia::RenderCommand::clear();
 	}
@@ -65,6 +71,7 @@ void Sandbox2D::onUpdate(Eucledia::Timestep ts)
 		}
 
 		Eucledia::Renderer2D::endScene();
+        _frameBuffer->unbind();
 	}
 }
 
@@ -72,7 +79,7 @@ void Sandbox2D::onImGuiRender()
 {
 	EUCLEDIA_PROFILE_FUNCTION();
 
-	static bool dockspaceEnable = false;
+	static bool dockspaceEnable = true;
    
 	if (dockspaceEnable)
 	{
@@ -143,7 +150,7 @@ void Sandbox2D::onImGuiRender()
         ImGui::Text("Indices: %d", stats.getTotalIndexCount());
 
         ImGui::ColorEdit4("Square Color", glm::value_ptr(_imguiColor));
-        ImGui::Image(_texture->getRendererID(), ImVec2{ 256, 256 });
+        ImGui::Image(_frameBuffer->getColorAttachmentRendererID(), ImVec2{ 1600.f, 900.f });
         ImGui::End();
 	}
     else 
