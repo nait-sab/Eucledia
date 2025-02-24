@@ -72,7 +72,7 @@ void ExampleLayer::onUpdate(Eucledia::Timestep ts)
 
 	Eucledia::Renderer::beginScene(_cameraController.getCamera());
 
-	glm::mat4 scale = glm::scale(glm::mat4(1), glm::vec3(0.1));
+	glm::mat4 scale = glm::scale(glm::mat4(1), glm::vec3(0.1f));
 
 	_shaderLibrary.get("square")->bind();
 	_shaderLibrary.get("square")->setFloat4("u_color", _squareColor);

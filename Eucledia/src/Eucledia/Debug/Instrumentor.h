@@ -69,13 +69,10 @@ namespace Eucledia
         {
             std::stringstream json;
 
-            std::string name = result.name;
-            std::replace(name.begin(), name.end(), '"', '\'');
-
             json << ",{";
             json << "\"cat\":\"function\",";
             json << "\"dur\":" << (result.elapsedTime.count()) << ',';
-            json << "\"name\":\"" << name << "\",";
+            json << "\"name\":\"" << result.name << "\",";
             json << "\"ph\":\"X\",";
             json << "\"pid\":0,";
             json << "\"tid\":" << result.threadID << ",";
@@ -159,6 +156,45 @@ namespace Eucledia
         std::chrono::time_point<std::chrono::steady_clock> _startTimepoint;
         bool _stopped;
     };
+
+    namespace InstrumentorUtils 
+    {
+        template <size_t N>
+        struct ChangeResult
+        {
+            char data[N];
+        };
+
+
+        template <size_t N, size_t K>
+        constexpr auto cleanupOutputString(const char(&expr)[N], const char(&remove)[K])
+        {
+            ChangeResult<N> result = {};
+
+            size_t srcIndex = 0;
+            size_t dstIndex = 0;
+
+            while (srcIndex < N)
+            {
+                size_t matchIndex = 0;
+
+                while (matchIndex < K - 1 && srcIndex + matchIndex < N - 1 && expr[srcIndex + matchIndex] == remove[matchIndex])
+                {
+                    matchIndex++;
+                }
+
+                if (matchIndex == K - 1)
+                {
+                    srcIndex += matchIndex;
+                }
+
+                result.data[dstIndex++] = expr[srcIndex] == '"' ? '\'' : expr[srcIndex];
+                srcIndex++;
+            }
+
+            return result;
+        }
+    }
 }
 
 #define EUCLEDIA_PROFILE 0
@@ -166,7 +202,7 @@ namespace Eucledia
 #if EUCLEDIA_PROFILE
     #define EUCLEDIA_PROFILE_BEGIN_SESSION(name, filepath) ::Eucledia::Instrumentor::get().beginSession(name, filepath)
     #define EUCLEDIA_PROFILE_END_SESSION() ::Eucledia::Instrumentor::get().endSession()
-    #define EUCLEDIA_PROFILE_SCOPE(name) ::Eucledia::InstrumentationTimer timer##__LINE__(name);
+    #define EUCLEDIA_PROFILE_SCOPE(name) constexpr auto fixedName = ::Eucledia::InstrumentorUtils::cleanupOutputString(name, "__cdecl"); timer##__LINE__(fixedName.data);
     #define EUCLEDIA_PROFILE_FUNCTION() EUCLEDIA_PROFILE_SCOPE(__FUNCSIG__)
 #else
     #define EUCLEDIA_PROFILE_BEGIN_SESSION(name, filepath)

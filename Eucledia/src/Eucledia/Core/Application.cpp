@@ -55,13 +55,13 @@ namespace Eucledia
 		dispatcher.dispatch<WindowResizeEvent>(EUCLEDIA_BIND_EVENT_FN(Application::onWindowResized));
 
 		for (auto it = _layerStack.rbegin(); it != _layerStack.rend(); ++it)
-		{
-			(*it)->onEvent(event);
-			
+		{			
 			if (event._handled)
 			{
 				break;
 			}
+
+			(*it)->onEvent(event);
 		}
 	}
 

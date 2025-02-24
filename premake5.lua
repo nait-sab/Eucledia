@@ -54,7 +54,8 @@ project "Eucledia"
 
 	defines
 	{
-		"_CTR_SECURE_NO_WARNINGS"
+		"_CTR_SECURE_NO_WARNINGS",
+		"GLFW_INCLUDE_NONE"
 	}
 
 	includedirs 
@@ -78,12 +79,6 @@ project "Eucledia"
 
 	filter "system:windows"
 		systemversion "latest"
-
-		defines 
-		{
-			"EUCLEDIA_BUILD_DLL",
-			"GLFW_INCLUDE_NONE"
-		}
 
 	filter "configurations:Debug"
 		defines "EUCLEDIA_DEBUG"

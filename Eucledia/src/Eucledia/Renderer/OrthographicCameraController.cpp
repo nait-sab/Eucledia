@@ -78,7 +78,7 @@ namespace Eucledia
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
 
-		_zoomLevel -= event.getYOffset() * .25;
+		_zoomLevel -= event.getYOffset() * .25f;
 		_zoomLevel = std::max(_zoomLevel, .25f);
 		_camera.setProjection(-_aspectRatio * _zoomLevel, _aspectRatio * _zoomLevel, -_zoomLevel, _zoomLevel);
 		return false;

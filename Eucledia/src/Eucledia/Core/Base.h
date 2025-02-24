@@ -12,12 +12,13 @@
 #endif
 
 #ifdef EUCLEDIA_DEBUG
+	#define EUCLEDIA_DEBUGBREAK() __debugbreak()
 	#define EUCLEDIA_ENABLE_ASSERTS
 #endif
 
 #ifdef EUCLEDIA_ENABLE_ASSERTS
-	#define EUCLEDIA_ASSERT(x, ...) { if(!(x)) { EUCLEDIA_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
-	#define EUCLEDIA_CORE_ASSERT(x, ...) { if(!(x)) { EUCLEDIA_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
+	#define EUCLEDIA_ASSERT(x, ...) { if(!(x)) { EUCLEDIA_ERROR("Assertion Failed: {0}", __VA_ARGS__); EUCLEDIA_DEBUGBREAK(); } }
+	#define EUCLEDIA_CORE_ASSERT(x, ...) { if(!(x)) { EUCLEDIA_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); EUCLEDIA_DEBUGBREAK(); } }
 #else
 	#define EUCLEDIA_ASSERT(x, ...)
 	#define EUCLEDIA_CORE_ASSERT(x, ...)

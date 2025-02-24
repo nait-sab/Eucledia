@@ -9,7 +9,7 @@
 
 #include <chrono>
 
-Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), _cameraController(16.f / 9.f)
+Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), _cameraController(16.f / 9.f), _imguiColor({ 0.8, 0.2, 0.2, 1 })
 {
 }
 
@@ -47,19 +47,19 @@ void Sandbox2D::onUpdate(Eucledia::Timestep ts)
 
 		Eucledia::Renderer2D::beginScene(_cameraController.getCamera());
 		Eucledia::Renderer2D::drawRotatedQuad({ 1, 0 }, { .8, .8 }, -45, {0.5, 0.2, 0.6, 1});
-		Eucledia::Renderer2D::drawQuad({ -1, 0 }, { .8, .8 }, { 0.8, 0.2, 0.2, 1 });
+		Eucledia::Renderer2D::drawQuad({ -1, 0 }, { .8, .8 }, _imguiColor);
 		Eucledia::Renderer2D::drawQuad({ .5, -.5 }, { .5, .75 }, { 0.8, 0.2, 0.8, 1 });
 		Eucledia::Renderer2D::drawQuad({ 0, 0, -0.1 }, { 20, 20 },  _texture, 10);
 		Eucledia::Renderer2D::drawRotatedQuad({ -2, 0, 0 }, { 1, 1 }, rotation, _texture, 20);
-		//Eucledia::Renderer2D::endScene();
+		Eucledia::Renderer2D::endScene();
 
-		//Eucledia::Renderer2D::beginScene(_cameraController.getCamera());
+		Eucledia::Renderer2D::beginScene(_cameraController.getCamera());
 
-		for (float y = -5.f; y < 5.f; y += .1)
+		for (float y = -5.f; y < 5.f; y += .5)
 		{
-			for (float x = -5.f; x < 5.f; x += .1)
+			for (float x = -5.f; x < 5.f; x += .5)
 			{
-				glm::vec4 color = { (x + 5.f) / 10.f, .4, (y + 5.f) / 10.f, .5 };
+				glm::vec4 color = { (x + 5.f) / 10.f, .4, (y + 5.f) / 10.f, 1 };
 				Eucledia::Renderer2D::drawQuad({ x, y }, { .45, .45 }, color);
 			}
 		}
@@ -82,7 +82,7 @@ void Sandbox2D::onImGuiRender()
 	ImGui::Text("Vertices: %d", stats.getTotalVertexCount());
 	ImGui::Text("Indices: %d", stats.getTotalIndexCount());
 
-	ImGui::ColorEdit3("Square Color", glm::value_ptr(_squareColor));
+	ImGui::ColorEdit3("Square Color", glm::value_ptr(_imguiColor));
 	ImGui::End();
 }
 

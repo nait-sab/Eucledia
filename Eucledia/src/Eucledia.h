@@ -1,7 +1,7 @@
 #pragma once
 
 // For use by Eucledia applications
-#include "Eucledia/Core/Core.h"
+#include "Eucledia/Core/Base.h"
 
 #include "Eucledia/Core/Application.h"
 #include "Eucledia/Core/Layer.h"

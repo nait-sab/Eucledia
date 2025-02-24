@@ -66,16 +66,54 @@ namespace Eucledia
 		const auto& layout = vertexBuffer->getlayout();
 		for (const auto& element : layout)
 		{
-			glEnableVertexAttribArray(_vertexBufferIndex);
-			glVertexAttribPointer(
-				_vertexBufferIndex,
-				element.getComponentCount(),
-				ShaderDataTypeToOpenGLBaseType(element._type),
-				element._normalized ? GL_TRUE : GL_FALSE,
-				layout.getStride(),
-				(const void*)element._offset
-			);
-			_vertexBufferIndex++;
+			switch (element._type)
+			{
+				case ShaderDataType::Float:
+				case ShaderDataType::Float2:
+				case ShaderDataType::Float3:
+				case ShaderDataType::Float4:
+				case ShaderDataType::Int:
+				case ShaderDataType::Int2:
+				case ShaderDataType::Int3:
+				case ShaderDataType::Int4:
+				case ShaderDataType::Bool:
+				{
+					glEnableVertexAttribArray(_vertexBufferIndex);
+					glVertexAttribPointer(
+						_vertexBufferIndex,
+						element.getComponentCount(),
+						ShaderDataTypeToOpenGLBaseType(element._type),
+						element._normalized ? GL_TRUE : GL_FALSE,
+						layout.getStride(),
+						(const void*)element._offset
+					);
+					_vertexBufferIndex++;
+					break;
+				}
+				case ShaderDataType::Mat3:
+				case ShaderDataType::Mat4:
+				{
+					uint8_t count = element.getComponentCount();
+					
+					for (uint8_t index = 0; index < count; index++)
+					{
+						glEnableVertexAttribArray(_vertexBufferIndex);
+						glVertexAttribPointer(
+							_vertexBufferIndex,
+							count,
+							ShaderDataTypeToOpenGLBaseType(element._type),
+							element._normalized ? GL_TRUE : GL_FALSE,
+							layout.getStride(),
+							(const void*)(sizeof(float) * count * 1)
+						);
+						glVertexAttribDivisor(_vertexBufferIndex, 1);
+						_vertexBufferIndex++;
+					}
+					break;
+				}
+				default:
+					EUCLEDIA_CORE_ASSERT(false, "Unknow ShaderDataType");
+			}
 		}
 
 		_vertexBuffers.push_back(vertexBuffer);

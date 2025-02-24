@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Eucledia/Core/Core.h"
+#include "Eucledia/Core/Base.h"
 
 #include "Eucledia/Core/Window.h"
 #include "Eucledia/Core/LayerStack.h"
