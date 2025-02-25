@@ -284,34 +284,11 @@ namespace Eucledia
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
 
-		constexpr size_t quadVertexCount = 4;
-		// 0 is the empty texture
-		const float textureIndex = 0;
-		constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
-		const float textureMultiplier = 1;
-
-		if (_data.quadIndexCount >= Renderer2DData::maxIndices)
-		{
-			flushAndReset();
-		}
-
 		glm::mat4 transform = glm::translate(glm::mat4(1), position);
 		transform *= glm::rotate(glm::mat4(1), glm::radians(rotation), { 0, 0, 1 });
 		transform *= glm::scale(glm::mat4(1), { size.x, size.y, 1 });
 
-		for (size_t index = 0; index < quadVertexCount; index++)
-		{
-			_data.quadVBPointer->position = transform * _data.quadVertexPositions[index];
-			_data.quadVBPointer->color = color;
-			_data.quadVBPointer->textCoord = textureCoords[index];
-			_data.quadVBPointer->textureIndex = textureIndex;
-			_data.quadVBPointer->textureMultiplier = textureMultiplier;
-			_data.quadVBPointer++;
-		}
-
-		_data.quadIndexCount += 6;
-
-		_data.stats.quadCount++;
+		drawQuad(transform, color);
 	}
 
 	void Renderer2D::drawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const ref<Texture2D>& texture, float multiplier, const glm::vec4& tintColor)
@@ -323,55 +300,11 @@ namespace Eucledia
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
 
-		constexpr size_t quadVertexCount = 4;
-		constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
-
-		if (_data.quadIndexCount >= Renderer2DData::maxIndices)
-		{
-			flushAndReset();
-		}
-
-		float textureIndex = 0;
-
-		// Skip index 0 of the empty texture
-		for (uint32_t index = 1; index < _data.textureSlotsIndex; index++)
-		{
-			if (*_data.textureSlots[index].get() == *texture.get())
-			{
-				textureIndex = (float)index;
-				break;
-			}
-		}
-
-		if (textureIndex == 0)
-		{
-			if (_data.textureSlotsIndex >= Renderer2DData::maxTextureSlots)
-			{
-				flushAndReset();
-			}
-
-			textureIndex = (float)_data.textureSlotsIndex;
-			_data.textureSlots[_data.textureSlotsIndex] = texture;
-			_data.textureSlotsIndex++;
-		}
-
 		glm::mat4 transform = glm::translate(glm::mat4(1), position);
 		transform *= glm::rotate(glm::mat4(1), glm::radians(rotation), { 0, 0, 1 });
 		transform *= glm::scale(glm::mat4(1), { size.x, size.y, 1 });
 
-		for (size_t index = 0; index < quadVertexCount; index++)
-		{
-			_data.quadVBPointer->position = transform * _data.quadVertexPositions[index];
-			_data.quadVBPointer->color = tintColor;
-			_data.quadVBPointer->textCoord = textureCoords[index];
-			_data.quadVBPointer->textureIndex = textureIndex;
-			_data.quadVBPointer->textureMultiplier = multiplier;
-			_data.quadVBPointer++;
-		}
-
-		_data.quadIndexCount += 6;
-
-		_data.stats.quadCount++;
+		drawQuad(transform, texture, multiplier, tintColor);
 	}
 
 	void Renderer2D::resetStats()

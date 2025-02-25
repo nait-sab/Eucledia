@@ -182,7 +182,8 @@ project "Sandbox"
 		"Eucledia/vendor/sdplog/include",
 		"Eucledia/src",
 		"Eucledia/vendor",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.entt}"
 	}
 
 	links {
