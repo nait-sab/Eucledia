@@ -113,6 +113,20 @@ namespace Eucledia
 		delete[] _data.quadVBBase;
 	}
 
+	void Renderer2D::beginScene(const Camera& camera, const glm::mat4& transform)
+	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
+		glm::mat4 viewProjection = camera.getProjection() * glm::inverse(transform);
+
+		_data.textureShader->bind();
+		_data.textureShader->setMat4("viewProjection", viewProjection);
+
+		_data.quadIndexCount = 0;
+		_data.quadVBPointer = _data.quadVBBase;
+		_data.textureSlotsIndex = 1;
+	}
+
 	void Renderer2D::beginScene(const OrthographicCamera& camera)
 	{
 		EUCLEDIA_PROFILE_FUNCTION();

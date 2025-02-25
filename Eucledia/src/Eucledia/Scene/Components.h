@@ -2,6 +2,8 @@
 
 #include <glm/glm.hpp>
 
+#include <Eucledia/Renderer/Camera.h>
+
 namespace Eucledia
 {
 	struct TagComponent
@@ -31,9 +33,16 @@ namespace Eucledia
 
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
-		SpriteRendererComponent(const glm::vec4 color) : color(color) {}
+		SpriteRendererComponent(const glm::vec4& color) : color(color) {}
+	};
 
-		operator glm::vec4& () { return color; }
-		operator const glm::vec4& () const { return color; }
+	struct CameraComponent
+	{
+		Camera camera;
+		bool primary = true;
+
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent&) = default;
+		CameraComponent(const Camera& camera) : camera(camera) {}
 	};
 }

@@ -34,12 +34,35 @@ namespace Eucledia
 
 	void Scene::onUpdate(Timestep ts)
 	{
-		auto group = _registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+		Camera* mainCamera = nullptr;
+		glm::mat4* cameraTransform = nullptr;
 
+		auto group = _registry.view<TransformComponent, CameraComponent>();
 		for (auto entity : group)
 		{
-			auto& [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-			Renderer2D::drawQuad(transform, sprite);
+			auto& [transform, camera] = group.get<TransformComponent, CameraComponent>(entity);
+
+			if (camera.primary)
+			{
+				mainCamera = &camera.camera;
+				cameraTransform = &transform.transform;
+				break;
+			}
+		}
+
+		if (mainCamera)
+		{
+			Renderer2D::beginScene(*mainCamera, *cameraTransform);
+
+			auto group = _registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+
+			for (auto entity : group)
+			{
+				auto& [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+				Renderer2D::drawQuad(transform, sprite.color);
+			}
+
+			Renderer2D::endScene();
 		}
 	}
 }

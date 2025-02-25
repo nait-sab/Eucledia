@@ -32,6 +32,9 @@ namespace Eucledia
         auto square = _activeScene->createEntity("Green Square");
         square.addComponent<SpriteRendererComponent>(glm::vec4{ 0, 1, 0, 1 });
         _squareEntity = square;
+
+        _cameraEntity = _activeScene->createEntity("camera Entity");
+        _cameraEntity.addComponent<CameraComponent>(glm::ortho(-16.f, 16.f, -9.f, 9.f, -1.f, 1.f));
     }
 
     void EditorLayer::onDetach()
@@ -63,9 +66,7 @@ namespace Eucledia
         RenderCommand::setClearColor({ .15f, .15f, .15f, 1 });
         RenderCommand::clear();
 
-        Renderer2D::beginScene(_cameraController.getCamera());
         _activeScene->onUpdate(ts);
-        Renderer2D::endScene();
 
         _frameBuffer->unbind();
     }
@@ -149,6 +150,9 @@ namespace Eucledia
             ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));
             ImGui::Separator();
         }
+
+        auto& cameraTransform = _cameraEntity.getComponent<TransformComponent>().transform[3];
+        ImGui::DragFloat3("Camera Transform", glm::value_ptr(cameraTransform));
 
         ImGui::End();
 

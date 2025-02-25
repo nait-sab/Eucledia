@@ -4,6 +4,8 @@
 
 #include "Eucledia/Renderer/Texture.h"
 
+#include "Eucledia/Renderer/Camera.h"
+
 namespace Eucledia
 {
 	class Renderer2D
@@ -12,6 +14,7 @@ namespace Eucledia
 		static void init();
 		static void shutdown();
 
+		static void beginScene(const Camera& camera, const glm::mat4& transform);
 		static void beginScene(const OrthographicCamera& camera);
 		static void endScene();
 		static void flush();
