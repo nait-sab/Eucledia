@@ -1,5 +1,5 @@
 #include "euclediapch.h"
-#include "Platform/Windows/WindowsInput.h"
+#include "Eucledia/Core/Input.h"
 
 #include "Eucledia/Core/Application.h"
 
@@ -7,21 +7,21 @@
 
 namespace Eucledia
 {
-	bool WindowsInput::isKeyPressedImpl(int keycode)
+	bool Input::isKeyPressed(int keycode)
 	{
 		auto window = static_cast<GLFWwindow*>(Application::get().getWindow().getNativeWindow());
 		auto state = glfwGetKey(window, keycode);
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 
-	bool WindowsInput::isMouseButtonPressedImpl(int button)
+	bool Input::isMouseButtonPressed(int button)
 	{
 		auto window = static_cast<GLFWwindow*>(Application::get().getWindow().getNativeWindow());
 		auto state = glfwGetMouseButton(window, button);
 		return state == GLFW_PRESS;
 	}
 
-	std::pair<float, float> WindowsInput::getMousePositionImpl()
+	std::pair<float, float> Input::getMousePosition()
 	{
 		auto window = static_cast<GLFWwindow*>(Application::get().getWindow().getNativeWindow());
 		double xPosition, yPosition;
@@ -29,15 +29,15 @@ namespace Eucledia
 		return { (float)xPosition, (float)yPosition };
 	}
 
-	float WindowsInput::getMouseXImpl()
+	float Input::getMouseX()
 	{
-		auto [x, y] = getMousePositionImpl();
+		auto [x, y] = getMousePosition();
 		return x;
 	}
 
-	float WindowsInput::getMouseYImpl()
+	float Input::getMouseY()
 	{
-		auto [x, y] = getMousePositionImpl();
+		auto [x, y] = getMousePosition();
 		return y;
 	}
 }

@@ -14,6 +14,8 @@ namespace Eucledia
 			None = 0, OpenGL = 1
 		};
 
+		virtual ~RendererAPI() = default;
+
 		virtual void init() = 0;
 		static scope<RendererAPI> create();
 
