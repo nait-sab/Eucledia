@@ -26,6 +26,7 @@ namespace Eucledia
 		ref<Framebuffer> _frameBuffer;
 		ref<Texture2D> _texture;
 
+		bool _viewportFocused = false, _viewportHovered = false;
 		glm::vec2 _viewportSize = { 0, 0 };
 
 		glm::vec4 _imguiColor;

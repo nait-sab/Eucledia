@@ -53,9 +53,12 @@ namespace Eucledia
 
 	void ImGuiLayer::onEvent(Event& event)
 	{
-		ImGuiIO& io = ImGui::GetIO();
-		event._handled |= event.isInCategory(EventCategoryMouse) & io.WantCaptureMouse;
-		event._handled |= event.isInCategory(EventCategoryKeyboard) & io.WantCaptureKeyboard;
+		if (_blockEvents)
+		{
+			ImGuiIO& io = ImGui::GetIO();
+			event._handled |= event.isInCategory(EventCategoryMouse) & io.WantCaptureMouse;
+			event._handled |= event.isInCategory(EventCategoryKeyboard) & io.WantCaptureKeyboard;
+		}
 	}
 
 	void ImGuiLayer::begin()

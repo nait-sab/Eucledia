@@ -28,6 +28,8 @@ namespace Eucledia
 
 		void close();
 
+		ImGuiLayer* getImGuiLayer() { return _imGuiLayer; }
+
 		static Application& get() { return *_instance; }
 
 	private:
