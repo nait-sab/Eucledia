@@ -74,6 +74,12 @@ namespace Eucledia
 		dispatcher.dispatch<WindowResizeEvent>(EUCLEDIA_BIND_EVENT_FN(OrthographicCameraController::onWindowResized));
 	}
 
+	void OrthographicCameraController::onResize(float width, float height)
+	{
+		_aspectRatio = width / height;
+		_camera.setProjection(-_aspectRatio * _zoomLevel, _aspectRatio * _zoomLevel, -_zoomLevel, _zoomLevel);
+	}
+
 	bool OrthographicCameraController::onMouseScrolled(MouseScrolledEvent& event)
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
@@ -88,8 +94,7 @@ namespace Eucledia
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
 
-		_aspectRatio = (float)event.getWidth() / (float)event.getHeight();
-		_camera.setProjection(-_aspectRatio * _zoomLevel, _aspectRatio * _zoomLevel, -_zoomLevel, _zoomLevel);
+		onResize((float)event.getWidth(), (float)event.getHeight());
 		return false;
 	}
 }

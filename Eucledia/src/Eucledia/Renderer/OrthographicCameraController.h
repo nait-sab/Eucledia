@@ -16,6 +16,8 @@ namespace Eucledia
 		void onUpdate(Timestep ts);
 		void onEvent(Event& event);
 
+		void onResize(float width, float height);
+
 		OrthographicCamera& getCamera() { return _camera; }
 		const OrthographicCamera& getCamera() const { return _camera; }
 

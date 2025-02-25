@@ -33,4 +33,4 @@ namespace Eucledia
 #define EUCLEDIA_INFO(...)			::Eucledia::Log::getClientLogger()->info(__VA_ARGS__)
 #define EUCLEDIA_WARN(...)			::Eucledia::Log::getClientLogger()->warn(__VA_ARGS__)
 #define EUCLEDIA_ERROR(...)			::Eucledia::Log::getClientLogger()->error(__VA_ARGS__)
-#define EUCLEDIA_CRITICAL(...)			::Eucledia::Log::getClientLogger()->critical(__VA_ARGS__)
+#define EUCLEDIA_CRITICAL(...)		::Eucledia::Log::getClientLogger()->critical(__VA_ARGS__)
