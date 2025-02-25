@@ -1,25 +1,26 @@
 #pragma once
 
-#include "entt.hpp"
-
 #include "Eucledia/Core/Timestep.h"
+
+#include <entt.hpp>
 
 namespace Eucledia
 {
+	class Entity;
+
 	class Scene
 	{
 	public:
 		Scene();
 		~Scene();
 
-		entt::entity createEntity();
-
-		// Temp
-		entt::registry& getRegistry() { return _registry; }
+		Entity createEntity(const std::string& name = std::string());
 
 		void onUpdate(Timestep ts);
 
 	private:
 		entt::registry _registry;
+
+		friend class Entity;
 	};
 }

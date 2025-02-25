@@ -4,6 +4,15 @@
 
 namespace Eucledia
 {
+	struct TagComponent
+	{
+		std::string tag;
+
+		TagComponent() = default;
+		TagComponent(const TagComponent&) = default;
+		TagComponent(const std::string& tag) : tag(tag) {}
+	};
+
 	struct TransformComponent
 	{
 		glm::mat4 transform{ 1 };

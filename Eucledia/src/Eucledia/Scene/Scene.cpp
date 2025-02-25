@@ -2,6 +2,7 @@
 #include "Eucledia/Scene/Scene.h"
 
 #include "Eucledia/Scene/Components.h"
+#include "Eucledia/Scene/Entity.h"
 #include "Eucledia/Renderer/Renderer2D.h"
 
 #include <glm/glm.hpp>
@@ -22,14 +23,19 @@ namespace Eucledia
 	{
 	}
 
-	entt::entity Scene::createEntity()
+	Entity Scene::createEntity(const std::string& name)
 	{
-		return _registry.create();
+		Entity entity = { _registry.create(), this };
+		entity.addComponent<TransformComponent>();
+		auto& tag = entity.addComponent<TagComponent>();
+		tag.tag = name.empty() ? "Entity" : name;
+		return entity;
 	}
 
 	void Scene::onUpdate(Timestep ts)
 	{
 		auto group = _registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+
 		for (auto entity : group)
 		{
 			auto& [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);

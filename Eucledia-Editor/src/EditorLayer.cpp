@@ -28,9 +28,9 @@ namespace Eucledia
         _frameBuffer = Framebuffer::create(spec);
 
         _activeScene = createRef<Scene>();
-        auto square = _activeScene->createEntity();
-        _activeScene->getRegistry().emplace<TransformComponent>(square);
-        _activeScene->getRegistry().emplace<SpriteRendererComponent>(square, glm::vec4{ 0, 1, 0, 1 });
+
+        auto square = _activeScene->createEntity("Green Square");
+        square.addComponent<SpriteRendererComponent>(glm::vec4{ 0, 1, 0, 1 });
         _squareEntity = square;
     }
 
@@ -139,8 +139,16 @@ namespace Eucledia
         ImGui::Text("Vertices: %d", stats.getTotalVertexCount());
         ImGui::Text("Indices: %d", stats.getTotalIndexCount());
 
-        auto& squareColor = _activeScene->getRegistry().get<SpriteRendererComponent>(_squareEntity).color;
-        ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));
+        if (_squareEntity)
+        {
+            ImGui::Separator();
+            auto& tag = _squareEntity.getComponent<TagComponent>().tag;
+            ImGui::Text("%s", tag.c_str());
+
+            auto& squareColor = _squareEntity.getComponent<SpriteRendererComponent>().color;
+            ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));
+            ImGui::Separator();
+        }
 
         ImGui::End();
 

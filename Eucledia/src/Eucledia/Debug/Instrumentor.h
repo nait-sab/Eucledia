@@ -27,7 +27,8 @@ namespace Eucledia
     class Instrumentor
     {
     public:
-        Instrumentor() : _currentSession(nullptr) {}
+        Instrumentor(const Instrumentor&) = delete;
+        Instrumentor(Instrumentor&&) = delete;
 
         void beginSession(const std::string& name, const std::string& filepath = "results.json")
         {
@@ -95,6 +96,13 @@ namespace Eucledia
         }
 
     private:
+        Instrumentor() : _currentSession(nullptr) {}
+
+        ~Instrumentor()
+        {
+            endSession();
+        }
+
         std::mutex _mutex;
         InstrumentationSession* _currentSession;
         std::ofstream _outputStream;
@@ -202,11 +210,15 @@ namespace Eucledia
 #if EUCLEDIA_PROFILE
     #define EUCLEDIA_PROFILE_BEGIN_SESSION(name, filepath) ::Eucledia::Instrumentor::get().beginSession(name, filepath)
     #define EUCLEDIA_PROFILE_END_SESSION() ::Eucledia::Instrumentor::get().endSession()
-    #define EUCLEDIA_PROFILE_SCOPE(name) constexpr auto fixedName = ::Eucledia::InstrumentorUtils::cleanupOutputString(name, "__cdecl"); timer##__LINE__(fixedName.data);
+    #define EUCLEDIA_PROFILE_SCOPE_LINE2(name, line) constexpr auto fixedName = ::Eucledia::InstrumentorUtils::cleanupOutputString(name, "__cdecl"); timer##__LINE__(fixedName##line.data);
+    #define EUCLEDIA_PROFILE_SCOPE_LINE(name, line) EUCLEDIA_PROFILE_SCOPE_LINE2(name, line)
+    #define EUCLEDIA_PROFILE_SCOPE(name) EUCLEDIA_PROFILE_SCOPE_LINE(name, __LINE__)
     #define EUCLEDIA_PROFILE_FUNCTION() EUCLEDIA_PROFILE_SCOPE(__FUNCSIG__)
 #else
     #define EUCLEDIA_PROFILE_BEGIN_SESSION(name, filepath)
     #define EUCLEDIA_PROFILE_END_SESSION()
+    #define EUCLEDIA_PROFILE_SCOPE_LINE2(name, line)
+    #define EUCLEDIA_PROFILE_SCOPE_LINE(name, line)
     #define EUCLEDIA_PROFILE_SCOPE(name)
     #define EUCLEDIA_PROFILE_FUNCTION()
 #endif
