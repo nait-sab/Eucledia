@@ -15,8 +15,8 @@ namespace Eucledia
 
 		void onUpdate() override;
 
-		unsigned int getWidth() const override { return _data._width; }
-		unsigned int getHeight() const override { return _data._height; }
+		uint32_t getWidth() const override { return _data._width; }
+		uint32_t getHeight() const override { return _data._height; }
 
 		// Window attributes
 		void setEventCallback(const EventCallbackFn& callback) override 
@@ -35,7 +35,7 @@ namespace Eucledia
 		struct WindowData
 		{
 			std::string _title;
-			unsigned int _width, _height;
+			uint32_t _width, _height;
 			bool _vSync;
 			EventCallbackFn _eventCallback;
 		};

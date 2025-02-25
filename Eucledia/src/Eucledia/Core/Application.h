@@ -15,7 +15,7 @@ namespace Eucledia
 	class Application
 	{
 	public:
-		Application();
+		Application(const std::string& name = "Eucledia App");
 		virtual ~Application();
 
 		void run();
@@ -47,5 +47,5 @@ namespace Eucledia
 	};
 
 	// To be defined in client
-	Application* CreateApplication();
+	Application* createApplication();
 }

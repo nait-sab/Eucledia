@@ -4,14 +4,14 @@
 
 #ifdef EUCLEDIA_PLATFORM_WNDOWS
 
-extern Eucledia::Application* Eucledia::CreateApplication();
+extern Eucledia::Application* Eucledia::createApplication();
 
 int main(int argc, char** argv)
 {
 	Eucledia::Log::init();
 
 	EUCLEDIA_PROFILE_BEGIN_SESSION("Startup", "EuclediaProfile-Startup.json");
-	auto app = Eucledia::CreateApplication();
+	auto app = Eucledia::createApplication();
 	EUCLEDIA_PROFILE_END_SESSION();
 
 	EUCLEDIA_PROFILE_BEGIN_SESSION("Runtime", "EuclediaProfile-Runtime.json");

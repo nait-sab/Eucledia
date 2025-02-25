@@ -20,7 +20,6 @@ private:
 	// Temp
 	Eucledia::ref<Eucledia::VertexArray> _squareVA;
 	Eucledia::ShaderLibrary _shaderLibrary;
-	Eucledia::ref<Eucledia::Framebuffer> _frameBuffer;
 	Eucledia::ref<Eucledia::Texture2D> _texture;
 
 	glm::vec4 _imguiColor;

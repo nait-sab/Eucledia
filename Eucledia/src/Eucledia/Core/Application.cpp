@@ -9,14 +9,14 @@ namespace Eucledia
 {
 	Application* Application::_instance = nullptr;
 
-	Application::Application()
+	Application::Application(const std::string& name)
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
 		 
 		EUCLEDIA_CORE_ASSERT(!_instance, "Application already exists")
 		_instance = this;
 
-		_window = Window::create();
+		_window = Window::create(WindowProps(name));
 		_window->setEventCallback(EUCLEDIA_BIND_EVENT_FN(Application::onEvent));
 
 		Renderer::init();

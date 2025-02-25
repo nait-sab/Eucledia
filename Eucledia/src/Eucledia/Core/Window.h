@@ -10,10 +10,10 @@ namespace Eucledia
 	struct WindowProps
 	{
 		std::string _title;
-		unsigned int _width;
-		unsigned int _height;
+		uint32_t _width;
+		uint32_t _height;
 
-		WindowProps(const std::string& title = "Eucledia Engine", unsigned int width = 1600, unsigned int height = 900) 
+		WindowProps(const std::string& title = "Eucledia Engine", uint32_t width = 1600, uint32_t height = 900)
 			: _title(title), _width(width), _height(height) {}
 	};
 
@@ -27,8 +27,8 @@ namespace Eucledia
 
 		virtual void onUpdate() = 0;
 
-		virtual unsigned int getWidth() const = 0;
-		virtual unsigned int getHeight() const = 0;
+		virtual uint32_t getWidth() const = 0;
+		virtual uint32_t getHeight() const = 0;
 
 		// Window attributes
 		virtual void setEventCallback(const EventCallbackFn& callback) = 0;

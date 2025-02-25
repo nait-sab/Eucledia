@@ -4,22 +4,22 @@
 #include "Sandbox2D.h"
 #include "ExampleLayer.h"
 
-class Sandbox : public Eucledia::Application
+class App : public Eucledia::Application
 {
 public:
-	Sandbox()
+	App() : Application("Eucledia App")
 	{
 		// pushLayer(new ExampleLayer());
 		pushLayer(new Sandbox2D());
 	}
 
-	~Sandbox()
+	~App()
 	{
 
 	}
 };
 
-Eucledia::Application* Eucledia::CreateApplication()
+Eucledia::Application* Eucledia::createApplication()
 {
-	return new Sandbox();
+	return new App();
 }

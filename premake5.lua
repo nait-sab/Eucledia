@@ -28,7 +28,6 @@ group "Dependencies"
 	include "Eucledia/vendor/Glad"
 	include "Eucledia/vendor/imgui"
 	include "Eucledia/vendor/glm"
-
 group ""
 
 project "Eucledia"
@@ -75,6 +74,61 @@ project "Eucledia"
 		"GLAD",
 		"ImGui",
 		"opengl32.lib"
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+
+	filter "configurations:Debug"
+		defines "EUCLEDIA_DEBUG"
+		runtime "Debug"
+		symbols "on"
+
+	filter "configurations:Release"
+		defines "EUCLEDIA_RELEASE"
+		runtime "Release"
+		optimize "on"
+
+	filter "configurations:Dist"
+		defines "EUCLEDIA_DIST"
+		runtime "Release"
+		optimize "on"
+
+	filter { "system:windows", "configurations:Debug" }
+		buildoptions "/utf-8"
+
+	filter { "system:windows", "configurations:Release" }
+		buildoptions "/utf-8"
+
+	filter { "system:windows", "configurations:Dist" }
+		buildoptions "/utf-8"
+
+project "Eucledia-Editor"
+	location "Eucledia-Editor"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
+
+	targetdir("bin/" .. outputdir .. "/%{prj.name}")
+	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files 
+	{
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.cpp"
+	}
+
+	includedirs 
+	{
+		"Eucledia/vendor/sdplog/include",
+		"Eucledia/src",
+		"Eucledia/vendor",
+		"%{IncludeDir.glm}"
+	}
+
+	links {
+		"Eucledia"
 	}
 
 	filter "system:windows"
