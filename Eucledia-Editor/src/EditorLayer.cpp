@@ -37,6 +37,14 @@ namespace Eucledia
     {
         EUCLEDIA_PROFILE_FUNCTION();
 
+        FrameBufferSpecification specification = _frameBuffer->getSpecification();
+
+        if (_viewportSize.x > 0 && _viewportSize.y > 0 && (specification.width != _viewportSize.x || specification.height != _viewportSize.y))
+        {
+            _frameBuffer->resize((uint32_t)_viewportSize.x, (uint32_t)_viewportSize.y);
+            _cameraController.onResize(_viewportSize.x, _viewportSize.y);
+        }
+
         if (_viewportFocused)
         {
             _cameraController.onUpdate(ts);
@@ -161,13 +169,7 @@ namespace Eucledia
         Application::get().getImGuiLayer()->blockEvents(!_viewportFocused || !_viewportHovered);
 
         ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-
-        if (_viewportSize != *((glm::vec2*)&viewportPanelSize))
-        {
-            _frameBuffer->resize((uint32_t)viewportPanelSize.x, (uint32_t)viewportPanelSize.y);
-            _viewportSize = { viewportPanelSize.x, viewportPanelSize.y };
-            _cameraController.onResize(_viewportSize.x, _viewportSize.y);
-        }
+        _viewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
         ImGui::Image(
             _frameBuffer->getColorAttachmentRendererID(), 
