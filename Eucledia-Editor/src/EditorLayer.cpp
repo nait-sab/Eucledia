@@ -26,6 +26,12 @@ namespace Eucledia
         spec.width = 1600;
         spec.height = 900;
         _frameBuffer = Framebuffer::create(spec);
+
+        _activeScene = createRef<Scene>();
+        auto square = _activeScene->createEntity();
+        _activeScene->getRegistry().emplace<TransformComponent>(square);
+        _activeScene->getRegistry().emplace<SpriteRendererComponent>(square, glm::vec4{ 0, 1, 0, 1 });
+        _squareEntity = square;
     }
 
     void EditorLayer::onDetach()
@@ -52,41 +58,16 @@ namespace Eucledia
 
         Renderer2D::resetStats();
 
-        {
-            EUCLEDIA_PROFILE_SCOPE("Renderer clean");
-            _frameBuffer->bind();
-            RenderCommand::setClearColor({ .15f, .15f, .15f, 1 });
-            RenderCommand::clear();
-        }
+        _frameBuffer->bind();
 
-        {
-            EUCLEDIA_PROFILE_SCOPE("Renderer draw");
+        RenderCommand::setClearColor({ .15f, .15f, .15f, 1 });
+        RenderCommand::clear();
 
-            static float rotation = 0.0f;
-            rotation += ts * 40;
+        Renderer2D::beginScene(_cameraController.getCamera());
+        _activeScene->onUpdate(ts);
+        Renderer2D::endScene();
 
-            Renderer2D::beginScene(_cameraController.getCamera());
-            Renderer2D::drawRotatedQuad({ 1, 0 }, { .8, .8 }, -45, { 0.5, 0.2, 0.6, 1 });
-            Renderer2D::drawQuad({ -1, 0 }, { .8, .8 }, _imguiColor);
-            Renderer2D::drawQuad({ .5, -.5 }, { .5, .75 }, { 0.8, 0.2, 0.8, 1 });
-            Renderer2D::drawQuad({ 0, 0, -0.1 }, { 20, 20 }, _texture, 10);
-            Renderer2D::drawRotatedQuad({ -2, 0, 0 }, { 1, 1 }, rotation, _texture, 20);
-            Renderer2D::endScene();
-
-            Renderer2D::beginScene(_cameraController.getCamera());
-
-            for (float y = -5.f; y < 5.f; y += .5)
-            {
-                for (float x = -5.f; x < 5.f; x += .5)
-                {
-                    glm::vec4 color = { (x + 5.f) / 10.f, .4, (y + 5.f) / 10.f, 1 };
-                    Renderer2D::drawQuad({ x, y }, { .45, .45 }, color);
-                }
-            }
-
-            Renderer2D::endScene();
-            _frameBuffer->unbind();
-        }
+        _frameBuffer->unbind();
     }
 
     void EditorLayer::onImGuiRender()
@@ -157,7 +138,10 @@ namespace Eucledia
         ImGui::Text("Quads: %d", stats.quadCount);
         ImGui::Text("Vertices: %d", stats.getTotalVertexCount());
         ImGui::Text("Indices: %d", stats.getTotalIndexCount());
-        ImGui::ColorEdit4("Square Color", glm::value_ptr(_imguiColor));
+
+        auto& squareColor = _activeScene->getRegistry().get<SpriteRendererComponent>(_squareEntity).color;
+        ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));
+
         ImGui::End();
 
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });

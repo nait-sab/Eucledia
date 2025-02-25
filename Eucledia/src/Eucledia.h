@@ -16,6 +16,9 @@
 
 #include "Eucledia/ImGui/ImGuiLayer.h"
 
+#include "Eucledia/Scene/Scene.h"
+#include "Eucledia/Scene/Components.h"
+
 // --- Renderer -------------------------------
 #include "Eucledia/Renderer/Renderer.h"
 #include "Eucledia/Renderer/Renderer2D.h"

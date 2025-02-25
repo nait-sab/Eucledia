@@ -172,6 +172,31 @@ namespace Eucledia
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
 
+		glm::mat4 transform = glm::translate(glm::mat4(1), position);
+		transform *= glm::scale(glm::mat4(1), { size.x, size.y, 1 });
+
+		drawQuad(transform, color);
+	}
+
+	void Renderer2D::drawQuad(const glm::vec2& position, const glm::vec2& size, const ref<Texture2D>& texture, float multiplier, const glm::vec4& tintColor)
+	{
+		drawQuad({ position.x, position.y, 0 }, size, texture, multiplier);
+	}
+
+	void Renderer2D::drawQuad(const glm::vec3& position, const glm::vec2& size, const ref<Texture2D>& texture, float multiplier, const glm::vec4& tintColor)
+	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
+		glm::mat4 transform = glm::translate(glm::mat4(1), position);
+		transform *= glm::scale(glm::mat4(1), { size.x, size.y, 1 });
+
+		drawQuad(transform, texture, multiplier, tintColor);
+	}
+
+	void Renderer2D::drawQuad(const glm::mat4& transform, const glm::vec4& color)
+	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
 		constexpr size_t quadVertexCount = 4;
 
 		// 0 is the empty texture
@@ -183,9 +208,6 @@ namespace Eucledia
 		{
 			flushAndReset();
 		}
-
-		glm::mat4 transform = glm::translate(glm::mat4(1), position);
-		transform *= glm::scale(glm::mat4(1), { size.x, size.y, 1 });
 
 		for (size_t index = 0; index < quadVertexCount; index++)
 		{
@@ -202,12 +224,7 @@ namespace Eucledia
 		_data.stats.quadCount++;
 	}
 
-	void Renderer2D::drawQuad(const glm::vec2& position, const glm::vec2& size, const ref<Texture2D>& texture, float multiplier, const glm::vec4& tintColor)
-	{
-		drawQuad({ position.x, position.y, 0 }, size, texture, multiplier);
-	}
-
-	void Renderer2D::drawQuad(const glm::vec3& position, const glm::vec2& size, const ref<Texture2D>& texture, float multiplier, const glm::vec4& tintColor)
+	void Renderer2D::drawQuad(const glm::mat4& transform, const ref<Texture2D>& texture, float multiplier, const glm::vec4& tintColor)
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
 
@@ -242,9 +259,6 @@ namespace Eucledia
 			_data.textureSlots[_data.textureSlotsIndex] = texture;
 			_data.textureSlotsIndex++;
 		}
-
-		glm::mat4 transform = glm::translate(glm::mat4(1), position);
-		transform *= glm::scale(glm::mat4(1), { size.x, size.y, 1 });
 
 		for (size_t index = 0; index < quadVertexCount; index++)
 		{

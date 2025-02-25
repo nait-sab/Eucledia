@@ -22,6 +22,7 @@ IncludeDir["Glad"] = "Eucledia/vendor/Glad/include"
 IncludeDir["ImGui"] = "Eucledia/vendor/imgui"
 IncludeDir["glm"] = "Eucledia/vendor/glm"
 IncludeDir["stb_image"] = "Eucledia/vendor/stb_image"
+IncludeDir["entt"] = "Eucledia/vendor/entt/include"
 
 group "Dependencies"
 	include "Eucledia/vendor/GLFW"
@@ -65,7 +66,8 @@ project "Eucledia"
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb_image}"
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.entt}"
 	}
 
 	links
@@ -124,7 +126,8 @@ project "Eucledia-Editor"
 		"Eucledia/vendor/sdplog/include",
 		"Eucledia/src",
 		"Eucledia/vendor",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.entt}"
 	}
 
 	links {

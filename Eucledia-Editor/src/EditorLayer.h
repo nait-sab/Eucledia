@@ -26,6 +26,9 @@ namespace Eucledia
 		ref<Framebuffer> _frameBuffer;
 		ref<Texture2D> _texture;
 
+		ref<Scene> _activeScene;
+		entt::entity _squareEntity;
+
 		bool _viewportFocused = false, _viewportHovered = false;
 		glm::vec2 _viewportSize = { 0, 0 };
 
