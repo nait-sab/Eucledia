@@ -34,7 +34,7 @@ namespace Eucledia
         _squareEntity = square;
 
         _cameraEntity = _activeScene->createEntity("camera Entity");
-        _cameraEntity.addComponent<CameraComponent>(glm::ortho(-16.f, 16.f, -9.f, 9.f, -1.f, 1.f));
+        _cameraEntity.addComponent<CameraComponent>();
     }
 
     void EditorLayer::onDetach()
@@ -52,6 +52,7 @@ namespace Eucledia
         {
             _frameBuffer->resize((uint32_t)_viewportSize.x, (uint32_t)_viewportSize.y);
             _cameraController.onResize(_viewportSize.x, _viewportSize.y);
+            _activeScene->onViewportResize((uint32_t)_viewportSize.x, (uint32_t)_viewportSize.y);
         }
 
         if (_viewportFocused)

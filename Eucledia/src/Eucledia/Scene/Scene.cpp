@@ -37,10 +37,10 @@ namespace Eucledia
 		Camera* mainCamera = nullptr;
 		glm::mat4* cameraTransform = nullptr;
 
-		auto group = _registry.view<TransformComponent, CameraComponent>();
-		for (auto entity : group)
+		auto view = _registry.view<TransformComponent, CameraComponent>();
+		for (auto entity : view)
 		{
-			auto& [transform, camera] = group.get<TransformComponent, CameraComponent>(entity);
+			auto& [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
 
 			if (camera.primary)
 			{
@@ -63,6 +63,23 @@ namespace Eucledia
 			}
 
 			Renderer2D::endScene();
+		}
+	}
+
+	void Scene::onViewportResize(uint32_t width, uint32_t height)
+	{
+		_viewportWidth = width;
+		_viewportHeight = height;
+
+		auto view = _registry.view<CameraComponent>();
+		for (auto entity : view)
+		{
+			auto& cameraComponant = view.get<CameraComponent>(entity);
+
+			if (!cameraComponant.fixedAspectRatio)
+			{
+				cameraComponant.camera.setViewportSize(width, height);
+			}
 		}
 	}
 }

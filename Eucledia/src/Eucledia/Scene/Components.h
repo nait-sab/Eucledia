@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 
-#include <Eucledia/Renderer/Camera.h>
+#include <Eucledia/Scene/SceneCamera.h>
 
 namespace Eucledia
 {
@@ -38,11 +38,11 @@ namespace Eucledia
 
 	struct CameraComponent
 	{
-		Camera camera;
+		SceneCamera camera;
 		bool primary = true;
+		bool fixedAspectRatio = false;
 
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
-		CameraComponent(const Camera& camera) : camera(camera) {}
 	};
 }
