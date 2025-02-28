@@ -24,15 +24,7 @@ namespace Eucledia
 		EUCLEDIA_CORE_INFO("	Renderer: {0}", reinterpret_cast<const char*>(glGetString(GL_RENDERER)));
 		EUCLEDIA_CORE_INFO("	Version: {0}", reinterpret_cast<const char*>(glGetString(GL_VERSION)));
 
-	#ifdef EUCLEDIA_ENABLE_ASSERTS
-		int versionMajor, versionMinor;
-		glGetIntegerv(GL_MAJOR_VERSION, &versionMajor);
-		glGetIntegerv(GL_MINOR_VERSION, &versionMinor);
-		EUCLEDIA_CORE_ASSERT(
-			versionMajor > 4 || (versionMajor == 4 && versionMinor >= 5), 
-			"Eucledia requires OpenGL version 4.5 or better"
-		);
-	#endif
+		EUCLEDIA_CORE_ASSERT(GLVersion.major > 4 || (GLVersion.major == 4 && GLVersion.minor >= 5), "Eucledia requires OpenGL version 4.5 or better");
 	}
 
 	void OpenGLContext::swapBuffers()

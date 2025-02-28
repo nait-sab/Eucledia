@@ -104,7 +104,7 @@ namespace Eucledia
 							ShaderDataTypeToOpenGLBaseType(element._type),
 							element._normalized ? GL_TRUE : GL_FALSE,
 							layout.getStride(),
-							(const void*)(sizeof(float) * count * 1)
+							(const void*)(element._offset + sizeof(float) * count * 1)
 						);
 						glVertexAttribDivisor(_vertexBufferIndex, 1);
 						_vertexBufferIndex++;

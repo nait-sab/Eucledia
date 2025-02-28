@@ -1,5 +1,11 @@
 #pragma once
 
+#ifdef EUCLEDIA_PLATFORM_WNDOWS
+	#ifndef NOMINAX
+		#define NOMIMAX
+	#endif
+#endif
+
 #include <iostream>
 #include <memory>
 #include <utility>
@@ -12,6 +18,8 @@
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
+
+#include "Eucledia/Core/Base.h"
 
 #include "Eucledia/Core/Log.h"
 

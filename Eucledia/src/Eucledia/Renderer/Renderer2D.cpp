@@ -255,7 +255,7 @@ namespace Eucledia
 		// Skip index 0 of the empty texture
 		for (uint32_t index = 1; index < _data.textureSlotsIndex; index++)
 		{
-			if (*_data.textureSlots[index].get() == *texture.get())
+			if (*_data.textureSlots[index] == *texture)
 			{
 				textureIndex = (float)index;
 				break;

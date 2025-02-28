@@ -1,6 +1,6 @@
 #pragma once
 
-#include "euclediapch.h"
+#include <sstream>
 
 #include "Eucledia/Core/Base.h"
 #include "Eucledia/Events/Event.h"

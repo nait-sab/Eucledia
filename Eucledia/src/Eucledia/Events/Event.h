@@ -1,8 +1,9 @@
 #pragma once
 
-#include "euclediapch.h"
+#include <functional>
 
 #include "Eucledia/Core/Base.h"
+#include "Eucledia/Debug/Instrumentor.h"
 
 namespace Eucledia
 {

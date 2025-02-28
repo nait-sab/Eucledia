@@ -70,7 +70,6 @@ namespace Eucledia
 				result.resize(file.tellg());
 				file.seekg(0, std::ios::beg);
 				file.read(&result[0], result.size());
-				file.close();
 			}
 			else
 			{
