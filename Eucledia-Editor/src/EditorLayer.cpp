@@ -35,6 +35,52 @@ namespace Eucledia
 
         _cameraEntity = _activeScene->createEntity("camera Entity");
         _cameraEntity.addComponent<CameraComponent>();
+
+        _secondCamera = _activeScene->createEntity("Side Camera Entity");
+        auto& secondCamera = _secondCamera.addComponent<CameraComponent>();
+        secondCamera.primary = false;
+
+        class CameraController : public ScriptableEntity
+        {
+        public:
+            void onCreate()
+            {
+                
+            }
+
+            void onDestroy()
+            {
+
+            }
+
+            void onUpdate(Timestep ts)
+            {
+                auto& transform = getComponent<TransformComponent>().transform;
+                float speed = 5.f;
+
+                if (Input::isKeyPressed(EUCLEDIA_KEY_A))
+                {
+                    transform[3][0] -= speed * ts;
+                }
+
+                if (Input::isKeyPressed(EUCLEDIA_KEY_D))
+                {
+                    transform[3][0] += speed * ts;
+                }
+
+                if (Input::isKeyPressed(EUCLEDIA_KEY_W))
+                {
+                    transform[3][1] += speed * ts;
+                }
+
+                if (Input::isKeyPressed(EUCLEDIA_KEY_S))
+                {
+                    transform[3][1] -= speed * ts;
+                }
+            }
+        };
+
+        _secondCamera.addComponent<NativeScriptComponent>().bind<CameraController>();
     }
 
     void EditorLayer::onDetach()
@@ -154,6 +200,22 @@ namespace Eucledia
 
         auto& cameraTransform = _cameraEntity.getComponent<TransformComponent>().transform[3];
         ImGui::DragFloat3("Camera Transform", glm::value_ptr(cameraTransform));
+
+        if (ImGui::Checkbox("Second Camera", &_primaryCamera))
+        {
+            _cameraEntity.getComponent<CameraComponent>().primary = _primaryCamera;
+            _secondCamera.getComponent<CameraComponent>().primary = !_primaryCamera;
+        }
+
+        {
+            auto& camera = _secondCamera.getComponent<CameraComponent>().camera;
+            float orthoSize = camera.getOrthographicSize();
+
+            if (ImGui::DragFloat("Second Camera Range", &orthoSize))
+            {
+                camera.setOrthographicsSize(orthoSize);
+            }
+        }
 
         ImGui::End();
 

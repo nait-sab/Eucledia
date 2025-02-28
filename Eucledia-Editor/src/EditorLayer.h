@@ -28,7 +28,9 @@ namespace Eucledia
 
 		ref<Scene> _activeScene;
 		Entity _squareEntity;
-		Entity _cameraEntity;
+		Entity _cameraEntity, _secondCamera;
+
+		bool _primaryCamera = true;
 
 		bool _viewportFocused = false, _viewportHovered = false;
 		glm::vec2 _viewportSize = { 0, 0 };

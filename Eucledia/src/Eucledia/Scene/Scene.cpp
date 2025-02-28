@@ -34,6 +34,21 @@ namespace Eucledia
 
 	void Scene::onUpdate(Timestep ts)
 	{
+		// Update scripts
+		{
+			_registry.view<NativeScriptComponent>().each([=](auto entity, auto& nativeScriptComponent) {
+				if (!nativeScriptComponent.instance)
+				{
+					nativeScriptComponent.instantiateFunction();
+					nativeScriptComponent.instance->_entity = Entity{ entity, this };
+					nativeScriptComponent.onCreateFunction(nativeScriptComponent.instance);
+				}
+
+				nativeScriptComponent.onUpdateFunction(nativeScriptComponent.instance, ts);
+			});
+		}
+
+		// Update the current active camera
 		Camera* mainCamera = nullptr;
 		glm::mat4* cameraTransform = nullptr;
 
@@ -50,6 +65,7 @@ namespace Eucledia
 			}
 		}
 
+		// Draw every entites with both transform and sprite component
 		if (mainCamera)
 		{
 			Renderer2D::beginScene(*mainCamera, *cameraTransform);

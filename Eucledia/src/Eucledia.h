@@ -18,6 +18,7 @@
 
 #include "Eucledia/Scene/Scene.h"
 #include "Eucledia/Scene/Entity.h"
+#include "Eucledia/Scene/ScriptableEntity.h"
 #include "Eucledia/Scene/Components.h"
 
 // --- Renderer -------------------------------
