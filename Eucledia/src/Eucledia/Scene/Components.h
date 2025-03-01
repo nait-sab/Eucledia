@@ -51,24 +51,14 @@ namespace Eucledia
 	{
 		ScriptableEntity* instance = nullptr;
 
-		/* Functions to create and destroy the entity */
-		std::function<void()> instantiateFunction;
-		std::function<void()> destroyInstanceFunction;
-
-		/* Native functions to manage the entity */
-		std::function<void(ScriptableEntity*)> onCreateFunction;
-		std::function<void(ScriptableEntity*, Timestep)> onUpdateFunction;
-		std::function<void(ScriptableEntity*)> onDestroyFunction;
+		ScriptableEntity*(*instantiateScript)();
+		void(*destroyScript)(NativeScriptComponent*);
 
 		template<typename T>
 		void bind()
 		{
-			instantiateFunction = [&]() { instance = new T(); };
-			destroyInstanceFunction = [&]() { delete (T*)instance; instance = nullptr; };
-
-			onCreateFunction = [](ScriptableEntity* instance) { ((T*)instance)->onCreate(); };
-			onUpdateFunction = [](ScriptableEntity* instance, Timestep ts) { ((T*)instance)->onUpdate(ts); };
-			onDestroyFunction = [](ScriptableEntity* instance) { ((T*)instance)->onDestroy(); };
+			instantiateScript = []() { return static_cast<ScriptableEntity*>(new T()); };
+			destroyScript = [](NativeScriptComponent* component) { delete component->instance; component->instance = nullptr; };
 		}
 	};
 }

@@ -9,11 +9,6 @@
 
 namespace Eucledia
 {
-	static void doMaths(const glm::mat4& transform)
-	{
-
-	}
-
 	Scene::Scene()
 	{
 		
@@ -36,15 +31,16 @@ namespace Eucledia
 	{
 		// Update scripts
 		{
-			_registry.view<NativeScriptComponent>().each([=](auto entity, auto& nativeScriptComponent) {
+			_registry.view<NativeScriptComponent>().each([=](auto entity, auto& nativeScriptComponent)
+			{
 				if (!nativeScriptComponent.instance)
 				{
-					nativeScriptComponent.instantiateFunction();
+					nativeScriptComponent.instance = nativeScriptComponent.instantiateScript();
 					nativeScriptComponent.instance->_entity = Entity{ entity, this };
-					nativeScriptComponent.onCreateFunction(nativeScriptComponent.instance);
+					nativeScriptComponent.instance->onCreate();
 				}
 
-				nativeScriptComponent.onUpdateFunction(nativeScriptComponent.instance, ts);
+				nativeScriptComponent.instance->onUpdate(ts);
 			});
 		}
 
@@ -55,7 +51,7 @@ namespace Eucledia
 		auto view = _registry.view<TransformComponent, CameraComponent>();
 		for (auto entity : view)
 		{
-			auto& [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
+			auto [transform, camera] = view.get<TransformComponent, CameraComponent>(entity);
 
 			if (camera.primary)
 			{
@@ -74,7 +70,7 @@ namespace Eucledia
 
 			for (auto entity : group)
 			{
-				auto& [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 				Renderer2D::drawQuad(transform, sprite.color);
 			}
 

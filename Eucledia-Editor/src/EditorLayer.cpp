@@ -43,16 +43,6 @@ namespace Eucledia
         class CameraController : public ScriptableEntity
         {
         public:
-            void onCreate()
-            {
-                
-            }
-
-            void onDestroy()
-            {
-
-            }
-
             void onUpdate(Timestep ts)
             {
                 auto& transform = getComponent<TransformComponent>().transform;
@@ -80,6 +70,7 @@ namespace Eucledia
             }
         };
 
+        _cameraEntity.addComponent<NativeScriptComponent>().bind<CameraController>();
         _secondCamera.addComponent<NativeScriptComponent>().bind<CameraController>();
     }
 
@@ -201,7 +192,7 @@ namespace Eucledia
         auto& cameraTransform = _cameraEntity.getComponent<TransformComponent>().transform[3];
         ImGui::DragFloat3("Camera Transform", glm::value_ptr(cameraTransform));
 
-        if (ImGui::Checkbox("Second Camera", &_primaryCamera))
+        if (ImGui::Checkbox("First Camera", &_primaryCamera))
         {
             _cameraEntity.getComponent<CameraComponent>().primary = _primaryCamera;
             _secondCamera.getComponent<CameraComponent>().primary = !_primaryCamera;
