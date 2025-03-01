@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Eucledia.h"
+#include "Panels/SceneHierarchyPanel.h"
 
 namespace Eucledia
 {
@@ -36,6 +37,8 @@ namespace Eucledia
 		glm::vec2 _viewportSize = { 0, 0 };
 
 		glm::vec4 _imguiColor;
+
+		SceneHierarchyPanel _sceneHierarchyPanel;
 	};
 }
 

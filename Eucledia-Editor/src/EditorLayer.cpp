@@ -72,6 +72,8 @@ namespace Eucledia
 
         _cameraEntity.addComponent<NativeScriptComponent>().bind<CameraController>();
         _secondCamera.addComponent<NativeScriptComponent>().bind<CameraController>();
+
+        _sceneHierarchyPanel.setContext(_activeScene);
     }
 
     void EditorLayer::onDetach()
@@ -167,6 +169,8 @@ namespace Eucledia
 
             ImGui::EndMenuBar();
         }
+
+        _sceneHierarchyPanel.onImGuiRender();
 
         ImGui::Begin("Settings");
 
