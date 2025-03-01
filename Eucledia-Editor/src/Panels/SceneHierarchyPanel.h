@@ -22,6 +22,7 @@ namespace Eucledia
 		Entity _selectionContext;
 
 		void drawEntityNode(Entity entity);
+		void drawComponents(Entity entity);
 	};
 }
 
