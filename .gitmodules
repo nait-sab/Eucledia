@@ -1,15 +1,15 @@
 [submodule "Eucledia/vendor/sdplog"]
 	path = Eucledia/vendor/sdplog
-	url = ../../gabime/spdlog.git
+	url = https://github.com/gabime/spdlog
 [submodule "Eucledia/vendor/imgui"]
 	path = Eucledia/vendor/imgui
-	url = ../..nait-sab/imgui.git
+	url = https://github.com/nait-sab/imgui
 [submodule "Eucledia/Vendor/GLFW"]
 	path = Eucledia/Vendor/GLFW
-	url = ../..nait-sab/glfw.git
+	url = https://github.com/nait-sab/glfw
 [submodule "Eucledia/vendor/glm"]
 	path = Eucledia/vendor/glm
-	url = ../..nait-sab/glm.git
+	url = https://github.com/nait-sab/glm
 [submodule "Eucledia/vendor/GLFW"]
 	path = Eucledia/vendor/GLFW
-	url = ../..nait-sab/glfw.git
+	url = https://github.com/nait-sab/glfw
