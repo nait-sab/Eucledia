@@ -122,9 +122,7 @@ namespace Eucledia
 		_data.textureShader->bind();
 		_data.textureShader->setMat4("viewProjection", viewProjection);
 
-		_data.quadIndexCount = 0;
-		_data.quadVBPointer = _data.quadVBBase;
-		_data.textureSlotsIndex = 1;
+		startBatch();
 	}
 
 	void Renderer2D::beginScene(const OrthographicCamera& camera)
@@ -134,19 +132,20 @@ namespace Eucledia
 		_data.textureShader->bind();
 		_data.textureShader->setMat4("viewProjection", camera.getViewProjectionMatrix());
 
-		_data.quadIndexCount = 0;
-		_data.quadVBPointer = _data.quadVBBase;
-		_data.textureSlotsIndex = 1;
+		startBatch();
 	}
 
 	void Renderer2D::endScene()
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
-
-		uint32_t dataSize = (uint32_t)((uint8_t*)_data.quadVBPointer - (uint8_t*)_data.quadVBBase);
-		_data.quadVB->setData(_data.quadVBBase, dataSize);
-
 		flush();
+	}
+
+	void Renderer2D::startBatch()
+	{
+		_data.quadIndexCount = 0;
+		_data.quadVBPointer = _data.quadVBBase;
+		_data.textureSlotsIndex = 1;
 	}
 
 	void Renderer2D::flush()
@@ -159,6 +158,9 @@ namespace Eucledia
 			return;
 		}
 
+		uint32_t dataSize = (uint32_t)((uint8_t*)_data.quadVBPointer - (uint8_t*)_data.quadVBBase);
+		_data.quadVB->setData(_data.quadVBBase, dataSize);
+
 		for (uint32_t index = 0; index < _data.textureSlotsIndex; index++)
 		{
 			_data.textureSlots[index]->bind(index);
@@ -168,13 +170,10 @@ namespace Eucledia
 		_data.stats.drawCalls++;
 	}
 
-	void Renderer2D::flushAndReset()
+	void Renderer2D::nextBatch()
 	{
-		endScene();
-
-		_data.quadIndexCount = 0;
-		_data.quadVBPointer = _data.quadVBBase;
-		_data.textureSlotsIndex = 1;
+		flush();
+		startBatch();
 	}
 
 	void Renderer2D::drawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
@@ -220,7 +219,7 @@ namespace Eucledia
 
 		if (_data.quadIndexCount >= Renderer2DData::maxIndices)
 		{
-			flushAndReset();
+			nextBatch();
 		}
 
 		for (size_t index = 0; index < quadVertexCount; index++)
@@ -247,7 +246,7 @@ namespace Eucledia
 
 		if (_data.quadIndexCount >= Renderer2DData::maxIndices)
 		{
-			flushAndReset();
+			nextBatch();
 		}
 
 		float textureIndex = 0;
@@ -266,7 +265,7 @@ namespace Eucledia
 		{
 			if (_data.textureSlotsIndex >= Renderer2DData::maxTextureSlots)
 			{
-				flushAndReset();
+				nextBatch();
 			}
 
 			textureIndex = (float)_data.textureSlotsIndex;
