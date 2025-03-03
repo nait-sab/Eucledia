@@ -88,16 +88,27 @@ namespace Eucledia
 			}
 		}
 
+		if (entity.hasComponent<SpriteRendererComponent>())
+		{
+			if (ImGui::TreeNodeEx((void*)typeid(SpriteRendererComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Sprite Renderer"))
+			{
+				auto& color = entity.getComponent<SpriteRendererComponent>().color;
+				ImGui::ColorEdit4("Color", glm::value_ptr(color));
+				ImGui::TreePop();
+			}
+		}
+
 		if (entity.hasComponent<CameraComponent>())
 		{
 			if (ImGui::TreeNodeEx((void*)typeid(CameraComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Camera"))
 			{
 				auto& cameraComponent = entity.getComponent<CameraComponent>();
 				auto& camera = cameraComponent.camera;
-				const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
-				const char* currentProjectionTypeString = projectionTypeStrings[(int)camera.getProjectionType()];
 
 				ImGui::Checkbox("Primary", &cameraComponent.primary);
+
+				const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
+				const char* currentProjectionTypeString = projectionTypeStrings[(int)camera.getProjectionType()];
 
 				if (ImGui::BeginCombo("Projection", currentProjectionTypeString))
 				{

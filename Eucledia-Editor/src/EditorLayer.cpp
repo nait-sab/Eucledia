@@ -36,10 +36,10 @@ namespace Eucledia
         auto squareRed = _activeScene->createEntity("Red Square");
         squareRed.addComponent<SpriteRendererComponent>(glm::vec4{ 1, 0, 0, 1 });
 
-        _cameraEntity = _activeScene->createEntity("camera Entity");
+        _cameraEntity = _activeScene->createEntity("Camera A Entity");
         _cameraEntity.addComponent<CameraComponent>();
 
-        _secondCamera = _activeScene->createEntity("Side Camera Entity");
+        _secondCamera = _activeScene->createEntity("Camera B Entity");
         auto& secondCamera = _secondCamera.addComponent<CameraComponent>();
         secondCamera.primary = false;
 
@@ -175,7 +175,7 @@ namespace Eucledia
 
         _sceneHierarchyPanel.onImGuiRender();
 
-        ImGui::Begin("Settings");
+        ImGui::Begin("Stats");
 
         auto stats = Renderer2D::getStats();
 
@@ -184,36 +184,6 @@ namespace Eucledia
         ImGui::Text("Quads: %d", stats.quadCount);
         ImGui::Text("Vertices: %d", stats.getTotalVertexCount());
         ImGui::Text("Indices: %d", stats.getTotalIndexCount());
-
-        if (_squareEntity)
-        {
-            ImGui::Separator();
-            auto& tag = _squareEntity.getComponent<TagComponent>().tag;
-            ImGui::Text("%s", tag.c_str());
-
-            auto& squareColor = _squareEntity.getComponent<SpriteRendererComponent>().color;
-            ImGui::ColorEdit4("Square Color", glm::value_ptr(squareColor));
-            ImGui::Separator();
-        }
-
-        auto& cameraTransform = _cameraEntity.getComponent<TransformComponent>().transform[3];
-        ImGui::DragFloat3("Camera Transform", glm::value_ptr(cameraTransform));
-
-        if (ImGui::Checkbox("First Camera", &_primaryCamera))
-        {
-            _cameraEntity.getComponent<CameraComponent>().primary = _primaryCamera;
-            _secondCamera.getComponent<CameraComponent>().primary = !_primaryCamera;
-        }
-
-        {
-            auto& camera = _secondCamera.getComponent<CameraComponent>().camera;
-            float orthoSize = camera.getOrthographicSize();
-
-            if (ImGui::DragFloat("Second Camera Range", &orthoSize))
-            {
-                camera.setOrthographicsSize(orthoSize);
-            }
-        }
 
         ImGui::End();
 
