@@ -1,8 +1,9 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
-#include <Eucledia/Scene/SceneCamera.h>
+#include "Eucledia/Scene/SceneCamera.h"
 #include "Eucledia/Scene/ScriptableEntity.h"
 
 namespace Eucledia
@@ -18,14 +19,26 @@ namespace Eucledia
 
 	struct TransformComponent
 	{
-		glm::mat4 transform{ 1 };
+		glm::vec3 translation = { 0.f, 0.f, 0.f };
+		glm::vec3 rotation = { 0.f, 0.f, 0.f };
+		glm::vec3 scale = { 1.f, 1.f, 1.f };
 
 		TransformComponent() = default;
 		TransformComponent(const TransformComponent&) = default;
-		TransformComponent(const glm::mat4& transform) : transform(transform) {}
+		TransformComponent(const glm::vec3& translation) : translation(translation) {}
 
-		operator glm::mat4& () { return transform; }
-		operator const glm::mat4& () const { return transform; }
+		glm::mat4 getTransform() const
+		{
+			glm::mat4 translationCalculated = glm::translate(glm::mat4(1.f), translation);
+
+			glm::mat4 rotationCalculated = glm::rotate(glm::mat4(1.f), rotation.x, { 1, 0, 0 })
+				* glm::rotate(glm::mat4(1.f), rotation.y, { 0, 1, 0 })
+				* glm::rotate(glm::mat4(1.f), rotation.z, { 0, 0, 1 });
+
+			glm::mat4 scaleCalculated = glm::scale(glm::mat4(1.f), scale);
+
+			return translationCalculated * rotationCalculated * scaleCalculated;
+		}
 	};
 
 	struct SpriteRendererComponent

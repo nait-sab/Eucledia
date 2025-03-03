@@ -70,7 +70,7 @@ namespace Eucledia
 	{
 	public:
 		BufferLayout() {}
-		BufferLayout(std::initializer_list<BufferElement>& elements) : _elements(elements)
+		BufferLayout(const std::initializer_list<BufferElement>& elements) : _elements(elements)
 		{
 			calculateOffesetsAndStride();
 		}

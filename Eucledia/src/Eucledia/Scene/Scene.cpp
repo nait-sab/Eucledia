@@ -46,7 +46,7 @@ namespace Eucledia
 
 		// Update the current active camera
 		Camera* mainCamera = nullptr;
-		glm::mat4* cameraTransform = nullptr;
+		glm::mat4 cameraTransform;
 
 		auto view = _registry.view<TransformComponent, CameraComponent>();
 		for (auto entity : view)
@@ -56,7 +56,7 @@ namespace Eucledia
 			if (camera.primary)
 			{
 				mainCamera = &camera.camera;
-				cameraTransform = &transform.transform;
+				cameraTransform = transform.getTransform();
 				break;
 			}
 		}
@@ -64,14 +64,14 @@ namespace Eucledia
 		// Draw every entites with both transform and sprite component
 		if (mainCamera)
 		{
-			Renderer2D::beginScene(*mainCamera, *cameraTransform);
+			Renderer2D::beginScene(*mainCamera, cameraTransform);
 
 			auto group = _registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 
 			for (auto entity : group)
 			{
 				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-				Renderer2D::drawQuad(transform, sprite.color);
+				Renderer2D::drawQuad(transform.getTransform(), sprite.color);
 			}
 
 			Renderer2D::endScene();

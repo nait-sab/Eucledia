@@ -48,27 +48,27 @@ namespace Eucledia
         public:
             void onUpdate(Timestep ts)
             {
-                auto& transform = getComponent<TransformComponent>().transform;
+                auto& translation = getComponent<TransformComponent>().translation;
                 float speed = 5.f;
 
                 if (Input::isKeyPressed(EUCLEDIA_KEY_A))
                 {
-                    transform[3][0] -= speed * ts;
+                    translation.x -= speed * ts;
                 }
 
                 if (Input::isKeyPressed(EUCLEDIA_KEY_D))
                 {
-                    transform[3][0] += speed * ts;
+                    translation.x += speed * ts;
                 }
 
                 if (Input::isKeyPressed(EUCLEDIA_KEY_W))
                 {
-                    transform[3][1] += speed * ts;
+                    translation.y += speed * ts;
                 }
 
                 if (Input::isKeyPressed(EUCLEDIA_KEY_S))
                 {
-                    transform[3][1] -= speed * ts;
+                    translation.y -= speed * ts;
                 }
             }
         };
