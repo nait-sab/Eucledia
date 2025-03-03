@@ -33,6 +33,9 @@ namespace Eucledia
         square.addComponent<SpriteRendererComponent>(glm::vec4{ 0, 1, 0, 1 });
         _squareEntity = square;
 
+        auto squareRed = _activeScene->createEntity("Red Square");
+        squareRed.addComponent<SpriteRendererComponent>(glm::vec4{ 1, 0, 0, 1 });
+
         _cameraEntity = _activeScene->createEntity("camera Entity");
         _cameraEntity.addComponent<CameraComponent>();
 

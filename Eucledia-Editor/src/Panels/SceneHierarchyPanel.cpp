@@ -84,6 +84,89 @@ namespace Eucledia
 			{
 				auto& transform = entity.getComponent<TransformComponent>().transform;
 				ImGui::DragFloat3("Position", glm::value_ptr(transform[3]), 0.5f);
+				ImGui::TreePop();
+			}
+		}
+
+		if (entity.hasComponent<CameraComponent>())
+		{
+			if (ImGui::TreeNodeEx((void*)typeid(CameraComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Camera"))
+			{
+				auto& cameraComponent = entity.getComponent<CameraComponent>();
+				auto& camera = cameraComponent.camera;
+				const char* projectionTypeStrings[] = { "Perspective", "Orthographic" };
+				const char* currentProjectionTypeString = projectionTypeStrings[(int)camera.getProjectionType()];
+
+				ImGui::Checkbox("Primary", &cameraComponent.primary);
+
+				if (ImGui::BeginCombo("Projection", currentProjectionTypeString))
+				{
+					for (int index = 0; index < 2; index++)
+					{
+						bool isSeleted = currentProjectionTypeString == projectionTypeStrings[index];
+
+						if (ImGui::Selectable(projectionTypeStrings[index], isSeleted))
+						{
+							currentProjectionTypeString = projectionTypeStrings[index];
+							camera.setProjectionType((SceneCamera::ProjectionType)index);
+						}
+
+						if (isSeleted)
+						{
+							ImGui::SetItemDefaultFocus();
+						}
+					}
+
+					ImGui::EndCombo();
+				}
+
+				if (camera.getProjectionType() == SceneCamera::ProjectionType::Perspective)
+				{
+					float perspectiveFOV = glm::degrees(camera.getPerspectiveFOV());
+					float perspectiveNearClip = camera.getPerspectiveNearClip();
+					float perspectiveFarClip = camera.getPerspectiveFarClip();
+
+					if (ImGui::DragFloat("FOV", &perspectiveFOV))
+					{
+						camera.setPerspectiveFOV(glm::radians(perspectiveFOV));
+					}
+
+
+					if (ImGui::DragFloat("Near", &perspectiveNearClip))
+					{
+						camera.setPerspectiveNearClip(perspectiveNearClip);
+					}
+
+					if (ImGui::DragFloat("Far", &perspectiveFarClip))
+					{
+						camera.setPerspectiveFarClip(perspectiveFarClip);
+					}
+				}
+
+				if (camera.getProjectionType() == SceneCamera::ProjectionType::Orthographic)
+				{
+					float orthographicSize = camera.getOrthographicSize();
+					float orthographicNearClip = camera.getOrthographicNearClip();
+					float orthographicFarClip = camera.getOrthographicFarClip();
+					
+					if (ImGui::DragFloat("Size", &orthographicSize))
+					{
+						camera.setOrthographicsSize(orthographicSize);
+					}
+
+
+					if (ImGui::DragFloat("Near", &orthographicNearClip))
+					{
+						camera.setOrthographicNearClip(orthographicNearClip);
+					}
+
+					if (ImGui::DragFloat("Far", &orthographicFarClip))
+					{
+						camera.setOrthographicFarClip(orthographicFarClip);
+					}
+
+					ImGui::Checkbox("Fixed Aspect Ratio", &cameraComponent.fixedAspectRatio);
+				}
 
 				ImGui::TreePop();
 			}
