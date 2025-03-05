@@ -22,6 +22,7 @@ namespace Eucledia
 		void end();
 
 		void blockEvents(bool block) { _blockEvents = block; }
+		void setDarkThemeColors();
 
 	private:
 		bool _blockEvents = true;

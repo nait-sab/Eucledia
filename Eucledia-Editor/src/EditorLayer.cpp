@@ -120,7 +120,6 @@ namespace Eucledia
 
         static bool dockspaceEnable = true;
         static bool opt_fullscreen = true;
-        static bool opt_padding = false;
         static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 
         ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
@@ -141,22 +140,31 @@ namespace Eucledia
         }
 
         if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
+        {
             window_flags |= ImGuiWindowFlags_NoBackground;
-        if (!opt_padding)
-            ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+        }
+
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
         ImGui::Begin("DockSpace Demo", &dockspaceEnable, window_flags);
-        if (!opt_padding)
-            ImGui::PopStyleVar();
+        ImGui::PopStyleVar();
 
         if (opt_fullscreen)
+        {
             ImGui::PopStyleVar(2);
+        }
 
         ImGuiIO& io = ImGui::GetIO();
+        ImGuiStyle& style = ImGui::GetStyle();
+        float minWindowSizeX = style.WindowMinSize.x;
+        style.WindowMinSize.x = 370.f;
+
         if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
         {
             ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
             ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
         }
+
+        style.WindowMinSize.x = minWindowSizeX;
 
         if (ImGui::BeginMenuBar())
         {
