@@ -5,9 +5,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Platform/OpenGL/OpenGLShader.h"
-
-#include <chrono>
+#include "Eucledia/Scene/SceneSerializer.h"
 
 namespace Eucledia
 {
@@ -29,7 +27,7 @@ namespace Eucledia
 
         _activeScene = createRef<Scene>();
 
-        auto square = _activeScene->createEntity("Green Square");
+        /*auto square = _activeScene->createEntity("Green Square");
         square.addComponent<SpriteRendererComponent>(glm::vec4{ 0, 1, 0, 1 });
         _squareEntity = square;
 
@@ -74,9 +72,10 @@ namespace Eucledia
         };
 
         _cameraEntity.addComponent<NativeScriptComponent>().bind<CameraController>();
-        _secondCamera.addComponent<NativeScriptComponent>().bind<CameraController>();
+        _secondCamera.addComponent<NativeScriptComponent>().bind<CameraController>();*/
 
         _sceneHierarchyPanel.setContext(_activeScene);
+
     }
 
     void EditorLayer::onDetach()
@@ -170,6 +169,18 @@ namespace Eucledia
         {
             if (ImGui::BeginMenu("File"))
             {
+                if (ImGui::MenuItem("Save"))
+                {
+                    SceneSerializer serializer(_activeScene);
+                    serializer.serialize("assets/scenes/default.yaml");
+                }
+
+                if (ImGui::MenuItem("Load"))
+                {
+                    SceneSerializer serializer(_activeScene);
+                    serializer.deserialize("assets/scenes/default.yaml");
+                }
+
                 if (ImGui::MenuItem("Exit"))
                 {
                     Application::get().close();

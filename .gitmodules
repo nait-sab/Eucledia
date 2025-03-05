@@ -13,3 +13,6 @@
 [submodule "Eucledia/vendor/GLFW"]
 	path = Eucledia/vendor/GLFW
 	url = https://github.com/nait-sab/glfw
+[submodule "Eucledia/vendor/yaml-cpp"]
+	path = Eucledia/vendor/yaml-cpp
+	url = https://github.com/nait-sab/yaml-cpp
