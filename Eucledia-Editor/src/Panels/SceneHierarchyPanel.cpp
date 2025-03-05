@@ -33,6 +33,16 @@ namespace Eucledia
 			_selectionContext = {};
 		}
 
+		if (ImGui::BeginPopupContextWindow(0, 1 | ImGuiPopupFlags_NoOpenOverItems))
+		{
+			if (ImGui::MenuItem("Create Empty Entity"))
+			{
+				_context->createEntity("Empty Entity");
+			}
+
+			ImGui::EndPopup();
+		}
+
 		ImGui::End();
 
 		ImGui::Begin("Properties");
@@ -40,6 +50,28 @@ namespace Eucledia
 		if (_selectionContext)
 		{
 			drawComponents(_selectionContext);
+
+			if (ImGui::Button("Add Component"))
+			{
+				ImGui::OpenPopup("AddComponent");
+			}
+
+			if (ImGui::BeginPopup("AddComponent"))
+			{
+				if (ImGui::MenuItem("Sprite"))
+				{
+					_selectionContext.addComponent<SpriteRendererComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+
+				if (ImGui::MenuItem("Camera"))
+				{
+					_selectionContext.addComponent<CameraComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+
+				ImGui::EndPopup();
+			}
 		}
 
 		ImGui::End();
@@ -57,9 +89,31 @@ namespace Eucledia
 			_selectionContext = entity;
 		}
 
+		bool entityDeleted = false;
+
+		if (ImGui::BeginPopupContextItem())
+		{
+			if (ImGui::MenuItem("Delete Entity"))
+			{
+				entityDeleted = true;
+			}
+
+			ImGui::EndPopup();
+		}
+
 		if (opened)
 		{
 			ImGui::TreePop();
+		}
+
+		if (entityDeleted)
+		{
+			_context->destroyEntity(entity);
+
+			if (_selectionContext == entity)
+			{
+				_selectionContext = {};
+			}
 		}
 	}
 
@@ -124,6 +178,8 @@ namespace Eucledia
 
 	void SceneHierarchyPanel::drawComponents(Entity entity)
 	{
+		const ImGuiTreeNodeFlags treeNodesFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
+
 		if (entity.hasComponent<TagComponent>())
 		{
 			auto& tag = entity.getComponent<TagComponent>().tag;
@@ -140,7 +196,10 @@ namespace Eucledia
 
 		if (entity.hasComponent<TransformComponent>())
 		{
-			if (ImGui::TreeNodeEx((void*)typeid(TransformComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Transform"))
+			bool open = ImGui::TreeNodeEx((void*)typeid(TransformComponent).hash_code(), treeNodesFlags, "Transform");
+			
+
+			if (open)
 			{
 				auto& transformComponent = entity.getComponent<TransformComponent>();
 				glm::vec3 rotation = glm::degrees(transformComponent.rotation);
@@ -156,17 +215,44 @@ namespace Eucledia
 
 		if (entity.hasComponent<SpriteRendererComponent>())
 		{
-			if (ImGui::TreeNodeEx((void*)typeid(SpriteRendererComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Sprite Renderer"))
+			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+			bool open = ImGui::TreeNodeEx((void*)typeid(SpriteRendererComponent).hash_code(), treeNodesFlags, "Sprite Renderer");
+			bool removeComponent = false;
+			ImGui::SameLine(ImGui::GetWindowWidth() - 25.f);
+
+			if (ImGui::Button("+", ImVec2{ 20, 20 }))
+			{
+				ImGui::OpenPopup("ComponentSettings");
+			}
+
+			ImGui::PopStyleVar();
+
+			if (ImGui::BeginPopup("ComponentSettings"))
+			{
+				if (ImGui::MenuItem("Remove component"))
+				{
+					removeComponent = true;
+				}
+
+				ImGui::EndPopup();
+			}
+
+			if (open)
 			{
 				auto& color = entity.getComponent<SpriteRendererComponent>().color;
 				ImGui::ColorEdit4("Color", glm::value_ptr(color));
 				ImGui::TreePop();
 			}
+
+			if (removeComponent)
+			{
+				entity.removeComponent<SpriteRendererComponent>();
+			}
 		}
 
 		if (entity.hasComponent<CameraComponent>())
 		{
-			if (ImGui::TreeNodeEx((void*)typeid(CameraComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Camera"))
+			if (ImGui::TreeNodeEx((void*)typeid(CameraComponent).hash_code(), treeNodesFlags, "Camera"))
 			{
 				auto& cameraComponent = entity.getComponent<CameraComponent>();
 				auto& camera = cameraComponent.camera;

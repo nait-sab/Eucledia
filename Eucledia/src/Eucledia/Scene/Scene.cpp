@@ -11,7 +11,6 @@ namespace Eucledia
 {
 	Scene::Scene()
 	{
-		
 	}
 
 	Scene::~Scene()
@@ -25,6 +24,11 @@ namespace Eucledia
 		auto& tag = entity.addComponent<TagComponent>();
 		tag.tag = name.empty() ? "Entity" : name;
 		return entity;
+	}
+
+	void Scene::destroyEntity(Entity entity)
+	{
+		_registry.destroy(entity);
 	}
 
 	void Scene::onUpdate(Timestep ts)
@@ -93,5 +97,37 @@ namespace Eucledia
 				cameraComponant.camera.setViewportSize(width, height);
 			}
 		}
+	}
+
+	template<typename T>
+	void Scene::onComponentAdded(Entity entity, T& component)
+	{
+		static_assert(false);
+	}
+
+	template<>
+	void Scene::onComponentAdded<TagComponent>(Entity entity, TagComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::onComponentAdded<TransformComponent>(Entity entity, TransformComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::onComponentAdded<SpriteRendererComponent>(Entity entity, SpriteRendererComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::onComponentAdded<CameraComponent>(Entity entity, CameraComponent& component)
+	{
+		component.camera.setViewportSize(_viewportWidth, _viewportHeight);
+	}
+
+	template<>
+	void Scene::onComponentAdded<NativeScriptComponent>(Entity entity, NativeScriptComponent& component)
+	{
 	}
 }
