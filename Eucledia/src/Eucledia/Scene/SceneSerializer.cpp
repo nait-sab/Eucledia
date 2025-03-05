@@ -18,6 +18,7 @@ namespace YAML
 			node.push_back(vector.x);
 			node.push_back(vector.y);
 			node.push_back(vector.z);
+			node.SetStyle(EmitterStyle::Flow);
 			return node;
 		}
 
@@ -45,6 +46,7 @@ namespace YAML
 			node.push_back(vector.y);
 			node.push_back(vector.z);
 			node.push_back(vector.w);
+			node.SetStyle(EmitterStyle::Flow);
 			return node;
 		}
 
@@ -181,10 +183,7 @@ namespace Eucledia
 
 	bool SceneSerializer::deserialize(const std::string& filepath)
 	{
-		std::ifstream stream(filepath);
-		std::stringstream strStream;
-		strStream << stream.rdbuf();
-		YAML::Node data = YAML::Load(strStream.str());
+		YAML::Node data = YAML::LoadFile(filepath);
 
 		if (!data["Scene"])
 		{

@@ -243,13 +243,29 @@ namespace Eucledia
 		{
 			if (ImGui::MenuItem("Sprite"))
 			{
-				_selectionContext.addComponent<SpriteRendererComponent>();
+				if (!_selectionContext.hasComponent<SpriteRendererComponent>())
+				{
+					_selectionContext.addComponent<SpriteRendererComponent>();
+				}
+				else
+				{
+					EUCLEDIA_CORE_WARN("This entity already has the sprite component");
+				}
+
 				ImGui::CloseCurrentPopup();
 			}
 
 			if (ImGui::MenuItem("Camera"))
 			{
-				_selectionContext.addComponent<CameraComponent>();
+				if (!_selectionContext.hasComponent<CameraComponent>())
+				{
+					_selectionContext.addComponent<CameraComponent>();
+				}
+				else
+				{
+					EUCLEDIA_CORE_WARN("This entity already has the sprite component");
+				}
+
 				ImGui::CloseCurrentPopup();
 			}
 
