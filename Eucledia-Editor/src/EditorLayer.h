@@ -28,8 +28,7 @@ namespace Eucledia
 		ref<Texture2D> _texture;
 
 		ref<Scene> _activeScene;
-		Entity _squareEntity;
-		Entity _cameraEntity, _secondCamera;
+		Entity _squareEntity, _cameraEntity;
 
 		bool _primaryCamera = true;
 

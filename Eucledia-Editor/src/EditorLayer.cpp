@@ -27,19 +27,12 @@ namespace Eucledia
 
         _activeScene = createRef<Scene>();
 
-        /*auto square = _activeScene->createEntity("Green Square");
-        square.addComponent<SpriteRendererComponent>(glm::vec4{ 0, 1, 0, 1 });
+        auto square = _activeScene->createEntity("Square");
+        square.addComponent<SpriteRendererComponent>(glm::vec4{ .85, .14, .8, 1 });
         _squareEntity = square;
 
-        auto squareRed = _activeScene->createEntity("Red Square");
-        squareRed.addComponent<SpriteRendererComponent>(glm::vec4{ 1, 0, 0, 1 });
-
-        _cameraEntity = _activeScene->createEntity("Camera A Entity");
+        _cameraEntity = _activeScene->createEntity("Camera");
         _cameraEntity.addComponent<CameraComponent>();
-
-        _secondCamera = _activeScene->createEntity("Camera B Entity");
-        auto& secondCamera = _secondCamera.addComponent<CameraComponent>();
-        secondCamera.primary = false;
 
         class CameraController : public ScriptableEntity
         {
@@ -72,8 +65,6 @@ namespace Eucledia
         };
 
         _cameraEntity.addComponent<NativeScriptComponent>().bind<CameraController>();
-        _secondCamera.addComponent<NativeScriptComponent>().bind<CameraController>();*/
-
         _sceneHierarchyPanel.setContext(_activeScene);
 
     }
