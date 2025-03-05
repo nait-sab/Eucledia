@@ -18,6 +18,12 @@ namespace Eucledia
 		virtual void onImGuiRender() override;
 		void onEvent(Event& event) override;
 
+		bool onKeyPressed(KeyPressedEvent& event);
+
+		void newScene();
+		void openScene();
+		void saveSceneAs();
+
 	private:
 		OrthographicCameraController _cameraController;
 

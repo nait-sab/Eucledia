@@ -16,6 +16,7 @@ namespace Eucledia
 	void SceneHierarchyPanel::setContext(const ref<Scene>& context)
 	{
 		_context = context;
+		_selectionContext = {};
 	}
 
 	void SceneHierarchyPanel::onImGuiRender()

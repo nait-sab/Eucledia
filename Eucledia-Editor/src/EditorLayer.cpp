@@ -6,6 +6,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Eucledia/Scene/SceneSerializer.h"
+#include "Eucledia/Utils/PlatformUtils.h"
 
 namespace Eucledia
 {
@@ -160,16 +161,19 @@ namespace Eucledia
         {
             if (ImGui::BeginMenu("File"))
             {
-                if (ImGui::MenuItem("Save"))
+                if (ImGui::MenuItem("New", "Ctrl+N"))
                 {
-                    SceneSerializer serializer(_activeScene);
-                    serializer.serialize("assets/scenes/default.yaml");
+                    newScene();
                 }
 
-                if (ImGui::MenuItem("Load"))
+                if (ImGui::MenuItem("Open", "Ctrl+O"))
                 {
-                    SceneSerializer serializer(_activeScene);
-                    serializer.deserialize("assets/scenes/default.yaml");
+                    openScene();
+                }
+
+                if (ImGui::MenuItem("Save as", "Ctrl+Shift+S"))
+                {
+                    saveSceneAs();
                 }
 
                 if (ImGui::MenuItem("Exit"))
@@ -223,5 +227,84 @@ namespace Eucledia
     void EditorLayer::onEvent(Event& event)
     {
         _cameraController.onEvent(event);
+
+        EventDispatcher dispatcher(event);
+        dispatcher.dispatch<KeyPressedEvent>(EUCLEDIA_BIND_EVENT_FN(EditorLayer::onKeyPressed));
+    }
+
+    bool EditorLayer::onKeyPressed(KeyPressedEvent& event)
+    {
+        if (event.getRepeatCount() > 0)
+        {
+            return false;
+        }
+
+        bool control = Input::isKeyPressed(EUCLEDIA_KEY_LEFT_CONTROL) || Input::isKeyPressed(EUCLEDIA_KEY_RIGHT_CONTROL);
+        bool shift = Input::isKeyPressed(EUCLEDIA_KEY_LEFT_SHIFT) || Input::isKeyPressed(EUCLEDIA_KEY_RIGHT_SHIFT);
+
+        switch (event.getKeyCode())
+        {
+            case EUCLEDIA_KEY_N:
+            {
+                if (control)
+                {
+                    newScene();
+                }
+
+                break;
+            }
+            case EUCLEDIA_KEY_O:
+            {
+                if (control)
+                {
+                    openScene();
+                }
+
+                break;
+            }
+            case EUCLEDIA_KEY_S:
+            {
+                if (control && shift)
+                {
+                    saveSceneAs();
+                }
+
+                break;
+            }
+        }
+
+        return false;
+    }
+
+    void EditorLayer::newScene()
+    {
+        _activeScene = createRef<Scene>();
+        _activeScene->onViewportResize((uint32_t)_viewportSize.x, (uint32_t)_viewportSize.y);
+        _sceneHierarchyPanel.setContext(_activeScene);
+    }
+
+    void EditorLayer::openScene()
+    {
+        std::string filepath = FileDialogs::openFile("Eucledia Scene (*.eucledia)\0*.eucledia\0");
+
+        if (!filepath.empty())
+        {
+            _activeScene = createRef<Scene>();
+            _activeScene->onViewportResize((uint32_t)_viewportSize.x, (uint32_t)_viewportSize.y);
+            _sceneHierarchyPanel.setContext(_activeScene);
+            SceneSerializer serializer(_activeScene);
+            serializer.deserialize(filepath);
+        }
+    }
+
+    void EditorLayer::saveSceneAs()
+    {
+        std::string filepath = FileDialogs::saveFile("Eucledia Scene (*.eucledia)\0*.eucledia\0");
+
+        if (!filepath.empty())
+        {
+            SceneSerializer serializer(_activeScene);
+            serializer.serialize(filepath);
+        }
     }
 }
