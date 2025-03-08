@@ -43,6 +43,8 @@ namespace Eucledia
 
 		glm::vec4 _imguiColor;
 
+		int _guizmoType = -1;
+
 		SceneHierarchyPanel _sceneHierarchyPanel;
 	};
 }

@@ -17,6 +17,8 @@ namespace Eucledia
 
 		void onImGuiRender();
 
+		Entity getSelectedEntity() const { return _selectionContext; }
+
 	private:
 		ref<Scene> _context;
 		Entity _selectionContext;

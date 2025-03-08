@@ -4,9 +4,11 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <ImGuizmo.h>
 
 #include "Eucledia/Scene/SceneSerializer.h"
 #include "Eucledia/Utils/PlatformUtils.h"
+#include "Eucledia/Math/Math.h"
 
 namespace Eucledia
 {
@@ -207,7 +209,7 @@ namespace Eucledia
 
         _viewportFocused = ImGui::IsWindowFocused();
         _viewportHovered = ImGui::IsWindowHovered();
-        Application::get().getImGuiLayer()->blockEvents(!_viewportFocused || !_viewportHovered);
+        Application::get().getImGuiLayer()->blockEvents(!_viewportFocused && !_viewportHovered);
 
         ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
         _viewportSize = { viewportPanelSize.x, viewportPanelSize.y };
@@ -218,6 +220,54 @@ namespace Eucledia
             ImVec2{ 0, 1 }, 
             ImVec2{ 1, 0 }
         );
+
+        Entity selectedEntity = _sceneHierarchyPanel.getSelectedEntity();
+
+        if (selectedEntity && _guizmoType != -1)
+        {
+            ImGuizmo::SetOrthographic(false);
+            ImGuizmo::SetDrawlist();
+
+            float windowWidth = (float)ImGui::GetWindowWidth();
+            float windowHeight = (float)ImGui::GetWindowHeight();
+            ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+
+            auto cameraEntity = _activeScene->getPrimaryCameraEntity();
+            const auto& camera = cameraEntity.getComponent<CameraComponent>().camera;
+            const glm::mat4& cameraProjetion = camera.getProjection();
+            glm::mat4 cameraView = glm::inverse(cameraEntity.getComponent<TransformComponent>().getTransform());
+
+            auto& transformComponent = selectedEntity.getComponent<TransformComponent>();
+            glm::mat4 transform = transformComponent.getTransform();
+
+            bool snap = Input::isKeyPressed(EUCLEDIA_KEY_LEFT_CONTROL);
+            float snapValue = .5f;
+
+            if (_guizmoType == ImGuizmo::OPERATION::ROTATE)
+            {
+                snapValue = 45.f;
+            }
+
+            float snapValues[3] = { snapValue, snapValue, snapValue };
+                
+            ImGuizmo::Manipulate(
+                glm::value_ptr(cameraView), glm::value_ptr(cameraProjetion),
+                (ImGuizmo::OPERATION)_guizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
+                nullptr, snap ? snapValues : nullptr
+            );
+
+            if (ImGuizmo::IsUsing())
+            {
+                glm::vec3 translation, rotation, scale;
+                Math::decomposeTransform(transform, translation, rotation, scale);
+
+                glm::vec3 deltaRotation = rotation - transformComponent.rotation;
+                transformComponent.translation = translation;
+                transformComponent.rotation += deltaRotation;
+                transformComponent.scale = scale;
+            }
+        }
+
         ImGui::End();
         ImGui::PopStyleVar();
 
@@ -271,6 +321,18 @@ namespace Eucledia
 
                 break;
             }
+            case EUCLEDIA_KEY_A:
+                _guizmoType = -1;
+                break;
+            case EUCLEDIA_KEY_W:
+                _guizmoType = ImGuizmo::OPERATION::TRANSLATE;
+                break;
+            case EUCLEDIA_KEY_E:
+                _guizmoType = ImGuizmo::OPERATION::ROTATE;
+                break;
+            case EUCLEDIA_KEY_R:
+                _guizmoType = ImGuizmo::OPERATION::SCALE;
+                break;
         }
 
         return false;

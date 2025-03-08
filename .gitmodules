@@ -16,3 +16,6 @@
 [submodule "Eucledia/vendor/yaml-cpp"]
 	path = Eucledia/vendor/yaml-cpp
 	url = https://github.com/nait-sab/yaml-cpp
+[submodule "Eucledia/vendor/imGuizmo"]
+	path = Eucledia/vendor/imGuizmo
+	url = https://github.com/nait-sab/ImGuizmo

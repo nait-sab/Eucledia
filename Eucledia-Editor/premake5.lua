@@ -19,7 +19,8 @@ project "Eucledia-Editor"
 		"%{wks.location}/Eucledia/src",
 		"%{wks.location}/Eucledia/vendor",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.ImGuizmo}"
 	}
 
 	links {

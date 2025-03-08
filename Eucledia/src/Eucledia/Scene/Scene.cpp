@@ -99,6 +99,23 @@ namespace Eucledia
 		}
 	}
 
+	Entity Scene::getPrimaryCameraEntity()
+	{
+		auto view = _registry.view<CameraComponent>();
+
+		for (auto entity : view)
+		{
+			const auto& camera = view.get<CameraComponent>(entity);
+
+			if (camera.primary)
+			{
+				return Entity{ entity, this };
+			}
+		}
+
+		return {};
+	}
+
 	template<typename T>
 	void Scene::onComponentAdded(Entity entity, T& component)
 	{
