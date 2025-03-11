@@ -31,21 +31,21 @@ namespace Eucledia
 		_registry.destroy(entity);
 	}
 
-	void Scene::onUpdate(Timestep ts)
+	void Scene::onUpdateRuntime(Timestep ts)
 	{
 		// Update scripts
 		{
 			_registry.view<NativeScriptComponent>().each([=](auto entity, auto& nativeScriptComponent)
-			{
-				if (!nativeScriptComponent.instance)
 				{
-					nativeScriptComponent.instance = nativeScriptComponent.instantiateScript();
-					nativeScriptComponent.instance->_entity = Entity{ entity, this };
-					nativeScriptComponent.instance->onCreate();
-				}
+					if (!nativeScriptComponent.instance)
+					{
+						nativeScriptComponent.instance = nativeScriptComponent.instantiateScript();
+						nativeScriptComponent.instance->_entity = Entity{ entity, this };
+						nativeScriptComponent.instance->onCreate();
+					}
 
-				nativeScriptComponent.instance->onUpdate(ts);
-			});
+					nativeScriptComponent.instance->onUpdate(ts);
+				});
 		}
 
 		// Update the current active camera
@@ -80,6 +80,21 @@ namespace Eucledia
 
 			Renderer2D::endScene();
 		}
+	}
+
+	void Scene::onUpdateEditor(Timestep ts, EditorCamera& camera)
+	{
+		Renderer2D::beginScene(camera);
+
+		auto group = _registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+
+		for (auto entity : group)
+		{
+			auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+			Renderer2D::drawQuad(transform.getTransform(), sprite.color);
+		}
+
+		Renderer2D::endScene();
 	}
 
 	void Scene::onViewportResize(uint32_t width, uint32_t height)

@@ -13,7 +13,7 @@
 namespace Eucledia
 {
 
-    EditorLayer::EditorLayer() : Layer("EditorLayer"), _cameraController(16.f / 9.f), _imguiColor({ 0.8, 0.2, 0.2, 1 })
+    EditorLayer::EditorLayer() : Layer("EditorLayer"), _cameraController(16.f / 9.f), _imguiColor({ 0.8f, 0.2f, 0.2f, 1.f })
     {
     }
 
@@ -30,8 +30,10 @@ namespace Eucledia
 
         _activeScene = createRef<Scene>();
 
+        _editorCamera = EditorCamera(30.f, 1.778f, .1f, 1000.f);
+
         auto square = _activeScene->createEntity("Square");
-        square.addComponent<SpriteRendererComponent>(glm::vec4{ .85, .14, .8, 1 });
+        square.addComponent<SpriteRendererComponent>(glm::vec4{ .85f, .14f, .8f, 1.f });
         _squareEntity = square;
 
         _cameraEntity = _activeScene->createEntity("Camera");
@@ -83,10 +85,11 @@ namespace Eucledia
 
         FrameBufferSpecification specification = _frameBuffer->getSpecification();
 
-        if (_viewportSize.x > 0 && _viewportSize.y > 0 && (specification.width != _viewportSize.x || specification.height != _viewportSize.y))
+        if (_viewportSize.x > 0.f && _viewportSize.y > 0.f && (specification.width != _viewportSize.x || specification.height != _viewportSize.y))
         {
             _frameBuffer->resize((uint32_t)_viewportSize.x, (uint32_t)_viewportSize.y);
             _cameraController.onResize(_viewportSize.x, _viewportSize.y);
+            _editorCamera.setViewportSize(_viewportSize.x, _viewportSize.y);
             _activeScene->onViewportResize((uint32_t)_viewportSize.x, (uint32_t)_viewportSize.y);
         }
 
@@ -95,14 +98,16 @@ namespace Eucledia
             _cameraController.onUpdate(ts);
         }
 
+        _editorCamera.onUpdate(ts);
+
         Renderer2D::resetStats();
 
         _frameBuffer->bind();
 
-        RenderCommand::setClearColor({ .15f, .15f, .15f, 1 });
+        RenderCommand::setClearColor({ .15f, .15f, .15f, 1.f });
         RenderCommand::clear();
 
-        _activeScene->onUpdate(ts);
+        _activeScene->onUpdateEditor(ts, _editorCamera);
 
         _frameBuffer->unbind();
     }
@@ -122,8 +127,8 @@ namespace Eucledia
             ImGui::SetNextWindowPos(viewport->WorkPos);
             ImGui::SetNextWindowSize(viewport->WorkSize);
             ImGui::SetNextWindowViewport(viewport->ID);
-            ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-            ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+            ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.f);
+            ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.f);
             window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
             window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
         }
@@ -137,7 +142,7 @@ namespace Eucledia
             window_flags |= ImGuiWindowFlags_NoBackground;
         }
 
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
         ImGui::Begin("DockSpace Demo", &dockspaceEnable, window_flags);
         ImGui::PopStyleVar();
 
@@ -154,7 +159,7 @@ namespace Eucledia
         if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
         {
             ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
-            ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+            ImGui::DockSpace(dockspace_id, ImVec2(0.f, 0.f), dockspace_flags);
         }
 
         style.WindowMinSize.x = minWindowSizeX;
@@ -203,7 +208,7 @@ namespace Eucledia
 
         ImGui::End();
 
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.f, 0.f });
 
         ImGui::Begin("Viewport");
 
@@ -217,8 +222,8 @@ namespace Eucledia
         ImGui::Image(
             _frameBuffer->getColorAttachmentRendererID(), 
             ImVec2{ _viewportSize.x, _viewportSize.y }, 
-            ImVec2{ 0, 1 }, 
-            ImVec2{ 1, 0 }
+            ImVec2{ 0.f, 1.f }, 
+            ImVec2{ 1.f, 0.f }
         );
 
         Entity selectedEntity = _sceneHierarchyPanel.getSelectedEntity();
@@ -232,10 +237,13 @@ namespace Eucledia
             float windowHeight = (float)ImGui::GetWindowHeight();
             ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
 
-            auto cameraEntity = _activeScene->getPrimaryCameraEntity();
+            /*auto cameraEntity = _activeScene->getPrimaryCameraEntity();
             const auto& camera = cameraEntity.getComponent<CameraComponent>().camera;
-            const glm::mat4& cameraProjetion = camera.getProjection();
-            glm::mat4 cameraView = glm::inverse(cameraEntity.getComponent<TransformComponent>().getTransform());
+            const glm::mat4& cameraProjection = camera.getProjection();
+            glm::mat4 cameraView = glm::inverse(cameraEntity.getComponent<TransformComponent>().getTransform());*/
+
+            const glm::mat4& cameraProjection = _editorCamera.getProjection();
+            glm::mat4 cameraView = _editorCamera.getViewMatrix();
 
             auto& transformComponent = selectedEntity.getComponent<TransformComponent>();
             glm::mat4 transform = transformComponent.getTransform();
@@ -251,7 +259,7 @@ namespace Eucledia
             float snapValues[3] = { snapValue, snapValue, snapValue };
                 
             ImGuizmo::Manipulate(
-                glm::value_ptr(cameraView), glm::value_ptr(cameraProjetion),
+                glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
                 (ImGuizmo::OPERATION)_guizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
                 nullptr, snap ? snapValues : nullptr
             );
@@ -277,6 +285,7 @@ namespace Eucledia
     void EditorLayer::onEvent(Event& event)
     {
         _cameraController.onEvent(event);
+        _editorCamera.onEvent(event);
 
         EventDispatcher dispatcher(event);
         dispatcher.dispatch<KeyPressedEvent>(EUCLEDIA_BIND_EVENT_FN(EditorLayer::onKeyPressed));

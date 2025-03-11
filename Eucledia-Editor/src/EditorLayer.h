@@ -3,6 +3,8 @@
 #include "Eucledia.h"
 #include "Panels/SceneHierarchyPanel.h"
 
+#include "Eucledia/Renderer/EditorCamera.h"
+
 namespace Eucledia
 {
 	class EditorLayer : public Layer
@@ -37,6 +39,8 @@ namespace Eucledia
 		Entity _squareEntity, _cameraEntity;
 
 		bool _primaryCamera = true;
+
+		EditorCamera _editorCamera;
 
 		bool _viewportFocused = false, _viewportHovered = false;
 		glm::vec2 _viewportSize = { 0, 0 };

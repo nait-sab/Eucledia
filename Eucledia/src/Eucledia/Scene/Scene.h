@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Eucledia/Core/Timestep.h"
+#include "Eucledia/Renderer/EditorCamera.h"
 
 #include <entt.hpp>
 
@@ -17,7 +18,8 @@ namespace Eucledia
 		Entity createEntity(const std::string& name = std::string());
 		void destroyEntity(Entity entity);
 
-		void onUpdate(Timestep ts);
+		void onUpdateRuntime(Timestep ts);
+		void onUpdateEditor(Timestep ts, EditorCamera& camera);
 		void onViewportResize(uint32_t width, uint32_t height);
 
 		Entity getPrimaryCameraEntity();

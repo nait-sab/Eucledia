@@ -125,6 +125,18 @@ namespace Eucledia
 		startBatch();
 	}
 
+	void Renderer2D::beginScene(const EditorCamera& camera)
+	{
+		EUCLEDIA_PROFILE_FUNCTION();
+
+		glm::mat4 viewProjection = camera.getViewProjection();
+
+		_data.textureShader->bind();
+		_data.textureShader->setMat4("viewProjection", viewProjection);
+
+		startBatch();
+	}
+
 	void Renderer2D::beginScene(const OrthographicCamera& camera)
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
