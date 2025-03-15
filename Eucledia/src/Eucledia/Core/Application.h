@@ -35,7 +35,7 @@ namespace Eucledia
 	private:
 		static Application* _instance;
 
-		std::unique_ptr<Window> _window;
+		scope<Window> _window;
 
 		bool onWindowClosed(WindowCloseEvent& event);
 		bool onWindowResized(WindowResizeEvent& event);

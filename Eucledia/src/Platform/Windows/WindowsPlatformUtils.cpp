@@ -1,7 +1,6 @@
 #include "euclediapch.h"
 #include "Eucledia/Utils/PlatformUtils.h"
 
-#include <sstream>
 #include <commdlg.h>
 #include <GLFW/glfw3.h>
 
@@ -16,12 +15,19 @@ namespace Eucledia
 	{
 		OPENFILENAMEA dialog;
 		CHAR fileBuffer[260] = { 0 };
+		CHAR currentDir[256] = { 0 };
 
 		ZeroMemory(&dialog, sizeof(OPENFILENAME));
 		dialog.lStructSize = sizeof(OPENFILENAME);
 		dialog.hwndOwner = glfwGetWin32Window((GLFWwindow*)Application::get().getWindow().getNativeWindow());
 		dialog.lpstrFile = fileBuffer;
 		dialog.nMaxFile = sizeof(fileBuffer);
+
+		if (GetCurrentDirectoryA(256, currentDir))
+		{
+			dialog.lpstrInitialDir = currentDir;
+		}
+
 		dialog.lpstrFilter = filter; // filter = File extensions allowed
 		dialog.nFilterIndex = 1;
 		dialog.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
@@ -38,15 +44,22 @@ namespace Eucledia
 	{
 		OPENFILENAMEA dialog;
 		CHAR fileBuffer[260] = { 0 };
+		CHAR currentDir[256] = { 0 };
 
 		ZeroMemory(&dialog, sizeof(OPENFILENAME));
 		dialog.lStructSize = sizeof(OPENFILENAME);
 		dialog.hwndOwner = glfwGetWin32Window((GLFWwindow*)Application::get().getWindow().getNativeWindow());
 		dialog.lpstrFile = fileBuffer;
 		dialog.nMaxFile = sizeof(fileBuffer);
+
+		if (GetCurrentDirectoryA(256, currentDir))
+		{
+			dialog.lpstrInitialDir = currentDir;
+		}
+
 		dialog.lpstrFilter = filter; // filter = File extensions allowed
 		dialog.nFilterIndex = 1;
-		dialog.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+		dialog.Flags = OFN_PATHMUSTEXIST | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR;
 		dialog.lpstrDefExt = strchr(filter, '\0') + 1;
 
 		if (GetSaveFileNameA(&dialog) == TRUE)
