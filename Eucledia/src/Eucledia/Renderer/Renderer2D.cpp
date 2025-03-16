@@ -16,6 +16,9 @@ namespace Eucledia
 		glm::vec2 textCoord;
 		float textureIndex;
 		float textureMultiplier;
+
+		// for Editor
+		int entityID;
 	};
 
 	struct Renderer2DData
@@ -56,7 +59,8 @@ namespace Eucledia
 			{ ShaderDataType::Float4, "color" },
 			{ ShaderDataType::Float2, "textCoord" },
 			{ ShaderDataType::Float, "textureIndex" },
-			{ ShaderDataType::Float, "textureMultiplier" }
+			{ ShaderDataType::Float, "textureMultiplier" },
+			{ ShaderDataType::Int, "entityID" }
 		});
 		_data.quadVA->addVertexBuffer(_data.quadVB);
 		_data.quadVBBase = new QuadVertex[_data.maxVertices];
@@ -218,7 +222,7 @@ namespace Eucledia
 		drawQuad(transform, texture, multiplier, tintColor);
 	}
 
-	void Renderer2D::drawQuad(const glm::mat4& transform, const glm::vec4& color)
+	void Renderer2D::drawQuad(const glm::mat4& transform, const glm::vec4& color, int entityID)
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
 
@@ -241,6 +245,7 @@ namespace Eucledia
 			_data.quadVBPointer->textCoord = textureCoords[index];
 			_data.quadVBPointer->textureIndex = textureIndex;
 			_data.quadVBPointer->textureMultiplier = textureMultiplier;
+			_data.quadVBPointer->entityID = entityID;
 			_data.quadVBPointer++;
 		}
 
@@ -249,7 +254,7 @@ namespace Eucledia
 		_data.stats.quadCount++;
 	}
 
-	void Renderer2D::drawQuad(const glm::mat4& transform, const ref<Texture2D>& texture, float multiplier, const glm::vec4& tintColor)
+	void Renderer2D::drawQuad(const glm::mat4& transform, const ref<Texture2D>& texture, float multiplier, const glm::vec4& tintColor, int entityID)
 	{
 		EUCLEDIA_PROFILE_FUNCTION();
 
@@ -292,6 +297,7 @@ namespace Eucledia
 			_data.quadVBPointer->textCoord = textureCoords[index];
 			_data.quadVBPointer->textureIndex = textureIndex;
 			_data.quadVBPointer->textureMultiplier = multiplier;
+			_data.quadVBPointer->entityID = entityID;
 			_data.quadVBPointer++;
 		}
 
@@ -330,6 +336,11 @@ namespace Eucledia
 		transform *= glm::scale(glm::mat4(1), { size.x, size.y, 1 });
 
 		drawQuad(transform, texture, multiplier, tintColor);
+	}
+
+	void Renderer2D::drawSprite(const glm::mat4& transform, SpriteRendererComponent& sprite, int entityID)
+	{
+		drawQuad(transform, sprite.color, entityID);
 	}
 
 	void Renderer2D::resetStats()

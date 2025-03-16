@@ -72,11 +72,6 @@ namespace Eucledia
 				case ShaderDataType::Float2:
 				case ShaderDataType::Float3:
 				case ShaderDataType::Float4:
-				case ShaderDataType::Int:
-				case ShaderDataType::Int2:
-				case ShaderDataType::Int3:
-				case ShaderDataType::Int4:
-				case ShaderDataType::Bool:
 				{
 					glEnableVertexAttribArray(_vertexBufferIndex);
 					glVertexAttribPointer(
@@ -84,6 +79,23 @@ namespace Eucledia
 						element.getComponentCount(),
 						ShaderDataTypeToOpenGLBaseType(element._type),
 						element._normalized ? GL_TRUE : GL_FALSE,
+						layout.getStride(),
+						(const void*)element._offset
+					);
+					_vertexBufferIndex++;
+					break;
+				}
+				case ShaderDataType::Int:
+				case ShaderDataType::Int2:
+				case ShaderDataType::Int3:
+				case ShaderDataType::Int4:
+				case ShaderDataType::Bool:
+				{
+					glEnableVertexAttribArray(_vertexBufferIndex);
+					glVertexAttribIPointer(
+						_vertexBufferIndex,
+						element.getComponentCount(),
+						ShaderDataTypeToOpenGLBaseType(element._type),
 						layout.getStride(),
 						(const void*)element._offset
 					);

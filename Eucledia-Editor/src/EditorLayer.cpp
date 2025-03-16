@@ -24,6 +24,7 @@ namespace Eucledia
         _texture = Texture2D::create("assets/textures/default.png");
 
         FrameBufferSpecification spec;
+        spec.attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
         spec.width = 1600;
         spec.height = 900;
         _frameBuffer = Framebuffer::create(spec);
@@ -107,7 +108,24 @@ namespace Eucledia
         RenderCommand::setClearColor({ .15f, .15f, .15f, 1.f });
         RenderCommand::clear();
 
+        _frameBuffer->clearAttachment(1, -1);
+
         _activeScene->onUpdateEditor(ts, _editorCamera);
+
+        auto [mx, my] = ImGui::GetMousePos();
+        mx -= _viewportBounds[0].x;
+        my -= _viewportBounds[0].y;
+        glm::vec2 viewportSize = _viewportBounds[1] - _viewportBounds[0];
+        my = viewportSize.y - my;
+
+        int mouseX = (int)mx;
+        int mouseY = (int)my;
+
+        if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
+        {
+           int pixelData = _frameBuffer->readPixel(1, mouseX, mouseY);
+           _hoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, _activeScene.get());
+        }
 
         _frameBuffer->unbind();
     }
@@ -198,6 +216,15 @@ namespace Eucledia
 
         ImGui::Begin("Stats");
 
+        std::string name = "None";
+
+        if (_hoveredEntity)
+        {
+            name = _hoveredEntity.getComponent<TagComponent>().tag;
+        }
+
+        ImGui::Text("Hovered Entity : %s", name.c_str());
+
         auto stats = Renderer2D::getStats();
 
         ImGui::Text("Renderer2D Stats:");
@@ -211,6 +238,7 @@ namespace Eucledia
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.f, 0.f });
 
         ImGui::Begin("Viewport");
+        auto viewportOffset = ImGui::GetCursorPos();
 
         _viewportFocused = ImGui::IsWindowFocused();
         _viewportHovered = ImGui::IsWindowHovered();
@@ -225,6 +253,15 @@ namespace Eucledia
             ImVec2{ 0.f, 1.f }, 
             ImVec2{ 1.f, 0.f }
         );
+
+        auto windowSize = ImGui::GetWindowSize();
+        ImVec2 minBound = ImGui::GetWindowPos();
+        minBound.x += viewportOffset.x;
+        minBound.y += viewportOffset.y;
+
+        ImVec2 maxBound = { minBound.x + windowSize.x, minBound.y + windowSize.y };
+        _viewportBounds[0] = { minBound.x, minBound.y };
+        _viewportBounds[1] = { maxBound.x, maxBound.y };
 
         Entity selectedEntity = _sceneHierarchyPanel.getSelectedEntity();
 

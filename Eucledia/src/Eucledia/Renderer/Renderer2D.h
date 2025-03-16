@@ -7,6 +7,8 @@
 #include "Eucledia/Renderer/Camera.h"
 #include "Eucledia/Renderer/EditorCamera.h"
 
+#include "Eucledia/Scene/Components.h"
+
 namespace Eucledia
 {
 	class Renderer2D
@@ -26,13 +28,15 @@ namespace Eucledia
 		static void drawQuad(const glm::vec2& position, const glm::vec2& size, const ref<Texture2D>& texture, float multiplier = 1, const glm::vec4& tintColor = glm::vec4(1));
 		static void drawQuad(const glm::vec3& position, const glm::vec2& size, const ref<Texture2D>& texture, float multiplier = 1, const glm::vec4& tintColor = glm::vec4(1));
 
-		static void drawQuad(const glm::mat4& transform, const glm::vec4& color);
-		static void drawQuad(const glm::mat4& transform, const ref<Texture2D>& texture, float multiplier = 1, const glm::vec4& tintColor = glm::vec4(1));
+		static void drawQuad(const glm::mat4& transform, const glm::vec4& color, int entityID = -1);
+		static void drawQuad(const glm::mat4& transform, const ref<Texture2D>& texture, float multiplier = 1, const glm::vec4& tintColor = glm::vec4(1), int entityID = -1);
 
 		static void drawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color);
 		static void drawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const glm::vec4& color);
 		static void drawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const ref<Texture2D>& texture, float multiplier = 1, const glm::vec4& tintColor = glm::vec4(1));
 		static void drawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const ref<Texture2D>& texture, float multiplier = 1, const glm::vec4& tintColor = glm::vec4(1));
+
+		static void drawSprite(const glm::mat4& transform, SpriteRendererComponent& sprite, int entityID);
 	
 		struct Statistics
 		{

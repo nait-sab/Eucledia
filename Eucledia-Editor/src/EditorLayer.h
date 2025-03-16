@@ -38,12 +38,15 @@ namespace Eucledia
 		ref<Scene> _activeScene;
 		Entity _squareEntity, _cameraEntity;
 
+		Entity _hoveredEntity;
+
 		bool _primaryCamera = true;
 
 		EditorCamera _editorCamera;
 
 		bool _viewportFocused = false, _viewportHovered = false;
 		glm::vec2 _viewportSize = { 0, 0 };
+		glm::vec2 _viewportBounds[2];
 
 		glm::vec4 _imguiColor;
 
