@@ -56,6 +56,11 @@ namespace Eucledia
 		ImGui::End();
 	}
 
+	void SceneHierarchyPanel::setSelectedEntity(Entity entity)
+	{
+		_selectionContext = entity;
+	}
+
 	void SceneHierarchyPanel::drawEntityNode(Entity entity)
 	{
 		auto& tag = entity.getComponent<TagComponent>().tag;

@@ -21,6 +21,7 @@ namespace Eucledia
 		void onEvent(Event& event) override;
 
 		bool onKeyPressed(KeyPressedEvent& event);
+		bool onMouseButtonPressed(MouseButtonPressedEvent& event);
 
 		void newScene();
 		void openScene();

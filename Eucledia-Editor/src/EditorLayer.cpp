@@ -325,6 +325,7 @@ namespace Eucledia
 
         EventDispatcher dispatcher(event);
         dispatcher.dispatch<KeyPressedEvent>(EUCLEDIA_BIND_EVENT_FN(EditorLayer::onKeyPressed));
+        dispatcher.dispatch<MouseButtonPressedEvent>(EUCLEDIA_BIND_EVENT_FN(EditorLayer::onMouseButtonPressed));
     }
 
     bool EditorLayer::onKeyPressed(KeyPressedEvent& event)
@@ -394,6 +395,19 @@ namespace Eucledia
                 }
 
                 break;
+        }
+
+        return false;
+    }
+
+    bool EditorLayer::onMouseButtonPressed(MouseButtonPressedEvent& event)
+    {
+        if (event.getMouseButton() == EUCLEDIA_MOUSE_BUTTON_LEFT && 
+            _viewportHovered && 
+            !ImGuizmo::IsOver() && 
+            !Input::isKeyPressed(EUCLEDIA_KEY_LEFT_ALT)
+        ) {
+            _sceneHierarchyPanel.setSelectedEntity(_hoveredEntity);
         }
 
         return false;
