@@ -238,7 +238,13 @@ namespace Eucledia
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.f, 0.f });
 
         ImGui::Begin("Viewport");
-        auto viewportOffset = ImGui::GetCursorPos();
+
+        auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
+        auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
+        auto viewportOffset = ImGui::GetWindowPos();
+
+        _viewportBounds[0] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
+        _viewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
 
         _viewportFocused = ImGui::IsWindowFocused();
         _viewportHovered = ImGui::IsWindowHovered();
@@ -254,15 +260,6 @@ namespace Eucledia
             ImVec2{ 1.f, 0.f }
         );
 
-        auto windowSize = ImGui::GetWindowSize();
-        ImVec2 minBound = ImGui::GetWindowPos();
-        minBound.x += viewportOffset.x;
-        minBound.y += viewportOffset.y;
-
-        ImVec2 maxBound = { minBound.x + windowSize.x, minBound.y + windowSize.y };
-        _viewportBounds[0] = { minBound.x, minBound.y };
-        _viewportBounds[1] = { maxBound.x, maxBound.y };
-
         Entity selectedEntity = _sceneHierarchyPanel.getSelectedEntity();
 
         if (selectedEntity && _guizmoType != -1)
@@ -270,9 +267,11 @@ namespace Eucledia
             ImGuizmo::SetOrthographic(false);
             ImGuizmo::SetDrawlist();
 
-            float windowWidth = (float)ImGui::GetWindowWidth();
-            float windowHeight = (float)ImGui::GetWindowHeight();
-            ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+            ImGuizmo::SetRect(
+                _viewportBounds[0].x, _viewportBounds[0].y,
+                _viewportBounds[1].x - _viewportBounds[0].x,
+                _viewportBounds[1].y - _viewportBounds[0].y
+            );
 
             /*auto cameraEntity = _activeScene->getPrimaryCameraEntity();
             const auto& camera = cameraEntity.getComponent<CameraComponent>().camera;
@@ -368,16 +367,32 @@ namespace Eucledia
                 break;
             }
             case EUCLEDIA_KEY_A:
-                _guizmoType = -1;
+                if (!ImGuizmo::IsUsing())
+                {
+                    _guizmoType = -1;
+                }
+
                 break;
             case EUCLEDIA_KEY_W:
-                _guizmoType = ImGuizmo::OPERATION::TRANSLATE;
+                if (!ImGuizmo::IsUsing())
+                {
+                    _guizmoType = ImGuizmo::OPERATION::TRANSLATE;
+                }
+
                 break;
             case EUCLEDIA_KEY_E:
-                _guizmoType = ImGuizmo::OPERATION::ROTATE;
+                if (!ImGuizmo::IsUsing())
+                {
+                    _guizmoType = ImGuizmo::OPERATION::ROTATE;
+                }
+
                 break;
             case EUCLEDIA_KEY_R:
-                _guizmoType = ImGuizmo::OPERATION::SCALE;
+                if (!ImGuizmo::IsUsing())
+                {
+                    _guizmoType = ImGuizmo::OPERATION::SCALE;
+                }
+
                 break;
         }
 
