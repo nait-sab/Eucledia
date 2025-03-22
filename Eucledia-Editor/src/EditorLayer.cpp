@@ -213,6 +213,7 @@ namespace Eucledia
         }
 
         _sceneHierarchyPanel.onImGuiRender();
+        _contentBrowserPanel.onImGuiRender();
 
         ImGui::Begin("Stats");
 

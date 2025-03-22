@@ -26,6 +26,5 @@ namespace Eucledia
 
 	private:
 		bool _blockEvents = true;
-		float _time = 0;
 	};
 }

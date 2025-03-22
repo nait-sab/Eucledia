@@ -2,6 +2,7 @@
 
 #include "Eucledia.h"
 #include "Panels/SceneHierarchyPanel.h"
+#include "Panels/ContentBrowserPanel.h"
 
 #include "Eucledia/Renderer/EditorCamera.h"
 
@@ -54,6 +55,7 @@ namespace Eucledia
 		int _guizmoType = -1;
 
 		SceneHierarchyPanel _sceneHierarchyPanel;
+		ContentBrowserPanel _contentBrowserPanel;
 	};
 }
 

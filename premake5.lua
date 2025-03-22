@@ -1,4 +1,5 @@
 include "./vendor/premake/premake_customization/solution_items.lua"
+include "dependencies.lua"
 
 workspace "Eucledia"
 	architecture "x86_64"
@@ -17,16 +18,6 @@ workspace "Eucledia"
 	}
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
-
-IncludeDir = {}
-IncludeDir["GLFW"] = "%{wks.location}/Eucledia/vendor/GLFW/include"
-IncludeDir["Glad"] = "%{wks.location}/Eucledia/vendor/Glad/include"
-IncludeDir["ImGui"] = "%{wks.location}/Eucledia/vendor/imgui"
-IncludeDir["glm"] = "%{wks.location}/Eucledia/vendor/glm"
-IncludeDir["stb_image"] = "%{wks.location}/Eucledia/vendor/stb_image"
-IncludeDir["entt"] = "%{wks.location}/Eucledia/vendor/entt/include"
-IncludeDir["yaml_cpp"] = "%{wks.location}/Eucledia/vendor/yaml-cpp/include"
-IncludeDir["ImGuizmo"] = "%{wks.location}/Eucledia/vendor/ImGuizmo"
 
 group "Dependencies"
 	include "vendor/premake"
